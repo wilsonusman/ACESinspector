@@ -519,7 +519,7 @@ namespace ACESinspector
 
         public List<string> invalidParttypePositions(VCdb vcdb, PCdb pcdb, IProgress<int> progress)
         {
-            int i; string sqlString = ""; int percentProgress = 0;
+            int i; int percentProgress = 0;
             BaseVehicle basevidTemp = new BaseVehicle();
 
             for (i = 0; i <= appsCount - 1; i++)

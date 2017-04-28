@@ -1,0 +1,13 @@
+D:\Users\Luke\Documents\ACESinspector\ACESinspector\obj\Debug\ACESinspector.csprojResolveAssemblyReference.cache
+D:\Users\Luke\Documents\ACESinspector\ACESinspector\obj\Debug\ACESinspector.Form1.resources
+D:\Users\Luke\Documents\ACESinspector\ACESinspector\obj\Debug\ACESinspector.Properties.Resources.resources
+D:\Users\Luke\Documents\ACESinspector\ACESinspector\obj\Debug\ACESinspector.csproj.GenerateResource.Cache
+D:\Users\Luke\Documents\ACESinspector\ACESinspector\bin\Debug\ACESinspector.exe.config
+D:\Users\Luke\Documents\ACESinspector\ACESinspector\bin\Debug\ACESinspector.exe.manifest
+D:\Users\Luke\Documents\ACESinspector\ACESinspector\bin\Debug\ACESinspector.application
+D:\Users\Luke\Documents\ACESinspector\ACESinspector\bin\Debug\ACESinspector.exe
+D:\Users\Luke\Documents\ACESinspector\ACESinspector\bin\Debug\ACESinspector.pdb
+D:\Users\Luke\Documents\ACESinspector\ACESinspector\obj\Debug\ACESinspector.exe.manifest
+D:\Users\Luke\Documents\ACESinspector\ACESinspector\obj\Debug\ACESinspector.application
+D:\Users\Luke\Documents\ACESinspector\ACESinspector\obj\Debug\ACESinspector.exe
+D:\Users\Luke\Documents\ACESinspector\ACESinspector\obj\Debug\ACESinspector.pdb
