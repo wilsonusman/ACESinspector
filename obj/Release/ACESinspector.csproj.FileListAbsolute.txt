@@ -1,0 +1,12 @@
+D:\Users\Luke\Documents\ACESinspector\ACESinspector\bin\Release\ACESinspector.exe.config
+D:\Users\Luke\Documents\ACESinspector\ACESinspector\bin\Release\ACESinspector.exe.manifest
+D:\Users\Luke\Documents\ACESinspector\ACESinspector\bin\Release\ACESinspector.application
+D:\Users\Luke\Documents\ACESinspector\ACESinspector\bin\Release\ACESinspector.exe
+D:\Users\Luke\Documents\ACESinspector\ACESinspector\bin\Release\ACESinspector.pdb
+D:\Users\Luke\Documents\ACESinspector\ACESinspector\obj\Release\ACESinspector.Form1.resources
+D:\Users\Luke\Documents\ACESinspector\ACESinspector\obj\Release\ACESinspector.Properties.Resources.resources
+D:\Users\Luke\Documents\ACESinspector\ACESinspector\obj\Release\ACESinspector.csproj.GenerateResource.Cache
+D:\Users\Luke\Documents\ACESinspector\ACESinspector\obj\Release\ACESinspector.exe.manifest
+D:\Users\Luke\Documents\ACESinspector\ACESinspector\obj\Release\ACESinspector.application
+D:\Users\Luke\Documents\ACESinspector\ACESinspector\obj\Release\ACESinspector.exe
+D:\Users\Luke\Documents\ACESinspector\ACESinspector\obj\Release\ACESinspector.pdb
