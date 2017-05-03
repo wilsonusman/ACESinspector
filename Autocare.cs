@@ -256,6 +256,9 @@ namespace ACESinspector
         public int appsCount = 0;
         public List<string> distinctParts = new List<string>();
         public Dictionary<string, int> partsAppsCounts = new Dictionary<string, int>();
+        public Dictionary<string, string> partsPartTypes = new Dictionary<string, string>();
+        public Dictionary<string, string> partsPositions = new Dictionary<string, string>();
+
 
         public List<int> distinctBasevids = new List<int>();
         public List<string> distinctAssets = new List<string>();
@@ -313,6 +316,8 @@ namespace ACESinspector
             distinctAssets.Clear();
             distinctBasevids.Clear();
             partsAppsCounts.Clear();
+            partsPartTypes.Clear();
+            partsPositions.Clear();
             duplicateErrors.Clear();
             overlapsErrors.Clear();
             CNCoverlapsErrors.Clear();
@@ -329,7 +334,6 @@ namespace ACESinspector
             analysisComplete = false;
             analysisWarnings = 0;
             analysisErrors = 0;
-            partsAppsCounts.Clear();
             duplicateErrors.Clear();
             overlapsErrors.Clear();
             CNCoverlapsErrors.Clear();
@@ -340,8 +344,51 @@ namespace ACESinspector
             xmlValidationErrors.Clear();
         }
 
+                
+        public List<string> duplicates(VCdb vcdb, PCdb pcdb, IProgress<int> progress)
+        {
+            // hashtable for temp storage of [basevid_parttype_position_qualifiers_mfrlable]="appId1,appId2,AppId3..."
+            // any element that has more than one appId in the second dimension, is a vehicle with duplicates.
+            Dictionary<String, String> duplicatesHashtable = new Dictionary<string, string>();
+            int i; int percentProgress = 0; string hashkey = "";
+            int tempBaseVehicleid;
+
+            for (i = 0; i <= appsCount - 1; i++)
+            {
+                //build a hashkey that defines a vehicle. use Tabs characters to delimit the hashstring so it can be parsed apart later for presenation
+                hashkey = apps[i].basevehilceid.ToString() + "\t" + apps[i].parttypeid.ToString() + "\t" + apps[i].positionid + "\t" + apps[i].niceAttributesString(vcdb,true) + "\t" + apps[i].mfrlabel + "\t" + apps[i].part;
+                if (duplicatesHashtable.ContainsKey(hashkey))
+                {
+                    duplicatesHashtable[hashkey] += "," + apps[i].id.ToString();
+                }
+                else
+                {
+                    duplicatesHashtable.Add(hashkey, apps[i].id.ToString());
+                }
+
+                if (progress != null)
+                {// only report progress on whole percentage steps (100 total reports). reporting on every iteration is too process intensive
+                    percentProgress = Convert.ToInt32(((double)i / (double)appsCount) * 100);
+                    if ((double)percentProgress % (double)1 == 0) { progress.Report(percentProgress); }
+                }
+            }
+
+            foreach (KeyValuePair<string, string> entry in duplicatesHashtable)
+            {
+                if (entry.Value.Contains(","))
+                {
+                    string[] fields = entry.Key.Split('\t');
+                    tempBaseVehicleid = Convert.ToInt32(fields[0]);
+                    duplicateErrors.Add(tempBaseVehicleid.ToString() + "\t" + vcdb.niceMakeOfBasevid(tempBaseVehicleid) + "\t" + vcdb.niceModelOfBasevid(tempBaseVehicleid) + "\t" + vcdb.niceYearOfBasevid(tempBaseVehicleid) + "\t" + pcdb.niceParttype(Convert.ToInt32(fields[1])) + "\t" + pcdb.nicePosition(Convert.ToInt32(fields[2])) + "\t" + fields[3] + "\t" + entry.Value);
+                    analysisWarnings++;
+                }
+            }
+            return duplicateErrors;
+        }
 
 
+
+        /*
         public List<string> duplicates(VCdb vcdb, PCdb pcdb, IProgress<int> progress)
         {
             int i; int percentProgress = 0;
@@ -364,30 +411,52 @@ namespace ACESinspector
             return duplicateErrors;
         }
 
+        */
+
+
+
+
 
 
         public List<string> overlaps(VCdb vcdb, PCdb pcdb, IProgress<int> progress)
         {
-            int i; int percentProgress = 0;
-            for (i = 0; i <= appsCount - 2; i++)
+            // hashtable for temp storage of [basevid_parttype_position_qualifiers_mfrlable]="partA,partB,partC..."
+            // any element that has more than one part in the second dimension, is a vehicle with overlaps.
+            Dictionary<String, String> overlapsHashtable = new Dictionary<string, string>();
+            int i; int percentProgress = 0; string hashkey = "";
+            int tempBaseVehicleid;
+
+            for (i = 0; i <= appsCount - 1; i++)
             {
-                if (apps[i].basevehilceid == apps[i + 1].basevehilceid &&
-                    apps[i].part != apps[i + 1].part &&
-                    apps[i].parttypeid == apps[i + 1].parttypeid &&
-                    apps[i].positionid == apps[i + 1].positionid &&
-                    apps[i].mfrlabel == apps[i + 1].mfrlabel &&
-                    apps[i].asset == apps[i + 1].asset &&
-                    apps[i].assetitemorder == apps[i + 1].assetitemorder &&
-                    apps[i].namevalpairString(true) == apps[i + 1].namevalpairString(true) &&
-                    ((apps[i].namevalpairString(true) != "" && apps[i + 1].namevalpairString(true) != "") || (apps[i].namevalpairString(true) == "" && apps[i + 1].namevalpairString(true) == "")))
+                //build a hashkey that defines a vehicle. us Tabs characters to delimit the hashstring so it can be parsed apart later for presenation
+                hashkey = apps[i].basevehilceid.ToString() + "\t" + apps[i].parttypeid.ToString()+ "\t" + apps[i].positionid + "\t" + apps[i].namevalpairString(true) + "\t" + apps[i].mfrlabel;
+                if (overlapsHashtable.ContainsKey(hashkey))
                 {
-                    overlapsErrors.Add(apps[i].id + "\t" + apps[i + 1].id + "\t" + vcdb.niceMakeOfBasevid(apps[i].basevehilceid) + "\t" + vcdb.niceModelOfBasevid(apps[i].basevehilceid) + "\t" + vcdb.niceYearOfBasevid(apps[i].basevehilceid).ToString() + "\t" + pcdb.niceParttype(apps[i].parttypeid) + "\t" + pcdb.nicePosition(apps[i].positionid) + "\t" + apps[i].quantity + "\t" + apps[i].part + "\t" + apps[i + 1].part + "\t" + apps[i].namevalpairString(true));
-                    analysisWarnings++;
+                    if(!overlapsHashtable[hashkey].Contains(apps[i].part))
+                    {
+                        overlapsHashtable[hashkey] += "," + apps[i].part;
+                    }
                 }
+                else
+                {
+                    overlapsHashtable.Add(hashkey, apps[i].part);
+                }
+
                 if (progress != null)
                 {// only report progress on whole percentage steps (100 total reports). reporting on every iteration is too process intensive
                     percentProgress = Convert.ToInt32(((double)i / (double)appsCount) * 100);
-                    if ((double)percentProgress % (double)51 == 0) { progress.Report(percentProgress); }
+                    if ((double)percentProgress % (double)1 == 0) { progress.Report(percentProgress); }
+                }
+            }
+
+            foreach (KeyValuePair<string, string> entry in overlapsHashtable)
+            {
+                if(entry.Value.Contains(","))
+                {
+                    string[] fields = entry.Key.Split('\t');
+                    tempBaseVehicleid = Convert.ToInt32(fields[0]);
+                    overlapsErrors.Add(tempBaseVehicleid.ToString() + "\t" + vcdb.niceMakeOfBasevid(tempBaseVehicleid) + "\t" + vcdb.niceModelOfBasevid(tempBaseVehicleid) + "\t" + vcdb.niceYearOfBasevid(tempBaseVehicleid) + "\t" + pcdb.niceParttype(Convert.ToInt32(fields[1])) + "\t" + pcdb.nicePosition(Convert.ToInt32(fields[2])) + "\t" + fields[3] + "\t" + entry.Value);
+                    analysisWarnings++;
                 }
             }
             return overlapsErrors;
@@ -396,7 +465,7 @@ namespace ACESinspector
 
         public List<string> CNCoverlaps(VCdb vcdb, PCdb pcdb, IProgress<int> progress)
         {
-            int i; int percentProgress = 0;
+            int i; int percentProgress = 0; int groupnumber = 1;
             for (i = 0; i <= appsCount - 2; i++)
             {
                 if (apps[i].basevehilceid == apps[i + 1].basevehilceid &&
@@ -407,9 +476,9 @@ namespace ACESinspector
                     apps[i].assetitemorder == apps[i + 1].assetitemorder &&
                     ((apps[i].namevalpairString(true) == "" && apps[i + 1].namevalpairString(true) != "") || (apps[i].namevalpairString(true) != "" && apps[i + 1].namevalpairString(true) == "")))
                 {
-                    CNCoverlapsErrors.Add(apps[i].id + "\t" + vcdb.niceMakeOfBasevid(apps[i].basevehilceid) + "\t" + vcdb.niceModelOfBasevid(apps[i].basevehilceid) + "\t" + vcdb.niceYearOfBasevid(apps[i].basevehilceid).ToString() + "\t" + pcdb.niceParttype(apps[i].parttypeid) + "\t" + pcdb.nicePosition(apps[i].positionid) + "\t" + apps[i].quantity + "\t" + apps[i].part + "\t" + apps[i].namevalpairString(true));
-                    CNCoverlapsErrors.Add(apps[i + 1].id + "\t" + vcdb.niceMakeOfBasevid(apps[i].basevehilceid) + "\t" + vcdb.niceModelOfBasevid(apps[i].basevehilceid) + "\t" + vcdb.niceYearOfBasevid(apps[i].basevehilceid).ToString() + "\t" + pcdb.niceParttype(apps[i + 1].parttypeid) + "\t" + pcdb.nicePosition(apps[i + 1].positionid) + "\t" + apps[i + 1].quantity + "\t" + apps[i + 1].part + "\t" + apps[i + 1].namevalpairString(true));
-                    analysisWarnings++;
+                    CNCoverlapsErrors.Add(groupnumber.ToString() + "\t" + apps[i].id.ToString() + "\t" + apps[i].basevehilceid.ToString() + "\t" + vcdb.niceMakeOfBasevid(apps[i].basevehilceid) + "\t" + vcdb.niceModelOfBasevid(apps[i].basevehilceid) + "\t" + vcdb.niceYearOfBasevid(apps[i].basevehilceid).ToString() + "\t" + pcdb.niceParttype(apps[i].parttypeid) + "\t" + pcdb.nicePosition(apps[i].positionid) + "\t" + apps[i].quantity.ToString() + "\t" + apps[i].part + "\t" + apps[i].niceAttributesString(vcdb,true));
+                    CNCoverlapsErrors.Add(groupnumber.ToString() + "\t" + apps[i + 1].id.ToString() + "\t" + apps[i+1].basevehilceid.ToString() + "\t" + vcdb.niceMakeOfBasevid(apps[i].basevehilceid) + "\t" + vcdb.niceModelOfBasevid(apps[i].basevehilceid) + "\t" + vcdb.niceYearOfBasevid(apps[i].basevehilceid).ToString() + "\t" + pcdb.niceParttype(apps[i + 1].parttypeid) + "\t" + pcdb.nicePosition(apps[i + 1].positionid) + "\t" + apps[i + 1].quantity.ToString() + "\t" + apps[i + 1].part + "\t" + apps[i+1].niceAttributesString(vcdb, true));
+                    analysisWarnings++; groupnumber++;
                 }
                 if (progress != null)
                 {// only report progress on whole percentage steps (100 total reports). reporting on every iteration is too process intensive
@@ -573,6 +642,7 @@ namespace ACESinspector
             XDocument xmlDoc = null;
             XmlSchemaSet schemas = new XmlSchemaSet();
             string schemaString = "";
+            bool found;
 
             if (_schemaString == "")
             {// no schema string was passed in - extract ACES version from XML
@@ -634,7 +704,7 @@ namespace ACESinspector
                     apps[appsCount].part = (string)appElement.Element("Part");
 
 
-                    if(!distinctMfrLabels.Contains(apps[appsCount].mfrlabel)){distinctMfrLabels.Add(apps[appsCount].mfrlabel);}
+                    if(apps[appsCount].mfrlabel !=null &&  !distinctMfrLabels.Contains(apps[appsCount].mfrlabel)){distinctMfrLabels.Add(apps[appsCount].mfrlabel);}
                     if (!distinctPartTypes.Contains(apps[appsCount].parttypeid)) {distinctPartTypes.Add(apps[appsCount].parttypeid);}
 
                     if (!distinctParts.Contains(apps[appsCount].part))
@@ -646,6 +716,47 @@ namespace ACESinspector
 
                         partsAppsCounts[apps[appsCount].part] += 1;
                     }
+
+                    // add this app's part/parttype combination to the partsPartTypes hashtable
+                    if (partsPartTypes.ContainsKey(apps[appsCount].part))
+                    {
+                        // check for the existance of this parttypeid in the comma-seperated list before adding it.
+                        found = false;
+                        string[] chunks = partsPartTypes[apps[appsCount].part].Split(',');
+                        foreach(string chunk in chunks)
+                        {
+                            if(Convert.ToInt32(chunk) == Convert.ToInt32(apps[appsCount].parttypeid.ToString())){found = true; break;}
+                        }
+                        if (!found) { partsPartTypes[apps[appsCount].part] += "," + apps[appsCount].parttypeid.ToString(); }
+
+                    }
+                    else
+                    {
+                        partsPartTypes.Add(apps[appsCount].part, apps[appsCount].parttypeid.ToString());
+                    }
+
+
+                    // add this app's part/position combination to the partsPositions hashtable
+                    if (partsPositions.ContainsKey(apps[appsCount].part))
+                    {
+                        // check for the existance of this positonid in the comma-seperated list before adding it.
+                        found = false;
+                        string[] chunks = partsPositions[apps[appsCount].part].Split(',');
+                        foreach (string chunk in chunks)
+                        {
+                            if (Convert.ToInt32(chunk) == Convert.ToInt32(apps[appsCount].positionid.ToString())) { found = true; break; }
+                        }
+                        if (!found) { partsPositions[apps[appsCount].part] += "," + apps[appsCount].positionid.ToString(); }
+
+                    }
+                    else
+                    {
+                        partsPositions.Add(apps[appsCount].part, apps[appsCount].positionid.ToString());
+                    }
+
+
+
+
                     apps[appsCount].asset = (string)appElement.Element("Asset");
                     if (!distinctAssets.Contains(apps[appsCount].asset)) { distinctAssets.Add(apps[appsCount].asset); }
 
@@ -690,6 +801,8 @@ namespace ACESinspector
 
         public string generateAssessmentFile(string _filePath,PCdb pcdb)
         {
+            string partTypeNameListString = ""; string positionNameListString = "";
+
             string codeVersion= System.Reflection.Assembly.GetExecutingAssembly().GetName().Version.ToString();
             string excelTabColorXMLtag = "";
             try
@@ -708,47 +821,96 @@ namespace ACESinspector
                     sw.Write("<Row><Cell><Data ss:Type=\"String\">Validator project home</Data></Cell><Cell ss:StyleID=\"s64\" ss:HRef=\"https://autopartsource.com/ACESinspector\"><Data ss:Type=\"String\">autopartsource.com/ACESinspector</Data></Cell></Row>");
                     sw.Write("</Table><WorksheetOptions xmlns=\"urn:schemas-microsoft-com:office:excel\"><PageSetup><Header x:Margin=\"0.3\"/><Footer x:Margin=\"0.3\"/><PageMargins x:Bottom=\"0.75\" x:Left=\"0.7\" x:Right=\"0.7\" x:Top=\"0.75\"/></PageSetup><Selected/><ProtectObjects>False</ProtectObjects><ProtectScenarios>False</ProtectScenarios></WorksheetOptions></Worksheet>");
 
-                    sw.Write("<Worksheet ss:Name=\"Parts\"><Table ss:ExpandedColumnCount=\"1\" x:FullColumns=\"1\" x:FullRows=\"1\" ss:DefaultRowHeight=\"15\">");
-                    foreach (string distinctPart in distinctParts) {sw.Write("<Row><Cell><Data ss:Type=\"String\">" + distinctPart + "</Data></Cell></Row>"); }
-                    sw.Write("</Table><WorksheetOptions xmlns=\"urn:schemas-microsoft-com:office:excel\"><PageSetup><Header x:Margin=\"0.3\"/><Footer x:Margin=\"0.3\"/><PageMargins x:Bottom=\"0.75\" x:Left=\"0.7\" x:Right=\"0.7\" x:Top=\"0.75\"/></PageSetup><ProtectObjects>False</ProtectObjects><ProtectScenarios>False</ProtectScenarios></WorksheetOptions></Worksheet>");
+                    
+                    sw.Write("<Worksheet ss:Name=\"Parts\"><Table ss:ExpandedColumnCount=\"4\" x:FullColumns=\"1\" x:FullRows=\"1\" ss:DefaultRowHeight=\"15\"><Column ss:Width=\"100\"/><Column ss:Width=\"100\"/><Column ss:Width=\"100\"/><Column ss:Width=\"100\"/><Row><Cell ss:StyleID=\"s65\"><Data ss:Type=\"String\">Part</Data></Cell><Cell ss:StyleID=\"s65\"><Data ss:Type=\"String\">Applications Count</Data></Cell><Cell ss:StyleID=\"s65\"><Data ss:Type=\"String\">Part Types</Data></Cell><Cell ss:StyleID=\"s65\"><Data ss:Type=\"String\">Positions</Data></Cell></Row>");
+                    foreach (string distinctPart in distinctParts)
+                    {
+                        string[] partTypeIdStrings = partsPartTypes[distinctPart].Split(',');
+                        partTypeNameListString = ""; foreach (string partTypeIdString in partTypeIdStrings) { partTypeNameListString += pcdb.niceParttype(Convert.ToInt32(partTypeIdString)) + ","; }
+                        partTypeNameListString = partTypeNameListString.Substring(0, partTypeNameListString.Length - 1);
+                        string[] positionIdStrings = partsPositions[distinctPart].Split(',');
+                        positionNameListString = ""; foreach (string positionIdString in positionIdStrings) { positionNameListString += pcdb.nicePosition(Convert.ToInt32(positionIdString)) + ","; }
+                        positionNameListString = positionNameListString.Substring(0, positionNameListString.Length - 1);
+                        sw.Write("<Row><Cell><Data ss:Type=\"String\">" + distinctPart + "</Data></Cell><Cell><Data ss:Type=\"Number\">" + partsAppsCounts[distinctPart].ToString() + "</Data></Cell><Cell><Data ss:Type=\"String\">" + partTypeNameListString + "</Data></Cell><Cell><Data ss:Type=\"String\">" + positionNameListString + "</Data></Cell></Row>");
+                    }
+                    sw.Write("</Table><WorksheetOptions xmlns=\"urn:schemas-microsoft-com:office:excel\"><PageSetup><Header x:Margin=\"0.3\"/><Footer x:Margin=\"0.3\"/><PageMargins x:Bottom=\"0.75\" x:Left=\"0.7\" x:Right=\"0.7\" x:Top=\"0.75\"/></PageSetup><FreezePanes/><FrozenNoSplit/><SplitHorizontal>1</SplitHorizontal><TopRowBottomPane>1</TopRowBottomPane><ActivePane>2</ActivePane><Panes><Pane><Number>3</Number></Pane><Pane><Number>2</Number><ActiveRow>0</ActiveRow></Pane></Panes><ProtectObjects>False</ProtectObjects><ProtectScenarios>False</ProtectScenarios></WorksheetOptions></Worksheet>");
 
                     sw.Write("<Worksheet ss:Name=\"Part Types\"><Table ss:ExpandedColumnCount=\"2\" x:FullColumns=\"1\" x:FullRows=\"1\" ss:DefaultRowHeight=\"15\"><Column ss:Index=\"2\" ss:AutoFitWidth=\"0\" ss:Width=\"183.75\"/>");
                     foreach (int distinctPartType in distinctPartTypes) { sw.Write("<Row><Cell><Data ss:Type=\"Number\">" + distinctPartType + "</Data></Cell><Cell><Data ss:Type=\"String\">" + pcdb.niceParttype(distinctPartType) + "</Data></Cell></Row>"); }
                     sw.Write("</Table><WorksheetOptions xmlns=\"urn:schemas-microsoft-com:office:excel\"><PageSetup><Header x:Margin=\"0.3\"/><Footer x:Margin=\"0.3\"/><PageMargins x:Bottom=\"0.75\" x:Left=\"0.7\" x:Right=\"0.7\" x:Top=\"0.75\"/></PageSetup><ProtectObjects>False</ProtectObjects><ProtectScenarios>False</ProtectScenarios></WorksheetOptions></Worksheet>");
-                    sw.Write("<Worksheet ss:Name=\"MfrLabels\"><Table ss:ExpandedColumnCount=\"1\" x:FullColumns=\"1\" x:FullRows=\"1\" ss:DefaultRowHeight=\"15\"><Column ss:AutoFitWidth=\"0\" ss:Width=\"151.5\"/>");
 
-                    foreach (string distinctMfrLabel in distinctMfrLabels) { sw.Write("<Row><Cell><Data ss:Type=\"String\">"+ distinctMfrLabel + "</Data></Cell></Row>"); }
-
-                    sw.Write("</Table><WorksheetOptions xmlns=\"urn:schemas-microsoft-com:office:excel\"><PageSetup><Header x:Margin=\"0.3\"/><Footer x:Margin=\"0.3\"/><PageMargins x:Bottom=\"0.75\" x:Left=\"0.7\" x:Right=\"0.7\" x:Top=\"0.75\"/></PageSetup><ProtectObjects>False</ProtectObjects><ProtectScenarios>False</ProtectScenarios></WorksheetOptions></Worksheet>");
-
-                    sw.Write("<Worksheet ss:Name =\"Invalid Base Vids\"><Table ss:ExpandedColumnCount=\"7\" x:FullColumns=\"1\" x:FullRows=\"1\" ss:DefaultRowHeight=\"15\"><Column ss:AutoFitWidth=\"0\" ss:Width=\"45\"/><Column ss:Width=\"77.25\"/><Column ss:Index=\"4\" ss:AutoFitWidth=\"0\" ss:Width=\"96\"/><Column ss:AutoFitWidth=\"0\" ss:Width=\"73.5\"/><Column ss:AutoFitWidth=\"0\" ss:Width=\"253.5\"/><Column ss:AutoFitWidth=\"0\" ss:Width=\"371.25\"/><Row><Cell ss:StyleID=\"s65\"><Data ss:Type=\"String\">App Id</Data></Cell><Cell ss:StyleID=\"s65\"><Data ss:Type=\"String\">Invalid BaseVid</Data></Cell><Cell ss:StyleID=\"s65\"><Data ss:Type=\"String\">Part</Data></Cell><Cell ss:StyleID=\"s65\"><Data ss:Type=\"String\">Part Type</Data></Cell><Cell ss:StyleID=\"s65\"><Data ss:Type=\"String\">Position</Data></Cell><Cell ss:StyleID=\"s65\"><Data ss:Type=\"String\">Qualifiers</Data></Cell><Cell ss:StyleID=\"s65\"><Data ss:Type=\"String\">Notes</Data></Cell></Row>");
-
-                    foreach(string line in basevehicleidsErrors)
+                    if(distinctMfrLabels.Count > 0)
                     {
-                        string[] fileds = line.Split('\t');
-                        sw.Write("<Row><Cell><Data ss:Type=\"Number\">" + fileds[0]+ "</Data></Cell><Cell><Data ss:Type=\"Number\">" + fileds[1] + "</Data></Cell><Cell><Data ss:Type=\"String\">" + fileds[2] + "</Data></Cell><Cell><Data ss:Type=\"String\">" + fileds[3] + "</Data></Cell><Cell><Data ss:Type=\"Number\">" + fileds[4] + "</Data></Cell><Cell><Data ss:Type=\"String\">" + fileds[5] + "</Data></Cell><Cell><Data ss:Type=\"String\">" + fileds[6] + "</Data></Cell></Row>");
+                        sw.Write("<Worksheet ss:Name=\"MfrLabels\"><Table ss:ExpandedColumnCount=\"1\" x:FullColumns=\"1\" x:FullRows=\"1\" ss:DefaultRowHeight=\"15\"><Column ss:AutoFitWidth=\"0\" ss:Width=\"151.5\"/>");
+                        foreach (string distinctMfrLabel in distinctMfrLabels) { sw.Write("<Row><Cell><Data ss:Type=\"String\">" + distinctMfrLabel + "</Data></Cell></Row>"); }
+                        sw.Write("</Table><WorksheetOptions xmlns=\"urn:schemas-microsoft-com:office:excel\"><PageSetup><Header x:Margin=\"0.3\"/><Footer x:Margin=\"0.3\"/><PageMargins x:Bottom=\"0.75\" x:Left=\"0.7\" x:Right=\"0.7\" x:Top=\"0.75\"/></PageSetup><ProtectObjects>False</ProtectObjects><ProtectScenarios>False</ProtectScenarios></WorksheetOptions></Worksheet>");
                     }
-                    excelTabColorXMLtag = "";  if(basevehicleidsErrors.Count>0) { excelTabColorXMLtag = "<TabColorIndex>10</TabColorIndex>"; }
-                    sw.Write("</Table><WorksheetOptions xmlns=\"urn:schemas-microsoft-com:office:excel\"><PageSetup><Header x:Margin=\"0.3\"/><Footer x:Margin=\"0.3\"/><PageMargins x:Bottom=\"0.75\" x:Left=\"0.7\" x:Right=\"0.7\" x:Top=\"0.75\"/></PageSetup><Print><ValidPrinterInfo/><HorizontalResolution>600</HorizontalResolution><VerticalResolution>600</VerticalResolution></Print>" + excelTabColorXMLtag + "<FreezePanes/><FrozenNoSplit/><SplitHorizontal>1</SplitHorizontal><TopRowBottomPane>1</TopRowBottomPane><ActivePane>2</ActivePane><Panes><Pane><Number>3</Number></Pane><Pane><Number>2</Number><ActiveRow>0</ActiveRow></Pane></Panes><ProtectObjects>False</ProtectObjects><ProtectScenarios>False</ProtectScenarios></WorksheetOptions></Worksheet>");
 
 
-                    sw.Write("<Worksheet ss:Name=\"Invalid VCdb Codes\"><Table ss:ExpandedColumnCount=\"10\" x:FullColumns=\"1\" x:FullRows=\"1\" ss:DefaultRowHeight=\"15\"><Column ss:AutoFitWidth=\"0\" ss:Width=\"45\"/><Column ss:AutoFitWidth=\"0\" ss:Width=\"78.75\"/><Column ss:AutoFitWidth=\"0\" ss:Width=\"99.75\"/><Column ss:Width=\"31.5\"/><Column ss:AutoFitWidth=\"0\" ss:Width=\"60\"/><Column ss:AutoFitWidth=\"0\" ss:Width=\"112.5\"/><Column ss:Width=\"43.5\"/><Column ss:Width =\"43.5\"/><Column ss:AutoFitWidth=\"0\" ss:Width=\"237\"/><Column ss:AutoFitWidth=\"0\" ss:Width=\"319.5\"/><Row><Cell ss:StyleID=\"s65\"><Data ss:Type=\"String\">App Id</Data></Cell><Cell ss:StyleID=\"s65\"><Data ss:Type=\"String\">Make</Data></Cell><Cell ss:StyleID=\"s65\"><Data ss:Type=\"String\">Model</Data></Cell><Cell ss:StyleID=\"s65\"><Data ss:Type=\"String\">Year</Data></Cell><Cell ss:StyleID=\"s65\"><Data ss:Type=\"String\">Part Type</Data></Cell><Cell ss:StyleID=\"s65\"><Data ss:Type=\"String\">Position</Data></Cell><Cell ss:StyleID=\"s65\"><Data ss:Type=\"String\">Quantity</Data></Cell><Cell ss:StyleID=\"s65\"><Data ss:Type=\"String\">Part</Data></Cell><Cell ss:StyleID=\"s65\"><Data ss:Type=\"String\">VCdb Attributes</Data></Cell><Cell ss:StyleID=\"s65\"><Data ss:Type=\"String\">Notes</Data></Cell></Row>");
-                    foreach (string line in vcdbCodesErrors)
+                    if (overlapsErrors.Count > 0)
                     {
-                        string[] fileds = line.Split('\t');
-                        sw.Write("<Row><Cell><Data ss:Type=\"Number\">" + fileds[0] + "</Data></Cell><Cell><Data ss:Type=\"String\">" + fileds[1] + "</Data></Cell><Cell><Data ss:Type=\"String\">" + fileds[2] + "</Data></Cell><Cell><Data ss:Type=\"String\">" + fileds[3] + "</Data></Cell><Cell><Data ss:Type=\"String\">" + fileds[4] + "</Data></Cell><Cell><Data ss:Type=\"String\">" + fileds[5] + "</Data></Cell><Cell><Data ss:Type=\"Number\">" + fileds[6] + "</Data></Cell><Cell><Data ss:Type=\"String\">" + fileds[7] + "</Data></Cell><Cell><Data ss:Type =\"String\">" + fileds[8] + "</Data></Cell><Cell><Data ss:Type=\"String\">" + fileds[9] + "</Data></Cell></Row>");
+                        sw.Write("<Worksheet ss:Name=\"Overlaps\"><Table ss:ExpandedColumnCount=\"8\" x:FullColumns=\"1\" x:FullRows=\"1\" ss:DefaultRowHeight=\"15\"><Column ss:AutoFitWidth=\"0\" ss:Width=\"45\"/><Column ss:AutoFitWidth=\"0\" ss:Width=\"78.75\"/><Column ss:AutoFitWidth=\"0\" ss:Width=\"99.75\"/><Column ss:Width=\"31.5\"/><Column ss:AutoFitWidth=\"0\" ss:Width=\"60\"/><Column ss:AutoFitWidth=\"0\" ss:Width=\"112.5\"/><Column ss:Width=\"43.5\"/><Column ss:AutoFitWidth=\"0\" ss:Width=\"319.5\"/><Row><Cell ss:StyleID=\"s65\"><Data ss:Type=\"String\">BaseVehcile Id</Data></Cell><Cell ss:StyleID=\"s65\"><Data ss:Type=\"String\">Make</Data></Cell><Cell ss:StyleID=\"s65\"><Data ss:Type=\"String\">Model</Data></Cell><Cell ss:StyleID=\"s65\"><Data ss:Type=\"String\">Year</Data></Cell><Cell ss:StyleID=\"s65\"><Data ss:Type=\"String\">Part Type</Data></Cell><Cell ss:StyleID=\"s65\"><Data ss:Type=\"String\">Position</Data></Cell><Cell ss:StyleID=\"s65\"><Data ss:Type=\"String\">Qualifiers</Data></Cell><Cell ss:StyleID=\"s65\"><Data ss:Type=\"String\">Parts</Data></Cell></Row>");
+                        foreach (string line in overlapsErrors)
+                        {
+                            string[] fileds = line.Split('\t');
+                            sw.Write("<Row><Cell><Data ss:Type=\"Number\">" + fileds[0] + "</Data></Cell><Cell><Data ss:Type=\"String\">" + fileds[1] + "</Data></Cell><Cell><Data ss:Type=\"String\">" + fileds[2] + "</Data></Cell><Cell><Data ss:Type=\"String\">" + fileds[3] + "</Data></Cell><Cell><Data ss:Type=\"String\">" + fileds[4] + "</Data></Cell><Cell><Data ss:Type=\"String\">" + fileds[5] + "</Data></Cell><Cell><Data ss:Type=\"String\">" + fileds[6] + "</Data></Cell><Cell><Data ss:Type=\"String\">" + fileds[7] + "</Data></Cell></Row>");
+                        }
+                        excelTabColorXMLtag = "<TabColorIndex>10</TabColorIndex>";
+                        sw.Write("</Table><WorksheetOptions xmlns=\"urn:schemas-microsoft-com:office:excel\"><PageSetup><Header x:Margin=\"0.3\"/><Footer x:Margin=\"0.3\"/><PageMargins x:Bottom=\"0.75\" x:Left=\"0.7\" x:Right=\"0.7\" x:Top=\"0.75\"/></PageSetup>" + excelTabColorXMLtag + "<FreezePanes/><FrozenNoSplit/><SplitHorizontal>1</SplitHorizontal><TopRowBottomPane>1</TopRowBottomPane><ActivePane>2</ActivePane><Panes><Pane><Number>3</Number></Pane><Pane><Number>2</Number><ActiveRow>0</ActiveRow></Pane></Panes><ProtectObjects>False</ProtectObjects><ProtectScenarios>False</ProtectScenarios></WorksheetOptions></Worksheet>");
                     }
-                    excelTabColorXMLtag = ""; if (vcdbCodesErrors.Count > 0) { excelTabColorXMLtag = "<TabColorIndex>10</TabColorIndex>"; }
-                    sw.Write("</Table><WorksheetOptions xmlns=\"urn:schemas-microsoft-com:office:excel\"><PageSetup><Header x:Margin=\"0.3\"/><Footer x:Margin=\"0.3\"/><PageMargins x:Bottom=\"0.75\" x:Left=\"0.7\" x:Right=\"0.7\" x:Top=\"0.75\"/></PageSetup>"+ excelTabColorXMLtag + "<FreezePanes/><FrozenNoSplit/><SplitHorizontal>1</SplitHorizontal><TopRowBottomPane>1</TopRowBottomPane><ActivePane>2</ActivePane><Panes><Pane><Number>3</Number></Pane><Pane><Number>2</Number><ActiveRow>0</ActiveRow></Pane></Panes><ProtectObjects>False</ProtectObjects><ProtectScenarios>False</ProtectScenarios></WorksheetOptions></Worksheet>");
 
-                    sw.Write("<Worksheet ss:Name=\"Invalid VCdb Configs\"><Table ss:ExpandedColumnCount=\"10\" x:FullColumns=\"1\" x:FullRows=\"1\" ss:DefaultRowHeight=\"15\"><Column ss:AutoFitWidth=\"0\" ss:Width=\"45\"/><Column ss:AutoFitWidth=\"0\" ss:Width=\"78.75\"/><Column ss:AutoFitWidth=\"0\" ss:Width=\"99.75\"/><Column ss:Width=\"31.5\"/><Column ss:AutoFitWidth=\"0\" ss:Width=\"60\"/><Column ss:AutoFitWidth=\"0\" ss:Width=\"112.5\"/><Column ss:Width=\"43.5\"/><Column ss:Width =\"43.5\"/><Column ss:AutoFitWidth=\"0\" ss:Width=\"237\"/><Column ss:AutoFitWidth=\"0\" ss:Width=\"319.5\"/><Row><Cell ss:StyleID=\"s65\"><Data ss:Type=\"String\">App Id</Data></Cell><Cell ss:StyleID=\"s65\"><Data ss:Type=\"String\">Make</Data></Cell><Cell ss:StyleID=\"s65\"><Data ss:Type=\"String\">Model</Data></Cell><Cell ss:StyleID=\"s65\"><Data ss:Type=\"String\">Year</Data></Cell><Cell ss:StyleID=\"s65\"><Data ss:Type=\"String\">Part Type</Data></Cell><Cell ss:StyleID=\"s65\"><Data ss:Type=\"String\">Position</Data></Cell><Cell ss:StyleID=\"s65\"><Data ss:Type=\"String\">Quantity</Data></Cell><Cell ss:StyleID=\"s65\"><Data ss:Type=\"String\">Part</Data></Cell><Cell ss:StyleID=\"s65\"><Data ss:Type=\"String\">VCdb Attributes</Data></Cell><Cell ss:StyleID=\"s65\"><Data ss:Type=\"String\">Notes</Data></Cell></Row>");
-                    foreach (string line in vcdbConfigurationsErrors)
+
+                    if (CNCoverlapsErrors.Count > 0)
                     {
-                        string[] fileds = line.Split('\t');
-                        sw.Write("<Row><Cell><Data ss:Type=\"Number\">" + fileds[0] + "</Data></Cell><Cell><Data ss:Type=\"String\">" + fileds[1] + "</Data></Cell><Cell><Data ss:Type=\"String\">" + fileds[2] + "</Data></Cell><Cell><Data ss:Type=\"String\">" + fileds[3] + "</Data></Cell><Cell><Data ss:Type=\"String\">" + fileds[4] + "</Data></Cell><Cell><Data ss:Type=\"String\">" + fileds[5] + "</Data></Cell><Cell><Data ss:Type=\"Number\">" + fileds[6] + "</Data></Cell><Cell><Data ss:Type=\"String\">" + fileds[7] + "</Data></Cell><Cell><Data ss:Type =\"String\">" + fileds[8] + "</Data></Cell><Cell><Data ss:Type=\"String\">" + fileds[9] + "</Data></Cell></Row>");
+                        sw.Write("<Worksheet ss:Name=\"CNC Overlaps\"><Table ss:ExpandedColumnCount=\"11\" x:FullColumns=\"1\" x:FullRows=\"1\" ss:DefaultRowHeight=\"15\"><Column ss:Width=\"100\"/><Column ss:Width=\"100\"/><Column ss:Width=\"100\"/><Column ss:Width=\"100\"/><Column ss:Width=\"100\"/><Column ss:Width=\"100\"/><Column ss:Width=\"100\"/><Column ss:Width=\"100\"/><Column ss:Width=\"100\"/><Column ss:Width=\"100\"/><Column ss:Width=\"100\"/><Row><Cell ss:StyleID=\"s65\"><Data ss:Type=\"String\">CNC Group</Data></Cell><Cell ss:StyleID=\"s65\"><Data ss:Type=\"String\">App Id</Data></Cell><Cell ss:StyleID=\"s65\"><Data ss:Type=\"String\">BaseVehcile Id</Data></Cell><Cell ss:StyleID=\"s65\"><Data ss:Type=\"String\">Make</Data></Cell><Cell ss:StyleID=\"s65\"><Data ss:Type=\"String\">Model</Data></Cell><Cell ss:StyleID=\"s65\"><Data ss:Type=\"String\">Year</Data></Cell><Cell ss:StyleID=\"s65\"><Data ss:Type=\"String\">Part Type</Data></Cell><Cell ss:StyleID=\"s65\"><Data ss:Type=\"String\">Position</Data></Cell><Cell ss:StyleID=\"s65\"><Data ss:Type=\"String\">Quantity</Data></Cell><Cell ss:StyleID=\"s65\"><Data ss:Type=\"String\">Part</Data></Cell><Cell ss:StyleID=\"s65\"><Data ss:Type=\"String\">Qualifiers</Data></Cell></Row>");
+                        foreach (string line in CNCoverlapsErrors)
+                        {
+                            string[] fileds = line.Split('\t');
+                            //sw.Write("<Row><Cell><Data ss:Type=\"Number\">" + fileds[0] + "</Data></Cell><Cell><Data ss:Type=\"String\">" + fileds[1] + "</Data></Cell><Cell><Data ss:Type=\"String\">" + fileds[2] + "</Data></Cell><Cell><Data ss:Type=\"String\">" + fileds[3] + "</Data></Cell><Cell><Data ss:Type=\"String\">" + fileds[4] + "</Data></Cell><Cell><Data ss:Type=\"String\">" + fileds[5] + "</Data></Cell><Cell><Data ss:Type=\"String\">" + fileds[6] + "</Data></Cell><Cell><Data ss:Type=\"String\">" + fileds[7] + "</Data></Cell></Row>");
+                            sw.Write("<Row><Cell><Data ss:Type=\"Number\">" + fileds[0] + "</Data></Cell><Cell><Data ss:Type=\"Number\">" + fileds[1] + "</Data></Cell><Cell><Data ss:Type=\"Number\">" + fileds[2] + "</Data></Cell><Cell><Data ss:Type=\"String\">" + fileds[3] + "</Data></Cell><Cell><Data ss:Type=\"String\">" + fileds[4] + "</Data></Cell><Cell><Data ss:Type=\"Number\">" + fileds[5] + "</Data></Cell><Cell><Data ss:Type=\"String\">" + fileds[6] + "</Data></Cell><Cell><Data ss:Type=\"String\">" + fileds[7] + "</Data></Cell><Cell><Data ss:Type=\"Number\">" + fileds[8] + "</Data></Cell><Cell><Data ss:Type=\"String\">" + fileds[9] + "</Data></Cell><Cell><Data ss:Type=\"String\">" + fileds[10] + "</Data></Cell></Row>");
+                        }
+                        excelTabColorXMLtag = "<TabColorIndex>10</TabColorIndex>";
+                        sw.Write("</Table><WorksheetOptions xmlns=\"urn:schemas-microsoft-com:office:excel\"><PageSetup><Header x:Margin=\"0.3\"/><Footer x:Margin=\"0.3\"/><PageMargins x:Bottom=\"0.75\" x:Left=\"0.7\" x:Right=\"0.7\" x:Top=\"0.75\"/></PageSetup>" + excelTabColorXMLtag + "<FreezePanes/><FrozenNoSplit/><SplitHorizontal>1</SplitHorizontal><TopRowBottomPane>1</TopRowBottomPane><ActivePane>2</ActivePane><Panes><Pane><Number>3</Number></Pane><Pane><Number>2</Number><ActiveRow>0</ActiveRow></Pane></Panes><ProtectObjects>False</ProtectObjects><ProtectScenarios>False</ProtectScenarios></WorksheetOptions></Worksheet>");
                     }
-                    excelTabColorXMLtag = ""; if (vcdbCodesErrors.Count > 0) { excelTabColorXMLtag = "<TabColorIndex>10</TabColorIndex>"; }
-                    sw.Write("</Table><WorksheetOptions xmlns=\"urn:schemas-microsoft-com:office:excel\"><PageSetup><Header x:Margin=\"0.3\"/><Footer x:Margin=\"0.3\"/><PageMargins x:Bottom=\"0.75\" x:Left=\"0.7\" x:Right=\"0.7\" x:Top=\"0.75\"/></PageSetup>" + excelTabColorXMLtag + "<FreezePanes/><FrozenNoSplit/><SplitHorizontal>1</SplitHorizontal><TopRowBottomPane>1</TopRowBottomPane><ActivePane>2</ActivePane><Panes><Pane><Number>3</Number></Pane><Pane><Number>2</Number><ActiveRow>0</ActiveRow></Pane></Panes><ProtectObjects>False</ProtectObjects><ProtectScenarios>False</ProtectScenarios></WorksheetOptions></Worksheet>");
+
+
+
+                    if (basevehicleidsErrors.Count > 0)
+                    {
+                        sw.Write("<Worksheet ss:Name =\"Invalid Base Vids\"><Table ss:ExpandedColumnCount=\"7\" x:FullColumns=\"1\" x:FullRows=\"1\" ss:DefaultRowHeight=\"15\"><Column ss:AutoFitWidth=\"0\" ss:Width=\"45\"/><Column ss:Width=\"77.25\"/><Column ss:Index=\"4\" ss:AutoFitWidth=\"0\" ss:Width=\"96\"/><Column ss:AutoFitWidth=\"0\" ss:Width=\"73.5\"/><Column ss:AutoFitWidth=\"0\" ss:Width=\"253.5\"/><Column ss:AutoFitWidth=\"0\" ss:Width=\"371.25\"/><Row><Cell ss:StyleID=\"s65\"><Data ss:Type=\"String\">App Id</Data></Cell><Cell ss:StyleID=\"s65\"><Data ss:Type=\"String\">Invalid BaseVid</Data></Cell><Cell ss:StyleID=\"s65\"><Data ss:Type=\"String\">Part</Data></Cell><Cell ss:StyleID=\"s65\"><Data ss:Type=\"String\">Part Type</Data></Cell><Cell ss:StyleID=\"s65\"><Data ss:Type=\"String\">Position</Data></Cell><Cell ss:StyleID=\"s65\"><Data ss:Type=\"String\">Qualifiers</Data></Cell><Cell ss:StyleID=\"s65\"><Data ss:Type=\"String\">Notes</Data></Cell></Row>");
+                        foreach (string line in basevehicleidsErrors)
+                        {
+                            string[] fileds = line.Split('\t');
+                            sw.Write("<Row><Cell><Data ss:Type=\"Number\">" + fileds[0] + "</Data></Cell><Cell><Data ss:Type=\"Number\">" + fileds[1] + "</Data></Cell><Cell><Data ss:Type=\"String\">" + fileds[2] + "</Data></Cell><Cell><Data ss:Type=\"String\">" + fileds[3] + "</Data></Cell><Cell><Data ss:Type=\"Number\">" + fileds[4] + "</Data></Cell><Cell><Data ss:Type=\"String\">" + fileds[5] + "</Data></Cell><Cell><Data ss:Type=\"String\">" + fileds[6] + "</Data></Cell></Row>");
+                        }
+                        excelTabColorXMLtag = "<TabColorIndex>10</TabColorIndex>";
+                        sw.Write("</Table><WorksheetOptions xmlns=\"urn:schemas-microsoft-com:office:excel\"><PageSetup><Header x:Margin=\"0.3\"/><Footer x:Margin=\"0.3\"/><PageMargins x:Bottom=\"0.75\" x:Left=\"0.7\" x:Right=\"0.7\" x:Top=\"0.75\"/></PageSetup><Print><ValidPrinterInfo/><HorizontalResolution>600</HorizontalResolution><VerticalResolution>600</VerticalResolution></Print>" + excelTabColorXMLtag + "<FreezePanes/><FrozenNoSplit/><SplitHorizontal>1</SplitHorizontal><TopRowBottomPane>1</TopRowBottomPane><ActivePane>2</ActivePane><Panes><Pane><Number>3</Number></Pane><Pane><Number>2</Number><ActiveRow>0</ActiveRow></Pane></Panes><ProtectObjects>False</ProtectObjects><ProtectScenarios>False</ProtectScenarios></WorksheetOptions></Worksheet>");
+                    }
+
+                    if(vcdbCodesErrors.Count > 0)
+                    {
+                        sw.Write("<Worksheet ss:Name=\"Invalid VCdb Codes\"><Table ss:ExpandedColumnCount=\"10\" x:FullColumns=\"1\" x:FullRows=\"1\" ss:DefaultRowHeight=\"15\"><Column ss:AutoFitWidth=\"0\" ss:Width=\"45\"/><Column ss:AutoFitWidth=\"0\" ss:Width=\"78.75\"/><Column ss:AutoFitWidth=\"0\" ss:Width=\"99.75\"/><Column ss:Width=\"31.5\"/><Column ss:AutoFitWidth=\"0\" ss:Width=\"60\"/><Column ss:AutoFitWidth=\"0\" ss:Width=\"112.5\"/><Column ss:Width=\"43.5\"/><Column ss:Width =\"43.5\"/><Column ss:AutoFitWidth=\"0\" ss:Width=\"237\"/><Column ss:AutoFitWidth=\"0\" ss:Width=\"319.5\"/><Row><Cell ss:StyleID=\"s65\"><Data ss:Type=\"String\">App Id</Data></Cell><Cell ss:StyleID=\"s65\"><Data ss:Type=\"String\">Make</Data></Cell><Cell ss:StyleID=\"s65\"><Data ss:Type=\"String\">Model</Data></Cell><Cell ss:StyleID=\"s65\"><Data ss:Type=\"String\">Year</Data></Cell><Cell ss:StyleID=\"s65\"><Data ss:Type=\"String\">Part Type</Data></Cell><Cell ss:StyleID=\"s65\"><Data ss:Type=\"String\">Position</Data></Cell><Cell ss:StyleID=\"s65\"><Data ss:Type=\"String\">Quantity</Data></Cell><Cell ss:StyleID=\"s65\"><Data ss:Type=\"String\">Part</Data></Cell><Cell ss:StyleID=\"s65\"><Data ss:Type=\"String\">VCdb Attributes</Data></Cell><Cell ss:StyleID=\"s65\"><Data ss:Type=\"String\">Notes</Data></Cell></Row>");
+                        foreach (string line in vcdbCodesErrors)
+                        {
+                            string[] fileds = line.Split('\t');
+                            sw.Write("<Row><Cell><Data ss:Type=\"Number\">" + fileds[0] + "</Data></Cell><Cell><Data ss:Type=\"String\">" + fileds[1] + "</Data></Cell><Cell><Data ss:Type=\"String\">" + fileds[2] + "</Data></Cell><Cell><Data ss:Type=\"String\">" + fileds[3] + "</Data></Cell><Cell><Data ss:Type=\"String\">" + fileds[4] + "</Data></Cell><Cell><Data ss:Type=\"String\">" + fileds[5] + "</Data></Cell><Cell><Data ss:Type=\"Number\">" + fileds[6] + "</Data></Cell><Cell><Data ss:Type=\"String\">" + fileds[7] + "</Data></Cell><Cell><Data ss:Type =\"String\">" + fileds[8] + "</Data></Cell><Cell><Data ss:Type=\"String\">" + fileds[9] + "</Data></Cell></Row>");
+                        }
+                        excelTabColorXMLtag = "<TabColorIndex>10</TabColorIndex>";
+                        sw.Write("</Table><WorksheetOptions xmlns=\"urn:schemas-microsoft-com:office:excel\"><PageSetup><Header x:Margin=\"0.3\"/><Footer x:Margin=\"0.3\"/><PageMargins x:Bottom=\"0.75\" x:Left=\"0.7\" x:Right=\"0.7\" x:Top=\"0.75\"/></PageSetup>" + excelTabColorXMLtag + "<FreezePanes/><FrozenNoSplit/><SplitHorizontal>1</SplitHorizontal><TopRowBottomPane>1</TopRowBottomPane><ActivePane>2</ActivePane><Panes><Pane><Number>3</Number></Pane><Pane><Number>2</Number><ActiveRow>0</ActiveRow></Pane></Panes><ProtectObjects>False</ProtectObjects><ProtectScenarios>False</ProtectScenarios></WorksheetOptions></Worksheet>");
+                    }
+
+
+                    if (vcdbConfigurationsErrors.Count > 0)
+                    {
+                        sw.Write("<Worksheet ss:Name=\"Invalid VCdb Configs\"><Table ss:ExpandedColumnCount=\"10\" x:FullColumns=\"1\" x:FullRows=\"1\" ss:DefaultRowHeight=\"15\"><Column ss:AutoFitWidth=\"0\" ss:Width=\"45\"/><Column ss:AutoFitWidth=\"0\" ss:Width=\"78.75\"/><Column ss:AutoFitWidth=\"0\" ss:Width=\"99.75\"/><Column ss:Width=\"31.5\"/><Column ss:AutoFitWidth=\"0\" ss:Width=\"60\"/><Column ss:AutoFitWidth=\"0\" ss:Width=\"112.5\"/><Column ss:Width=\"43.5\"/><Column ss:Width =\"43.5\"/><Column ss:AutoFitWidth=\"0\" ss:Width=\"237\"/><Column ss:AutoFitWidth=\"0\" ss:Width=\"319.5\"/><Row><Cell ss:StyleID=\"s65\"><Data ss:Type=\"String\">App Id</Data></Cell><Cell ss:StyleID=\"s65\"><Data ss:Type=\"String\">Make</Data></Cell><Cell ss:StyleID=\"s65\"><Data ss:Type=\"String\">Model</Data></Cell><Cell ss:StyleID=\"s65\"><Data ss:Type=\"String\">Year</Data></Cell><Cell ss:StyleID=\"s65\"><Data ss:Type=\"String\">Part Type</Data></Cell><Cell ss:StyleID=\"s65\"><Data ss:Type=\"String\">Position</Data></Cell><Cell ss:StyleID=\"s65\"><Data ss:Type=\"String\">Quantity</Data></Cell><Cell ss:StyleID=\"s65\"><Data ss:Type=\"String\">Part</Data></Cell><Cell ss:StyleID=\"s65\"><Data ss:Type=\"String\">VCdb Attributes</Data></Cell><Cell ss:StyleID=\"s65\"><Data ss:Type=\"String\">Notes</Data></Cell></Row>");
+                        foreach (string line in vcdbConfigurationsErrors)
+                        {
+                            string[] fileds = line.Split('\t');
+                            sw.Write("<Row><Cell><Data ss:Type=\"Number\">" + fileds[0] + "</Data></Cell><Cell><Data ss:Type=\"String\">" + fileds[1] + "</Data></Cell><Cell><Data ss:Type=\"String\">" + fileds[2] + "</Data></Cell><Cell><Data ss:Type=\"String\">" + fileds[3] + "</Data></Cell><Cell><Data ss:Type=\"String\">" + fileds[4] + "</Data></Cell><Cell><Data ss:Type=\"String\">" + fileds[5] + "</Data></Cell><Cell><Data ss:Type=\"Number\">" + fileds[6] + "</Data></Cell><Cell><Data ss:Type=\"String\">" + fileds[7] + "</Data></Cell><Cell><Data ss:Type =\"String\">" + fileds[8] + "</Data></Cell><Cell><Data ss:Type=\"String\">" + fileds[9] + "</Data></Cell></Row>");
+                        }
+                        excelTabColorXMLtag = "<TabColorIndex>10</TabColorIndex>";
+                        sw.Write("</Table><WorksheetOptions xmlns=\"urn:schemas-microsoft-com:office:excel\"><PageSetup><Header x:Margin=\"0.3\"/><Footer x:Margin=\"0.3\"/><PageMargins x:Bottom=\"0.75\" x:Left=\"0.7\" x:Right=\"0.7\" x:Top=\"0.75\"/></PageSetup>" + excelTabColorXMLtag + "<FreezePanes/><FrozenNoSplit/><SplitHorizontal>1</SplitHorizontal><TopRowBottomPane>1</TopRowBottomPane><ActivePane>2</ActivePane><Panes><Pane><Number>3</Number></Pane><Pane><Number>2</Number><ActiveRow>0</ActiveRow></Pane></Panes><ProtectObjects>False</ProtectObjects><ProtectScenarios>False</ProtectScenarios></WorksheetOptions></Worksheet>");
+                    }
 
                     sw.Write("</Workbook>");
                 }

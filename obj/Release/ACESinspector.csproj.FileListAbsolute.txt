@@ -10,3 +10,4 @@ D:\Users\Luke\Documents\ACESinspector\ACESinspector\obj\Release\ACESinspector.ex
 D:\Users\Luke\Documents\ACESinspector\ACESinspector\obj\Release\ACESinspector.application
 D:\Users\Luke\Documents\ACESinspector\ACESinspector\obj\Release\ACESinspector.exe
 D:\Users\Luke\Documents\ACESinspector\ACESinspector\obj\Release\ACESinspector.pdb
+D:\Users\Luke\Documents\ACESinspector\ACESinspector\obj\Release\ACESinspector.csprojResolveAssemblyReference.cache

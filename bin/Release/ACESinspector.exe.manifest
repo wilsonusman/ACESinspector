@@ -4,7 +4,7 @@
   <description asmv2:iconFile="ACESinspector_incon.ico" xmlns="urn:schemas-microsoft-com:asm.v1" />
   <application />
   <entryPoint>
-    <assemblyIdentity name="ACESinspector" version="1.0.1.9" language="neutral" processorArchitecture="x86" />
+    <assemblyIdentity name="ACESinspector" version="1.0.1.10" language="neutral" processorArchitecture="x86" />
     <commandLine file="ACESinspector.exe" parameters="" />
   </entryPoint>
   <trustInfo>
@@ -43,14 +43,14 @@
     </dependentAssembly>
   </dependency>
   <dependency>
-    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="ACESinspector.exe" size="325952">
-      <assemblyIdentity name="ACESinspector" version="1.0.1.9" language="neutral" processorArchitecture="x86" />
+    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="ACESinspector.exe" size="334656">
+      <assemblyIdentity name="ACESinspector" version="1.0.1.10" language="neutral" processorArchitecture="x86" />
       <hash>
         <dsig:Transforms>
           <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
         </dsig:Transforms>
         <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
-        <dsig:DigestValue>usUGCMHTSbSfgJel5IWaOWxkFFS4yMfmwNdWTqzxIbw=</dsig:DigestValue>
+        <dsig:DigestValue>5SrmfPJwltW/wxgRXGC/50elAWELAl2a/Mc5VJmQdq8=</dsig:DigestValue>
       </hash>
     </dependentAssembly>
   </dependency>
@@ -70,15 +70,6 @@
       </dsig:Transforms>
       <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
       <dsig:DigestValue>aKCKFoZXg9CVvPyx2GHb5BiIdk2/XKFpSxQCK3bR7Vc=</dsig:DigestValue>
-    </hash>
-  </file>
-  <file name="TextTemplate.ico" size="43451">
-    <hash>
-      <dsig:Transforms>
-        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
-      </dsig:Transforms>
-      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
-      <dsig:DigestValue>73B0slCytYXFNla9w0xLBUhV/GzNhs4QMBUfLEeTlS8=</dsig:DigestValue>
     </hash>
   </file>
 </asmv1:assembly>

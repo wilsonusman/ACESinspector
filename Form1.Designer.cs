@@ -37,10 +37,10 @@
             this.lblPCdbFilePath = new System.Windows.Forms.Label();
             this.btnAnalyze = new System.Windows.Forms.Button();
             this.dgParts = new System.Windows.Forms.DataGridView();
-            this.dgPartsPart = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.dgPartsAppCount = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.tabPage10 = new System.Windows.Forms.TabPage();
+            this.lblInvalidParttypePositionCount = new System.Windows.Forms.Label();
+            this.label19 = new System.Windows.Forms.Label();
             this.lblInvalidVCdbCodesCount = new System.Windows.Forms.Label();
             this.label17 = new System.Windows.Forms.Label();
             this.lblInvalidConfigurationsCount = new System.Windows.Forms.Label();
@@ -72,12 +72,58 @@
             this.label3 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
             this.tabPage2 = new System.Windows.Forms.TabPage();
+            this.tabPage6 = new System.Windows.Forms.TabPage();
+            this.groupBox2 = new System.Windows.Forms.GroupBox();
+            this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.btnBGExportSave = new System.Windows.Forms.Button();
+            this.label18 = new System.Windows.Forms.Label();
+            this.groupBoxDataExport = new System.Windows.Forms.GroupBox();
+            this.lblAppExportFilePath = new System.Windows.Forms.Label();
+            this.label11 = new System.Windows.Forms.Label();
+            this.comboBox1 = new System.Windows.Forms.ComboBox();
+            this.btnSelectAppExportFile = new System.Windows.Forms.Button();
+            this.checkBox2 = new System.Windows.Forms.CheckBox();
+            this.label1 = new System.Windows.Forms.Label();
+            this.comboBoxExportDelimiter = new System.Windows.Forms.ComboBox();
+            this.checkBox1 = new System.Windows.Forms.CheckBox();
+            this.btnAppExportSave = new System.Windows.Forms.Button();
+            this.groupBoxAssessment = new System.Windows.Forms.GroupBox();
+            this.lblAssessmentFilePath = new System.Windows.Forms.Label();
+            this.btnAssessmentSave = new System.Windows.Forms.Button();
+            this.btnSelectAssessmentFile = new System.Windows.Forms.Button();
             this.tabPage3 = new System.Windows.Forms.TabPage();
             this.dgDuplicates = new System.Windows.Forms.DataGridView();
+            this.dgDuplicatesBaseVehicleid = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.dgDuplicatesMake = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.dgDuplicatesModel = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.dgDuplicatesYear = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.dgDuplicatesParttype = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.dgDuplicatesPosition = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.dgDuplicatesAttributes = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.dgDuplicatesAppIds = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.tabPage5 = new System.Windows.Forms.TabPage();
             this.dgCNCoverlaps = new System.Windows.Forms.DataGridView();
+            this.dbCNCgroupnumber = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.dgCNCapplicationid = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.dgCNCbasevehicleid = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.dgCNCmake = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.dgCNCmodel = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.dgCNCyear = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.dgCNCparttype = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.dgCNCposition = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.dgCNCqty = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.dgCNCPart = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.dgCNCqualifiers = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.tabPage4 = new System.Windows.Forms.TabPage();
             this.dgOverlaps = new System.Windows.Forms.DataGridView();
+            this.dgOverlapsBaseVehicleid = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.dgOverlapsMake = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.dgOverlapsModel = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.dgOverlapsYear = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.dgOverlapsParttype = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.dgOverlapsPosition = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.dgOverlapsAttributes = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.dgOverlapsParts = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.tabPage7 = new System.Windows.Forms.TabPage();
             this.dgBasevids = new System.Windows.Forms.DataGridView();
             this.dgBasevidsApplicationid = new System.Windows.Forms.DataGridViewTextBoxColumn();
@@ -99,35 +145,6 @@
             this.dgVCdbCodesPart = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.dgVCdbCodesQualifiers = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.dgVCdbCodesNotes = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.tabPage9 = new System.Windows.Forms.TabPage();
-            this.dgVCdbConfigs = new System.Windows.Forms.DataGridView();
-            this.tabPage6 = new System.Windows.Forms.TabPage();
-            this.groupBox2 = new System.Windows.Forms.GroupBox();
-            this.groupBox1 = new System.Windows.Forms.GroupBox();
-            this.btnBGExportSave = new System.Windows.Forms.Button();
-            this.label18 = new System.Windows.Forms.Label();
-            this.groupBoxDataExport = new System.Windows.Forms.GroupBox();
-            this.lblAppExportFilePath = new System.Windows.Forms.Label();
-            this.label11 = new System.Windows.Forms.Label();
-            this.comboBox1 = new System.Windows.Forms.ComboBox();
-            this.btnSelectAppExportFile = new System.Windows.Forms.Button();
-            this.checkBox2 = new System.Windows.Forms.CheckBox();
-            this.label1 = new System.Windows.Forms.Label();
-            this.comboBoxExportDelimiter = new System.Windows.Forms.ComboBox();
-            this.checkBox1 = new System.Windows.Forms.CheckBox();
-            this.btnAppExportSave = new System.Windows.Forms.Button();
-            this.groupBoxAssessment = new System.Windows.Forms.GroupBox();
-            this.lblAssessmentFilePath = new System.Windows.Forms.Label();
-            this.btnAssessmentSave = new System.Windows.Forms.Button();
-            this.btnSelectAssessmentFile = new System.Windows.Forms.Button();
-            this.lblStatus = new System.Windows.Forms.Label();
-            this.button3 = new System.Windows.Forms.Button();
-            this.progressBar1 = new System.Windows.Forms.ProgressBar();
-            this.lblProgressPercent = new System.Windows.Forms.Label();
-            this.lblAppVersion = new System.Windows.Forms.Label();
-            this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
-            this.label19 = new System.Windows.Forms.Label();
-            this.lblInvalidParttypePositionCount = new System.Windows.Forms.Label();
             this.tabPage1 = new System.Windows.Forms.TabPage();
             this.dgParttypePosition = new System.Windows.Forms.DataGridView();
             this.dataGridViewTextBoxColumn1 = new System.Windows.Forms.DataGridViewTextBoxColumn();
@@ -139,6 +156,8 @@
             this.dataGridViewTextBoxColumn8 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.dataGridViewTextBoxColumn9 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.dataGridViewTextBoxColumn10 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.tabPage9 = new System.Windows.Forms.TabPage();
+            this.dgVCdbConfigs = new System.Windows.Forms.DataGridView();
             this.dgVCdbConfigsApplicationid = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.dgVCdbConfigsMake = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.dgVCdbConfigsModel = new System.Windows.Forms.DataGridViewTextBoxColumn();
@@ -148,39 +167,24 @@
             this.dgVCdbConfigsQty = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.dgVCdbConfigsPart = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.dgVCdbConfigsQualifiers = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.dgOverlapsApplicationidA = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.dgOverlapsApplicationidB = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.dgOverlapsMake = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.dgOverlapsModel = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.dgOverlapsYear = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.dgOverlapsParttype = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.dgOverlapsPosition = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.dgOverlapsQty = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.dgOverlapsPartA = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.dgOverlapsPartB = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.dgOverlapsAttributes = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.dgCNCapplicationid = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.dgCNCmake = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.dgCNCmodel = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.dgCNCyear = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.dgCNCparttype = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.dgCNCposition = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.dgCNCqty = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.dgCNCPart = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.dgCNCqualifiers = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.dgDuplicatesApplicationid = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.dgDuplicatesMake = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.dgDuplicatesModel = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.dgDuplicatesYear = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.dgDuplicatesParttype = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.dgDuplicatesPosition = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.dgDuplicatesQty = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.dgDuplicatesPart = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.dgDuplicatesAttributes = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.lblStatus = new System.Windows.Forms.Label();
+            this.button3 = new System.Windows.Forms.Button();
+            this.progressBar1 = new System.Windows.Forms.ProgressBar();
+            this.lblProgressPercent = new System.Windows.Forms.Label();
+            this.lblAppVersion = new System.Windows.Forms.Label();
+            this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
+            this.dgPartsPart = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.dgPartsAppCount = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.dgPartsParttypes = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.dgPartsPositions = new System.Windows.Forms.DataGridViewTextBoxColumn();
             ((System.ComponentModel.ISupportInitialize)(this.dgParts)).BeginInit();
             this.tabControl1.SuspendLayout();
             this.tabPage10.SuspendLayout();
             this.tabPage2.SuspendLayout();
+            this.tabPage6.SuspendLayout();
+            this.groupBox1.SuspendLayout();
+            this.groupBoxDataExport.SuspendLayout();
+            this.groupBoxAssessment.SuspendLayout();
             this.tabPage3.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgDuplicates)).BeginInit();
             this.tabPage5.SuspendLayout();
@@ -191,14 +195,10 @@
             ((System.ComponentModel.ISupportInitialize)(this.dgBasevids)).BeginInit();
             this.tabPage8.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgVCdbCodes)).BeginInit();
-            this.tabPage9.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.dgVCdbConfigs)).BeginInit();
-            this.tabPage6.SuspendLayout();
-            this.groupBox1.SuspendLayout();
-            this.groupBoxDataExport.SuspendLayout();
-            this.groupBoxAssessment.SuspendLayout();
             this.tabPage1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgParttypePosition)).BeginInit();
+            this.tabPage9.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.dgVCdbConfigs)).BeginInit();
             this.SuspendLayout();
             // 
             // btnSelectACESfile
@@ -276,27 +276,13 @@
             this.dgParts.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dgParts.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.dgPartsPart,
-            this.dgPartsAppCount});
+            this.dgPartsAppCount,
+            this.dgPartsParttypes,
+            this.dgPartsPositions});
             this.dgParts.Location = new System.Drawing.Point(3, 3);
             this.dgParts.Name = "dgParts";
             this.dgParts.Size = new System.Drawing.Size(838, 424);
             this.dgParts.TabIndex = 0;
-            // 
-            // dgPartsPart
-            // 
-            this.dgPartsPart.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
-            this.dgPartsPart.HeaderText = "Part";
-            this.dgPartsPart.Name = "dgPartsPart";
-            this.dgPartsPart.ReadOnly = true;
-            this.dgPartsPart.Width = 51;
-            // 
-            // dgPartsAppCount
-            // 
-            this.dgPartsAppCount.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
-            this.dgPartsAppCount.HeaderText = "Application Count";
-            this.dgPartsAppCount.Name = "dgPartsAppCount";
-            this.dgPartsAppCount.ReadOnly = true;
-            this.dgPartsAppCount.Width = 105;
             // 
             // tabControl1
             // 
@@ -356,6 +342,26 @@
             this.tabPage10.TabIndex = 9;
             this.tabPage10.Text = "Statistics";
             this.tabPage10.UseVisualStyleBackColor = true;
+            // 
+            // lblInvalidParttypePositionCount
+            // 
+            this.lblInvalidParttypePositionCount.AutoSize = true;
+            this.lblInvalidParttypePositionCount.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblInvalidParttypePositionCount.Location = new System.Drawing.Point(172, 353);
+            this.lblInvalidParttypePositionCount.Name = "lblInvalidParttypePositionCount";
+            this.lblInvalidParttypePositionCount.Size = new System.Drawing.Size(60, 20);
+            this.lblInvalidParttypePositionCount.TabIndex = 31;
+            this.lblInvalidParttypePositionCount.Text = "label20";
+            // 
+            // label19
+            // 
+            this.label19.AutoSize = true;
+            this.label19.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label19.Location = new System.Drawing.Point(5, 353);
+            this.label19.Name = "label19";
+            this.label19.Size = new System.Drawing.Size(132, 20);
+            this.label19.TabIndex = 30;
+            this.label19.Text = "PartType/Position";
             // 
             // lblInvalidVCdbCodesCount
             // 
@@ -668,306 +674,6 @@
             this.tabPage2.Text = "Parts";
             this.tabPage2.UseVisualStyleBackColor = true;
             // 
-            // tabPage3
-            // 
-            this.tabPage3.Controls.Add(this.dgDuplicates);
-            this.tabPage3.Location = new System.Drawing.Point(4, 22);
-            this.tabPage3.Name = "tabPage3";
-            this.tabPage3.Size = new System.Drawing.Size(837, 423);
-            this.tabPage3.TabIndex = 2;
-            this.tabPage3.Text = "Duplicates";
-            this.tabPage3.UseVisualStyleBackColor = true;
-            // 
-            // dgDuplicates
-            // 
-            this.dgDuplicates.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dgDuplicates.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
-            this.dgDuplicatesApplicationid,
-            this.dgDuplicatesMake,
-            this.dgDuplicatesModel,
-            this.dgDuplicatesYear,
-            this.dgDuplicatesParttype,
-            this.dgDuplicatesPosition,
-            this.dgDuplicatesQty,
-            this.dgDuplicatesPart,
-            this.dgDuplicatesAttributes});
-            this.dgDuplicates.Location = new System.Drawing.Point(3, 3);
-            this.dgDuplicates.Name = "dgDuplicates";
-            this.dgDuplicates.Size = new System.Drawing.Size(838, 420);
-            this.dgDuplicates.TabIndex = 1;
-            // 
-            // tabPage5
-            // 
-            this.tabPage5.Controls.Add(this.dgCNCoverlaps);
-            this.tabPage5.Location = new System.Drawing.Point(4, 22);
-            this.tabPage5.Name = "tabPage5";
-            this.tabPage5.Size = new System.Drawing.Size(837, 423);
-            this.tabPage5.TabIndex = 4;
-            this.tabPage5.Text = "CNC Overlaps";
-            this.tabPage5.UseVisualStyleBackColor = true;
-            // 
-            // dgCNCoverlaps
-            // 
-            this.dgCNCoverlaps.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dgCNCoverlaps.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
-            this.dgCNCapplicationid,
-            this.dgCNCmake,
-            this.dgCNCmodel,
-            this.dgCNCyear,
-            this.dgCNCparttype,
-            this.dgCNCposition,
-            this.dgCNCqty,
-            this.dgCNCPart,
-            this.dgCNCqualifiers});
-            this.dgCNCoverlaps.Location = new System.Drawing.Point(3, 3);
-            this.dgCNCoverlaps.Name = "dgCNCoverlaps";
-            this.dgCNCoverlaps.Size = new System.Drawing.Size(838, 424);
-            this.dgCNCoverlaps.TabIndex = 3;
-            // 
-            // tabPage4
-            // 
-            this.tabPage4.Controls.Add(this.dgOverlaps);
-            this.tabPage4.Location = new System.Drawing.Point(4, 22);
-            this.tabPage4.Name = "tabPage4";
-            this.tabPage4.Size = new System.Drawing.Size(837, 423);
-            this.tabPage4.TabIndex = 3;
-            this.tabPage4.Text = "Overlaps";
-            this.tabPage4.UseVisualStyleBackColor = true;
-            // 
-            // dgOverlaps
-            // 
-            this.dgOverlaps.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dgOverlaps.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
-            this.dgOverlapsApplicationidA,
-            this.dgOverlapsApplicationidB,
-            this.dgOverlapsMake,
-            this.dgOverlapsModel,
-            this.dgOverlapsYear,
-            this.dgOverlapsParttype,
-            this.dgOverlapsPosition,
-            this.dgOverlapsQty,
-            this.dgOverlapsPartA,
-            this.dgOverlapsPartB,
-            this.dgOverlapsAttributes});
-            this.dgOverlaps.Location = new System.Drawing.Point(3, 3);
-            this.dgOverlaps.Name = "dgOverlaps";
-            this.dgOverlaps.Size = new System.Drawing.Size(838, 424);
-            this.dgOverlaps.TabIndex = 2;
-            // 
-            // tabPage7
-            // 
-            this.tabPage7.Controls.Add(this.dgBasevids);
-            this.tabPage7.Location = new System.Drawing.Point(4, 22);
-            this.tabPage7.Name = "tabPage7";
-            this.tabPage7.Size = new System.Drawing.Size(837, 423);
-            this.tabPage7.TabIndex = 6;
-            this.tabPage7.Text = "Invalid Basevehicles";
-            this.tabPage7.UseVisualStyleBackColor = true;
-            // 
-            // dgBasevids
-            // 
-            this.dgBasevids.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dgBasevids.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
-            this.dgBasevidsApplicationid,
-            this.dgBasevidsBasevid,
-            this.dgBasevidsParttype,
-            this.dgBasevidsPosition,
-            this.dgBasevidsQty,
-            this.dgBasevidsPart,
-            this.dgBasevidsQualifiers});
-            this.dgBasevids.Location = new System.Drawing.Point(3, 3);
-            this.dgBasevids.Name = "dgBasevids";
-            this.dgBasevids.Size = new System.Drawing.Size(838, 424);
-            this.dgBasevids.TabIndex = 2;
-            // 
-            // dgBasevidsApplicationid
-            // 
-            this.dgBasevidsApplicationid.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
-            this.dgBasevidsApplicationid.HeaderText = "ID";
-            this.dgBasevidsApplicationid.Name = "dgBasevidsApplicationid";
-            this.dgBasevidsApplicationid.ReadOnly = true;
-            this.dgBasevidsApplicationid.Width = 43;
-            // 
-            // dgBasevidsBasevid
-            // 
-            this.dgBasevidsBasevid.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
-            this.dgBasevidsBasevid.HeaderText = "BaseVID";
-            this.dgBasevidsBasevid.Name = "dgBasevidsBasevid";
-            this.dgBasevidsBasevid.ReadOnly = true;
-            this.dgBasevidsBasevid.Width = 74;
-            // 
-            // dgBasevidsParttype
-            // 
-            this.dgBasevidsParttype.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
-            this.dgBasevidsParttype.HeaderText = "Part Type";
-            this.dgBasevidsParttype.Name = "dgBasevidsParttype";
-            this.dgBasevidsParttype.ReadOnly = true;
-            this.dgBasevidsParttype.Width = 78;
-            // 
-            // dgBasevidsPosition
-            // 
-            this.dgBasevidsPosition.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
-            this.dgBasevidsPosition.HeaderText = "Position";
-            this.dgBasevidsPosition.Name = "dgBasevidsPosition";
-            this.dgBasevidsPosition.ReadOnly = true;
-            this.dgBasevidsPosition.Width = 69;
-            // 
-            // dgBasevidsQty
-            // 
-            this.dgBasevidsQty.HeaderText = "Qty";
-            this.dgBasevidsQty.Name = "dgBasevidsQty";
-            this.dgBasevidsQty.ReadOnly = true;
-            // 
-            // dgBasevidsPart
-            // 
-            this.dgBasevidsPart.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
-            this.dgBasevidsPart.HeaderText = "Part";
-            this.dgBasevidsPart.Name = "dgBasevidsPart";
-            this.dgBasevidsPart.ReadOnly = true;
-            this.dgBasevidsPart.Width = 51;
-            // 
-            // dgBasevidsQualifiers
-            // 
-            this.dgBasevidsQualifiers.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
-            this.dgBasevidsQualifiers.HeaderText = "Qualifiers";
-            this.dgBasevidsQualifiers.Name = "dgBasevidsQualifiers";
-            this.dgBasevidsQualifiers.ReadOnly = true;
-            this.dgBasevidsQualifiers.Width = 75;
-            // 
-            // tabPage8
-            // 
-            this.tabPage8.Controls.Add(this.dgVCdbCodes);
-            this.tabPage8.Location = new System.Drawing.Point(4, 22);
-            this.tabPage8.Name = "tabPage8";
-            this.tabPage8.Size = new System.Drawing.Size(837, 423);
-            this.tabPage8.TabIndex = 7;
-            this.tabPage8.Text = "Invalid VCdb codes";
-            this.tabPage8.UseVisualStyleBackColor = true;
-            // 
-            // dgVCdbCodes
-            // 
-            this.dgVCdbCodes.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dgVCdbCodes.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
-            this.dgVCdbCodesApplicationid,
-            this.dgVCdbCodesMake,
-            this.dgVCdbCodesModel,
-            this.dgVCdbCodesYear,
-            this.dgVCdbCodesParttype,
-            this.dgVCdbCodesPosition,
-            this.dgVCdbCodesQty,
-            this.dgVCdbCodesPart,
-            this.dgVCdbCodesQualifiers,
-            this.dgVCdbCodesNotes});
-            this.dgVCdbCodes.Location = new System.Drawing.Point(3, 3);
-            this.dgVCdbCodes.Name = "dgVCdbCodes";
-            this.dgVCdbCodes.Size = new System.Drawing.Size(838, 425);
-            this.dgVCdbCodes.TabIndex = 2;
-            // 
-            // dgVCdbCodesApplicationid
-            // 
-            this.dgVCdbCodesApplicationid.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
-            this.dgVCdbCodesApplicationid.HeaderText = "ID";
-            this.dgVCdbCodesApplicationid.Name = "dgVCdbCodesApplicationid";
-            this.dgVCdbCodesApplicationid.ReadOnly = true;
-            this.dgVCdbCodesApplicationid.Width = 43;
-            // 
-            // dgVCdbCodesMake
-            // 
-            this.dgVCdbCodesMake.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
-            this.dgVCdbCodesMake.HeaderText = "Make";
-            this.dgVCdbCodesMake.Name = "dgVCdbCodesMake";
-            this.dgVCdbCodesMake.ReadOnly = true;
-            this.dgVCdbCodesMake.Width = 59;
-            // 
-            // dgVCdbCodesModel
-            // 
-            this.dgVCdbCodesModel.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
-            this.dgVCdbCodesModel.HeaderText = "Model";
-            this.dgVCdbCodesModel.Name = "dgVCdbCodesModel";
-            this.dgVCdbCodesModel.ReadOnly = true;
-            this.dgVCdbCodesModel.Width = 61;
-            // 
-            // dgVCdbCodesYear
-            // 
-            this.dgVCdbCodesYear.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
-            this.dgVCdbCodesYear.HeaderText = "Year";
-            this.dgVCdbCodesYear.Name = "dgVCdbCodesYear";
-            this.dgVCdbCodesYear.ReadOnly = true;
-            this.dgVCdbCodesYear.Width = 54;
-            // 
-            // dgVCdbCodesParttype
-            // 
-            this.dgVCdbCodesParttype.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
-            this.dgVCdbCodesParttype.HeaderText = "Part Type";
-            this.dgVCdbCodesParttype.Name = "dgVCdbCodesParttype";
-            this.dgVCdbCodesParttype.ReadOnly = true;
-            this.dgVCdbCodesParttype.Width = 72;
-            // 
-            // dgVCdbCodesPosition
-            // 
-            this.dgVCdbCodesPosition.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
-            this.dgVCdbCodesPosition.HeaderText = "Position";
-            this.dgVCdbCodesPosition.Name = "dgVCdbCodesPosition";
-            this.dgVCdbCodesPosition.ReadOnly = true;
-            this.dgVCdbCodesPosition.Width = 69;
-            // 
-            // dgVCdbCodesQty
-            // 
-            this.dgVCdbCodesQty.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
-            this.dgVCdbCodesQty.HeaderText = "Qty";
-            this.dgVCdbCodesQty.Name = "dgVCdbCodesQty";
-            this.dgVCdbCodesQty.ReadOnly = true;
-            this.dgVCdbCodesQty.Width = 48;
-            // 
-            // dgVCdbCodesPart
-            // 
-            this.dgVCdbCodesPart.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
-            this.dgVCdbCodesPart.HeaderText = "Part";
-            this.dgVCdbCodesPart.Name = "dgVCdbCodesPart";
-            this.dgVCdbCodesPart.ReadOnly = true;
-            this.dgVCdbCodesPart.Width = 51;
-            // 
-            // dgVCdbCodesQualifiers
-            // 
-            this.dgVCdbCodesQualifiers.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
-            this.dgVCdbCodesQualifiers.HeaderText = "VCdb Coded Attributes";
-            this.dgVCdbCodesQualifiers.Name = "dgVCdbCodesQualifiers";
-            this.dgVCdbCodesQualifiers.ReadOnly = true;
-            this.dgVCdbCodesQualifiers.Width = 127;
-            // 
-            // dgVCdbCodesNotes
-            // 
-            this.dgVCdbCodesNotes.HeaderText = "Notes";
-            this.dgVCdbCodesNotes.Name = "dgVCdbCodesNotes";
-            // 
-            // tabPage9
-            // 
-            this.tabPage9.Controls.Add(this.dgVCdbConfigs);
-            this.tabPage9.Location = new System.Drawing.Point(4, 22);
-            this.tabPage9.Name = "tabPage9";
-            this.tabPage9.Size = new System.Drawing.Size(837, 423);
-            this.tabPage9.TabIndex = 8;
-            this.tabPage9.Text = "Invalid Configurations";
-            this.tabPage9.UseVisualStyleBackColor = true;
-            // 
-            // dgVCdbConfigs
-            // 
-            this.dgVCdbConfigs.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dgVCdbConfigs.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
-            this.dgVCdbConfigsApplicationid,
-            this.dgVCdbConfigsMake,
-            this.dgVCdbConfigsModel,
-            this.dgVCdbConfigsYear,
-            this.dgVCdbConfigsParttype,
-            this.dgVCdbConfigsPosition,
-            this.dgVCdbConfigsQty,
-            this.dgVCdbConfigsPart,
-            this.dgVCdbConfigsQualifiers});
-            this.dgVCdbConfigs.Location = new System.Drawing.Point(3, 3);
-            this.dgVCdbConfigs.Name = "dgVCdbConfigs";
-            this.dgVCdbConfigs.Size = new System.Drawing.Size(838, 424);
-            this.dgVCdbConfigs.TabIndex = 3;
-            // 
             // tabPage6
             // 
             this.tabPage6.Controls.Add(this.groupBox2);
@@ -1176,78 +882,486 @@
             this.btnSelectAssessmentFile.UseVisualStyleBackColor = true;
             this.btnSelectAssessmentFile.Click += new System.EventHandler(this.btnSelectAssessmentFile_Click);
             // 
-            // lblStatus
+            // tabPage3
             // 
-            this.lblStatus.AutoSize = true;
-            this.lblStatus.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblStatus.Location = new System.Drawing.Point(86, 131);
-            this.lblStatus.Name = "lblStatus";
-            this.lblStatus.Size = new System.Drawing.Size(619, 20);
-            this.lblStatus.TabIndex = 13;
-            this.lblStatus.Text = "l1 label1 label1 label1 label1 label1 label1 label1 label1 label1 label1 label1 l" +
-    "abel1 label1";
+            this.tabPage3.Controls.Add(this.dgDuplicates);
+            this.tabPage3.Location = new System.Drawing.Point(4, 22);
+            this.tabPage3.Name = "tabPage3";
+            this.tabPage3.Size = new System.Drawing.Size(837, 423);
+            this.tabPage3.TabIndex = 2;
+            this.tabPage3.Text = "Duplicates";
+            this.tabPage3.UseVisualStyleBackColor = true;
             // 
-            // button3
+            // dgDuplicates
             // 
-            this.button3.Location = new System.Drawing.Point(12, 99);
-            this.button3.Name = "button3";
-            this.button3.Size = new System.Drawing.Size(95, 23);
-            this.button3.TabIndex = 14;
-            this.button3.Text = "Select Qdb";
-            this.button3.UseVisualStyleBackColor = true;
-            this.button3.Visible = false;
+            this.dgDuplicates.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dgDuplicates.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
+            this.dgDuplicatesBaseVehicleid,
+            this.dgDuplicatesMake,
+            this.dgDuplicatesModel,
+            this.dgDuplicatesYear,
+            this.dgDuplicatesParttype,
+            this.dgDuplicatesPosition,
+            this.dgDuplicatesAttributes,
+            this.dgDuplicatesAppIds});
+            this.dgDuplicates.Location = new System.Drawing.Point(3, 3);
+            this.dgDuplicates.Name = "dgDuplicates";
+            this.dgDuplicates.Size = new System.Drawing.Size(838, 420);
+            this.dgDuplicates.TabIndex = 1;
+            this.dgDuplicates.SortCompare += new System.Windows.Forms.DataGridViewSortCompareEventHandler(this.dgDuplicates_SortCompare);
             // 
-            // progressBar1
+            // dgDuplicatesBaseVehicleid
             // 
-            this.progressBar1.Location = new System.Drawing.Point(86, 151);
-            this.progressBar1.MarqueeAnimationSpeed = 0;
-            this.progressBar1.Name = "progressBar1";
-            this.progressBar1.Size = new System.Drawing.Size(709, 10);
-            this.progressBar1.Step = 1;
-            this.progressBar1.Style = System.Windows.Forms.ProgressBarStyle.Continuous;
-            this.progressBar1.TabIndex = 15;
+            this.dgDuplicatesBaseVehicleid.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
+            this.dgDuplicatesBaseVehicleid.HeaderText = "BaseVehicle id";
+            this.dgDuplicatesBaseVehicleid.Name = "dgDuplicatesBaseVehicleid";
+            this.dgDuplicatesBaseVehicleid.ReadOnly = true;
+            this.dgDuplicatesBaseVehicleid.Width = 102;
             // 
-            // lblProgressPercent
+            // dgDuplicatesMake
             // 
-            this.lblProgressPercent.AutoSize = true;
-            this.lblProgressPercent.Location = new System.Drawing.Point(801, 149);
-            this.lblProgressPercent.Name = "lblProgressPercent";
-            this.lblProgressPercent.Size = new System.Drawing.Size(33, 13);
-            this.lblProgressPercent.TabIndex = 16;
-            this.lblProgressPercent.Text = "100%";
+            this.dgDuplicatesMake.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
+            this.dgDuplicatesMake.HeaderText = "Make";
+            this.dgDuplicatesMake.Name = "dgDuplicatesMake";
+            this.dgDuplicatesMake.ReadOnly = true;
+            this.dgDuplicatesMake.Width = 59;
             // 
-            // lblAppVersion
+            // dgDuplicatesModel
             // 
-            this.lblAppVersion.AutoSize = true;
-            this.lblAppVersion.Location = new System.Drawing.Point(800, 0);
-            this.lblAppVersion.Name = "lblAppVersion";
-            this.lblAppVersion.Size = new System.Drawing.Size(16, 13);
-            this.lblAppVersion.TabIndex = 33;
-            this.lblAppVersion.Text = "...";
+            this.dgDuplicatesModel.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
+            this.dgDuplicatesModel.HeaderText = "Model";
+            this.dgDuplicatesModel.Name = "dgDuplicatesModel";
+            this.dgDuplicatesModel.ReadOnly = true;
+            this.dgDuplicatesModel.Width = 61;
             // 
-            // toolTip1
+            // dgDuplicatesYear
             // 
-            this.toolTip1.Popup += new System.Windows.Forms.PopupEventHandler(this.toolTip1_Popup);
+            this.dgDuplicatesYear.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
+            this.dgDuplicatesYear.HeaderText = "Year";
+            this.dgDuplicatesYear.Name = "dgDuplicatesYear";
+            this.dgDuplicatesYear.ReadOnly = true;
+            this.dgDuplicatesYear.Width = 54;
             // 
-            // label19
+            // dgDuplicatesParttype
             // 
-            this.label19.AutoSize = true;
-            this.label19.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label19.Location = new System.Drawing.Point(5, 353);
-            this.label19.Name = "label19";
-            this.label19.Size = new System.Drawing.Size(132, 20);
-            this.label19.TabIndex = 30;
-            this.label19.Text = "PartType/Position";
+            this.dgDuplicatesParttype.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
+            this.dgDuplicatesParttype.HeaderText = "Part Type";
+            this.dgDuplicatesParttype.Name = "dgDuplicatesParttype";
+            this.dgDuplicatesParttype.ReadOnly = true;
+            this.dgDuplicatesParttype.Width = 78;
             // 
-            // lblInvalidParttypePositionCount
+            // dgDuplicatesPosition
             // 
-            this.lblInvalidParttypePositionCount.AutoSize = true;
-            this.lblInvalidParttypePositionCount.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblInvalidParttypePositionCount.Location = new System.Drawing.Point(172, 353);
-            this.lblInvalidParttypePositionCount.Name = "lblInvalidParttypePositionCount";
-            this.lblInvalidParttypePositionCount.Size = new System.Drawing.Size(60, 20);
-            this.lblInvalidParttypePositionCount.TabIndex = 31;
-            this.lblInvalidParttypePositionCount.Text = "label20";
+            this.dgDuplicatesPosition.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
+            this.dgDuplicatesPosition.HeaderText = "Position";
+            this.dgDuplicatesPosition.Name = "dgDuplicatesPosition";
+            this.dgDuplicatesPosition.ReadOnly = true;
+            this.dgDuplicatesPosition.Width = 69;
+            // 
+            // dgDuplicatesAttributes
+            // 
+            this.dgDuplicatesAttributes.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
+            this.dgDuplicatesAttributes.HeaderText = "Qualifiers";
+            this.dgDuplicatesAttributes.Name = "dgDuplicatesAttributes";
+            this.dgDuplicatesAttributes.ReadOnly = true;
+            this.dgDuplicatesAttributes.Width = 75;
+            // 
+            // dgDuplicatesAppIds
+            // 
+            this.dgDuplicatesAppIds.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
+            this.dgDuplicatesAppIds.HeaderText = "App ids";
+            this.dgDuplicatesAppIds.Name = "dgDuplicatesAppIds";
+            this.dgDuplicatesAppIds.ReadOnly = true;
+            this.dgDuplicatesAppIds.Width = 67;
+            // 
+            // tabPage5
+            // 
+            this.tabPage5.Controls.Add(this.dgCNCoverlaps);
+            this.tabPage5.Location = new System.Drawing.Point(4, 22);
+            this.tabPage5.Name = "tabPage5";
+            this.tabPage5.Size = new System.Drawing.Size(837, 423);
+            this.tabPage5.TabIndex = 4;
+            this.tabPage5.Text = "CNC Overlaps";
+            this.tabPage5.UseVisualStyleBackColor = true;
+            // 
+            // dgCNCoverlaps
+            // 
+            this.dgCNCoverlaps.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dgCNCoverlaps.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
+            this.dbCNCgroupnumber,
+            this.dgCNCapplicationid,
+            this.dgCNCbasevehicleid,
+            this.dgCNCmake,
+            this.dgCNCmodel,
+            this.dgCNCyear,
+            this.dgCNCparttype,
+            this.dgCNCposition,
+            this.dgCNCqty,
+            this.dgCNCPart,
+            this.dgCNCqualifiers});
+            this.dgCNCoverlaps.Location = new System.Drawing.Point(3, 3);
+            this.dgCNCoverlaps.Name = "dgCNCoverlaps";
+            this.dgCNCoverlaps.Size = new System.Drawing.Size(838, 424);
+            this.dgCNCoverlaps.TabIndex = 3;
+            this.dgCNCoverlaps.SortCompare += new System.Windows.Forms.DataGridViewSortCompareEventHandler(this.dgCNCoverlaps_SortCompare);
+            // 
+            // dbCNCgroupnumber
+            // 
+            this.dbCNCgroupnumber.HeaderText = "CNC Group";
+            this.dbCNCgroupnumber.Name = "dbCNCgroupnumber";
+            // 
+            // dgCNCapplicationid
+            // 
+            this.dgCNCapplicationid.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
+            this.dgCNCapplicationid.HeaderText = "App id";
+            this.dgCNCapplicationid.Name = "dgCNCapplicationid";
+            this.dgCNCapplicationid.ReadOnly = true;
+            this.dgCNCapplicationid.Width = 51;
+            // 
+            // dgCNCbasevehicleid
+            // 
+            this.dgCNCbasevehicleid.HeaderText = "Base Vehicle id";
+            this.dgCNCbasevehicleid.Name = "dgCNCbasevehicleid";
+            // 
+            // dgCNCmake
+            // 
+            this.dgCNCmake.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
+            this.dgCNCmake.HeaderText = "Make";
+            this.dgCNCmake.Name = "dgCNCmake";
+            this.dgCNCmake.ReadOnly = true;
+            this.dgCNCmake.Width = 59;
+            // 
+            // dgCNCmodel
+            // 
+            this.dgCNCmodel.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
+            this.dgCNCmodel.HeaderText = "Model";
+            this.dgCNCmodel.Name = "dgCNCmodel";
+            this.dgCNCmodel.ReadOnly = true;
+            this.dgCNCmodel.Width = 61;
+            // 
+            // dgCNCyear
+            // 
+            this.dgCNCyear.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
+            this.dgCNCyear.HeaderText = "Year";
+            this.dgCNCyear.Name = "dgCNCyear";
+            this.dgCNCyear.ReadOnly = true;
+            this.dgCNCyear.Width = 54;
+            // 
+            // dgCNCparttype
+            // 
+            this.dgCNCparttype.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
+            this.dgCNCparttype.HeaderText = "Part Type";
+            this.dgCNCparttype.Name = "dgCNCparttype";
+            this.dgCNCparttype.ReadOnly = true;
+            this.dgCNCparttype.Width = 72;
+            // 
+            // dgCNCposition
+            // 
+            this.dgCNCposition.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
+            this.dgCNCposition.HeaderText = "Position";
+            this.dgCNCposition.Name = "dgCNCposition";
+            this.dgCNCposition.ReadOnly = true;
+            this.dgCNCposition.Width = 69;
+            // 
+            // dgCNCqty
+            // 
+            this.dgCNCqty.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
+            this.dgCNCqty.HeaderText = "Qty";
+            this.dgCNCqty.Name = "dgCNCqty";
+            this.dgCNCqty.ReadOnly = true;
+            this.dgCNCqty.Width = 48;
+            // 
+            // dgCNCPart
+            // 
+            this.dgCNCPart.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
+            this.dgCNCPart.HeaderText = "Part";
+            this.dgCNCPart.Name = "dgCNCPart";
+            this.dgCNCPart.Width = 51;
+            // 
+            // dgCNCqualifiers
+            // 
+            this.dgCNCqualifiers.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
+            this.dgCNCqualifiers.HeaderText = "Qualifiers";
+            this.dgCNCqualifiers.Name = "dgCNCqualifiers";
+            this.dgCNCqualifiers.ReadOnly = true;
+            this.dgCNCqualifiers.Width = 75;
+            // 
+            // tabPage4
+            // 
+            this.tabPage4.Controls.Add(this.dgOverlaps);
+            this.tabPage4.Location = new System.Drawing.Point(4, 22);
+            this.tabPage4.Name = "tabPage4";
+            this.tabPage4.Size = new System.Drawing.Size(837, 423);
+            this.tabPage4.TabIndex = 3;
+            this.tabPage4.Text = "Overlaps";
+            this.tabPage4.UseVisualStyleBackColor = true;
+            // 
+            // dgOverlaps
+            // 
+            this.dgOverlaps.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dgOverlaps.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
+            this.dgOverlapsBaseVehicleid,
+            this.dgOverlapsMake,
+            this.dgOverlapsModel,
+            this.dgOverlapsYear,
+            this.dgOverlapsParttype,
+            this.dgOverlapsPosition,
+            this.dgOverlapsAttributes,
+            this.dgOverlapsParts});
+            this.dgOverlaps.Location = new System.Drawing.Point(3, 3);
+            this.dgOverlaps.Name = "dgOverlaps";
+            this.dgOverlaps.Size = new System.Drawing.Size(838, 424);
+            this.dgOverlaps.TabIndex = 2;
+            this.dgOverlaps.SortCompare += new System.Windows.Forms.DataGridViewSortCompareEventHandler(this.dgOverlaps_SortCompare);
+            // 
+            // dgOverlapsBaseVehicleid
+            // 
+            this.dgOverlapsBaseVehicleid.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
+            this.dgOverlapsBaseVehicleid.HeaderText = "BaseVehicle id";
+            this.dgOverlapsBaseVehicleid.Name = "dgOverlapsBaseVehicleid";
+            this.dgOverlapsBaseVehicleid.ReadOnly = true;
+            this.dgOverlapsBaseVehicleid.Width = 102;
+            // 
+            // dgOverlapsMake
+            // 
+            this.dgOverlapsMake.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
+            this.dgOverlapsMake.HeaderText = "Make";
+            this.dgOverlapsMake.Name = "dgOverlapsMake";
+            this.dgOverlapsMake.ReadOnly = true;
+            this.dgOverlapsMake.Width = 59;
+            // 
+            // dgOverlapsModel
+            // 
+            this.dgOverlapsModel.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
+            this.dgOverlapsModel.HeaderText = "Model";
+            this.dgOverlapsModel.Name = "dgOverlapsModel";
+            this.dgOverlapsModel.ReadOnly = true;
+            this.dgOverlapsModel.Width = 61;
+            // 
+            // dgOverlapsYear
+            // 
+            this.dgOverlapsYear.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
+            this.dgOverlapsYear.HeaderText = "Year";
+            this.dgOverlapsYear.Name = "dgOverlapsYear";
+            this.dgOverlapsYear.ReadOnly = true;
+            this.dgOverlapsYear.Width = 54;
+            // 
+            // dgOverlapsParttype
+            // 
+            this.dgOverlapsParttype.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
+            this.dgOverlapsParttype.HeaderText = "Part Type";
+            this.dgOverlapsParttype.Name = "dgOverlapsParttype";
+            this.dgOverlapsParttype.ReadOnly = true;
+            this.dgOverlapsParttype.Width = 78;
+            // 
+            // dgOverlapsPosition
+            // 
+            this.dgOverlapsPosition.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
+            this.dgOverlapsPosition.HeaderText = "Position";
+            this.dgOverlapsPosition.Name = "dgOverlapsPosition";
+            this.dgOverlapsPosition.ReadOnly = true;
+            this.dgOverlapsPosition.Width = 69;
+            // 
+            // dgOverlapsAttributes
+            // 
+            this.dgOverlapsAttributes.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
+            this.dgOverlapsAttributes.HeaderText = "Qualifiers";
+            this.dgOverlapsAttributes.Name = "dgOverlapsAttributes";
+            this.dgOverlapsAttributes.ReadOnly = true;
+            this.dgOverlapsAttributes.Width = 75;
+            // 
+            // dgOverlapsParts
+            // 
+            this.dgOverlapsParts.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
+            this.dgOverlapsParts.HeaderText = "Parts";
+            this.dgOverlapsParts.Name = "dgOverlapsParts";
+            this.dgOverlapsParts.Width = 56;
+            // 
+            // tabPage7
+            // 
+            this.tabPage7.Controls.Add(this.dgBasevids);
+            this.tabPage7.Location = new System.Drawing.Point(4, 22);
+            this.tabPage7.Name = "tabPage7";
+            this.tabPage7.Size = new System.Drawing.Size(837, 423);
+            this.tabPage7.TabIndex = 6;
+            this.tabPage7.Text = "Invalid Basevehicles";
+            this.tabPage7.UseVisualStyleBackColor = true;
+            // 
+            // dgBasevids
+            // 
+            this.dgBasevids.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dgBasevids.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
+            this.dgBasevidsApplicationid,
+            this.dgBasevidsBasevid,
+            this.dgBasevidsParttype,
+            this.dgBasevidsPosition,
+            this.dgBasevidsQty,
+            this.dgBasevidsPart,
+            this.dgBasevidsQualifiers});
+            this.dgBasevids.Location = new System.Drawing.Point(3, 3);
+            this.dgBasevids.Name = "dgBasevids";
+            this.dgBasevids.Size = new System.Drawing.Size(838, 424);
+            this.dgBasevids.TabIndex = 2;
+            // 
+            // dgBasevidsApplicationid
+            // 
+            this.dgBasevidsApplicationid.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
+            this.dgBasevidsApplicationid.HeaderText = "ID";
+            this.dgBasevidsApplicationid.Name = "dgBasevidsApplicationid";
+            this.dgBasevidsApplicationid.ReadOnly = true;
+            this.dgBasevidsApplicationid.Width = 43;
+            // 
+            // dgBasevidsBasevid
+            // 
+            this.dgBasevidsBasevid.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
+            this.dgBasevidsBasevid.HeaderText = "BaseVID";
+            this.dgBasevidsBasevid.Name = "dgBasevidsBasevid";
+            this.dgBasevidsBasevid.ReadOnly = true;
+            this.dgBasevidsBasevid.Width = 74;
+            // 
+            // dgBasevidsParttype
+            // 
+            this.dgBasevidsParttype.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
+            this.dgBasevidsParttype.HeaderText = "Part Type";
+            this.dgBasevidsParttype.Name = "dgBasevidsParttype";
+            this.dgBasevidsParttype.ReadOnly = true;
+            this.dgBasevidsParttype.Width = 78;
+            // 
+            // dgBasevidsPosition
+            // 
+            this.dgBasevidsPosition.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
+            this.dgBasevidsPosition.HeaderText = "Position";
+            this.dgBasevidsPosition.Name = "dgBasevidsPosition";
+            this.dgBasevidsPosition.ReadOnly = true;
+            this.dgBasevidsPosition.Width = 69;
+            // 
+            // dgBasevidsQty
+            // 
+            this.dgBasevidsQty.HeaderText = "Qty";
+            this.dgBasevidsQty.Name = "dgBasevidsQty";
+            this.dgBasevidsQty.ReadOnly = true;
+            // 
+            // dgBasevidsPart
+            // 
+            this.dgBasevidsPart.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
+            this.dgBasevidsPart.HeaderText = "Part";
+            this.dgBasevidsPart.Name = "dgBasevidsPart";
+            this.dgBasevidsPart.ReadOnly = true;
+            this.dgBasevidsPart.Width = 51;
+            // 
+            // dgBasevidsQualifiers
+            // 
+            this.dgBasevidsQualifiers.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
+            this.dgBasevidsQualifiers.HeaderText = "Qualifiers";
+            this.dgBasevidsQualifiers.Name = "dgBasevidsQualifiers";
+            this.dgBasevidsQualifiers.ReadOnly = true;
+            this.dgBasevidsQualifiers.Width = 75;
+            // 
+            // tabPage8
+            // 
+            this.tabPage8.Controls.Add(this.dgVCdbCodes);
+            this.tabPage8.Location = new System.Drawing.Point(4, 22);
+            this.tabPage8.Name = "tabPage8";
+            this.tabPage8.Size = new System.Drawing.Size(837, 423);
+            this.tabPage8.TabIndex = 7;
+            this.tabPage8.Text = "Invalid VCdb codes";
+            this.tabPage8.UseVisualStyleBackColor = true;
+            // 
+            // dgVCdbCodes
+            // 
+            this.dgVCdbCodes.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dgVCdbCodes.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
+            this.dgVCdbCodesApplicationid,
+            this.dgVCdbCodesMake,
+            this.dgVCdbCodesModel,
+            this.dgVCdbCodesYear,
+            this.dgVCdbCodesParttype,
+            this.dgVCdbCodesPosition,
+            this.dgVCdbCodesQty,
+            this.dgVCdbCodesPart,
+            this.dgVCdbCodesQualifiers,
+            this.dgVCdbCodesNotes});
+            this.dgVCdbCodes.Location = new System.Drawing.Point(3, 3);
+            this.dgVCdbCodes.Name = "dgVCdbCodes";
+            this.dgVCdbCodes.Size = new System.Drawing.Size(838, 425);
+            this.dgVCdbCodes.TabIndex = 2;
+            // 
+            // dgVCdbCodesApplicationid
+            // 
+            this.dgVCdbCodesApplicationid.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
+            this.dgVCdbCodesApplicationid.HeaderText = "ID";
+            this.dgVCdbCodesApplicationid.Name = "dgVCdbCodesApplicationid";
+            this.dgVCdbCodesApplicationid.ReadOnly = true;
+            this.dgVCdbCodesApplicationid.Width = 43;
+            // 
+            // dgVCdbCodesMake
+            // 
+            this.dgVCdbCodesMake.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
+            this.dgVCdbCodesMake.HeaderText = "Make";
+            this.dgVCdbCodesMake.Name = "dgVCdbCodesMake";
+            this.dgVCdbCodesMake.ReadOnly = true;
+            this.dgVCdbCodesMake.Width = 59;
+            // 
+            // dgVCdbCodesModel
+            // 
+            this.dgVCdbCodesModel.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
+            this.dgVCdbCodesModel.HeaderText = "Model";
+            this.dgVCdbCodesModel.Name = "dgVCdbCodesModel";
+            this.dgVCdbCodesModel.ReadOnly = true;
+            this.dgVCdbCodesModel.Width = 61;
+            // 
+            // dgVCdbCodesYear
+            // 
+            this.dgVCdbCodesYear.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
+            this.dgVCdbCodesYear.HeaderText = "Year";
+            this.dgVCdbCodesYear.Name = "dgVCdbCodesYear";
+            this.dgVCdbCodesYear.ReadOnly = true;
+            this.dgVCdbCodesYear.Width = 54;
+            // 
+            // dgVCdbCodesParttype
+            // 
+            this.dgVCdbCodesParttype.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
+            this.dgVCdbCodesParttype.HeaderText = "Part Type";
+            this.dgVCdbCodesParttype.Name = "dgVCdbCodesParttype";
+            this.dgVCdbCodesParttype.ReadOnly = true;
+            this.dgVCdbCodesParttype.Width = 72;
+            // 
+            // dgVCdbCodesPosition
+            // 
+            this.dgVCdbCodesPosition.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
+            this.dgVCdbCodesPosition.HeaderText = "Position";
+            this.dgVCdbCodesPosition.Name = "dgVCdbCodesPosition";
+            this.dgVCdbCodesPosition.ReadOnly = true;
+            this.dgVCdbCodesPosition.Width = 69;
+            // 
+            // dgVCdbCodesQty
+            // 
+            this.dgVCdbCodesQty.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
+            this.dgVCdbCodesQty.HeaderText = "Qty";
+            this.dgVCdbCodesQty.Name = "dgVCdbCodesQty";
+            this.dgVCdbCodesQty.ReadOnly = true;
+            this.dgVCdbCodesQty.Width = 48;
+            // 
+            // dgVCdbCodesPart
+            // 
+            this.dgVCdbCodesPart.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
+            this.dgVCdbCodesPart.HeaderText = "Part";
+            this.dgVCdbCodesPart.Name = "dgVCdbCodesPart";
+            this.dgVCdbCodesPart.ReadOnly = true;
+            this.dgVCdbCodesPart.Width = 51;
+            // 
+            // dgVCdbCodesQualifiers
+            // 
+            this.dgVCdbCodesQualifiers.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
+            this.dgVCdbCodesQualifiers.HeaderText = "VCdb Coded Attributes";
+            this.dgVCdbCodesQualifiers.Name = "dgVCdbCodesQualifiers";
+            this.dgVCdbCodesQualifiers.ReadOnly = true;
+            this.dgVCdbCodesQualifiers.Width = 127;
+            // 
+            // dgVCdbCodesNotes
+            // 
+            this.dgVCdbCodesNotes.HeaderText = "Notes";
+            this.dgVCdbCodesNotes.Name = "dgVCdbCodesNotes";
             // 
             // tabPage1
             // 
@@ -1272,7 +1386,7 @@
             this.dataGridViewTextBoxColumn8,
             this.dataGridViewTextBoxColumn9,
             this.dataGridViewTextBoxColumn10});
-            this.dgParttypePosition.Location = new System.Drawing.Point(-1, -1);
+            this.dgParttypePosition.Location = new System.Drawing.Point(3, 3);
             this.dgParttypePosition.Name = "dgParttypePosition";
             this.dgParttypePosition.Size = new System.Drawing.Size(838, 424);
             this.dgParttypePosition.TabIndex = 4;
@@ -1349,6 +1463,34 @@
             this.dataGridViewTextBoxColumn10.ReadOnly = true;
             this.dataGridViewTextBoxColumn10.Width = 75;
             // 
+            // tabPage9
+            // 
+            this.tabPage9.Controls.Add(this.dgVCdbConfigs);
+            this.tabPage9.Location = new System.Drawing.Point(4, 22);
+            this.tabPage9.Name = "tabPage9";
+            this.tabPage9.Size = new System.Drawing.Size(837, 423);
+            this.tabPage9.TabIndex = 8;
+            this.tabPage9.Text = "Invalid Configurations";
+            this.tabPage9.UseVisualStyleBackColor = true;
+            // 
+            // dgVCdbConfigs
+            // 
+            this.dgVCdbConfigs.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dgVCdbConfigs.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
+            this.dgVCdbConfigsApplicationid,
+            this.dgVCdbConfigsMake,
+            this.dgVCdbConfigsModel,
+            this.dgVCdbConfigsYear,
+            this.dgVCdbConfigsParttype,
+            this.dgVCdbConfigsPosition,
+            this.dgVCdbConfigsQty,
+            this.dgVCdbConfigsPart,
+            this.dgVCdbConfigsQualifiers});
+            this.dgVCdbConfigs.Location = new System.Drawing.Point(3, 3);
+            this.dgVCdbConfigs.Name = "dgVCdbConfigs";
+            this.dgVCdbConfigs.Size = new System.Drawing.Size(838, 424);
+            this.dgVCdbConfigs.TabIndex = 3;
+            // 
             // dgVCdbConfigsApplicationid
             // 
             this.dgVCdbConfigsApplicationid.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
@@ -1421,233 +1563,84 @@
             this.dgVCdbConfigsQualifiers.ReadOnly = true;
             this.dgVCdbConfigsQualifiers.Width = 75;
             // 
-            // dgOverlapsApplicationidA
+            // lblStatus
             // 
-            this.dgOverlapsApplicationidA.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
-            this.dgOverlapsApplicationidA.HeaderText = "ID A";
-            this.dgOverlapsApplicationidA.Name = "dgOverlapsApplicationidA";
-            this.dgOverlapsApplicationidA.ReadOnly = true;
-            this.dgOverlapsApplicationidA.Width = 53;
+            this.lblStatus.AutoSize = true;
+            this.lblStatus.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblStatus.Location = new System.Drawing.Point(86, 131);
+            this.lblStatus.Name = "lblStatus";
+            this.lblStatus.Size = new System.Drawing.Size(619, 20);
+            this.lblStatus.TabIndex = 13;
+            this.lblStatus.Text = "l1 label1 label1 label1 label1 label1 label1 label1 label1 label1 label1 label1 l" +
+    "abel1 label1";
             // 
-            // dgOverlapsApplicationidB
+            // button3
             // 
-            this.dgOverlapsApplicationidB.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
-            this.dgOverlapsApplicationidB.HeaderText = "ID B";
-            this.dgOverlapsApplicationidB.Name = "dgOverlapsApplicationidB";
-            this.dgOverlapsApplicationidB.Width = 53;
+            this.button3.Location = new System.Drawing.Point(12, 99);
+            this.button3.Name = "button3";
+            this.button3.Size = new System.Drawing.Size(95, 23);
+            this.button3.TabIndex = 14;
+            this.button3.Text = "Select Qdb";
+            this.button3.UseVisualStyleBackColor = true;
+            this.button3.Visible = false;
             // 
-            // dgOverlapsMake
+            // progressBar1
             // 
-            this.dgOverlapsMake.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
-            this.dgOverlapsMake.HeaderText = "Make";
-            this.dgOverlapsMake.Name = "dgOverlapsMake";
-            this.dgOverlapsMake.ReadOnly = true;
-            this.dgOverlapsMake.Width = 59;
+            this.progressBar1.Location = new System.Drawing.Point(86, 151);
+            this.progressBar1.MarqueeAnimationSpeed = 0;
+            this.progressBar1.Name = "progressBar1";
+            this.progressBar1.Size = new System.Drawing.Size(709, 10);
+            this.progressBar1.Step = 1;
+            this.progressBar1.Style = System.Windows.Forms.ProgressBarStyle.Continuous;
+            this.progressBar1.TabIndex = 15;
             // 
-            // dgOverlapsModel
+            // lblProgressPercent
             // 
-            this.dgOverlapsModel.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
-            this.dgOverlapsModel.HeaderText = "Model";
-            this.dgOverlapsModel.Name = "dgOverlapsModel";
-            this.dgOverlapsModel.ReadOnly = true;
-            this.dgOverlapsModel.Width = 61;
+            this.lblProgressPercent.AutoSize = true;
+            this.lblProgressPercent.Location = new System.Drawing.Point(801, 149);
+            this.lblProgressPercent.Name = "lblProgressPercent";
+            this.lblProgressPercent.Size = new System.Drawing.Size(33, 13);
+            this.lblProgressPercent.TabIndex = 16;
+            this.lblProgressPercent.Text = "100%";
             // 
-            // dgOverlapsYear
+            // lblAppVersion
             // 
-            this.dgOverlapsYear.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
-            this.dgOverlapsYear.HeaderText = "Year";
-            this.dgOverlapsYear.Name = "dgOverlapsYear";
-            this.dgOverlapsYear.ReadOnly = true;
-            this.dgOverlapsYear.Width = 54;
+            this.lblAppVersion.AutoSize = true;
+            this.lblAppVersion.Location = new System.Drawing.Point(800, 0);
+            this.lblAppVersion.Name = "lblAppVersion";
+            this.lblAppVersion.Size = new System.Drawing.Size(16, 13);
+            this.lblAppVersion.TabIndex = 33;
+            this.lblAppVersion.Text = "...";
             // 
-            // dgOverlapsParttype
+            // toolTip1
             // 
-            this.dgOverlapsParttype.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
-            this.dgOverlapsParttype.HeaderText = "Part Type";
-            this.dgOverlapsParttype.Name = "dgOverlapsParttype";
-            this.dgOverlapsParttype.ReadOnly = true;
-            this.dgOverlapsParttype.Width = 78;
+            this.toolTip1.Popup += new System.Windows.Forms.PopupEventHandler(this.toolTip1_Popup);
             // 
-            // dgOverlapsPosition
+            // dgPartsPart
             // 
-            this.dgOverlapsPosition.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
-            this.dgOverlapsPosition.HeaderText = "Position";
-            this.dgOverlapsPosition.Name = "dgOverlapsPosition";
-            this.dgOverlapsPosition.ReadOnly = true;
-            this.dgOverlapsPosition.Width = 69;
+            this.dgPartsPart.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
+            this.dgPartsPart.HeaderText = "Part";
+            this.dgPartsPart.Name = "dgPartsPart";
+            this.dgPartsPart.ReadOnly = true;
+            this.dgPartsPart.Width = 51;
             // 
-            // dgOverlapsQty
+            // dgPartsAppCount
             // 
-            this.dgOverlapsQty.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
-            this.dgOverlapsQty.HeaderText = "Qty";
-            this.dgOverlapsQty.Name = "dgOverlapsQty";
-            this.dgOverlapsQty.ReadOnly = true;
-            this.dgOverlapsQty.Width = 48;
+            this.dgPartsAppCount.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
+            this.dgPartsAppCount.HeaderText = "Application Count";
+            this.dgPartsAppCount.Name = "dgPartsAppCount";
+            this.dgPartsAppCount.ReadOnly = true;
+            this.dgPartsAppCount.Width = 105;
             // 
-            // dgOverlapsPartA
+            // dgPartsParttypes
             // 
-            this.dgOverlapsPartA.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
-            this.dgOverlapsPartA.HeaderText = "Part A";
-            this.dgOverlapsPartA.Name = "dgOverlapsPartA";
-            this.dgOverlapsPartA.Width = 61;
+            this.dgPartsParttypes.HeaderText = "Part Types";
+            this.dgPartsParttypes.Name = "dgPartsParttypes";
             // 
-            // dgOverlapsPartB
+            // dgPartsPositions
             // 
-            this.dgOverlapsPartB.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
-            this.dgOverlapsPartB.HeaderText = "Part B";
-            this.dgOverlapsPartB.Name = "dgOverlapsPartB";
-            this.dgOverlapsPartB.Width = 61;
-            // 
-            // dgOverlapsAttributes
-            // 
-            this.dgOverlapsAttributes.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
-            this.dgOverlapsAttributes.HeaderText = "Qualifiers";
-            this.dgOverlapsAttributes.Name = "dgOverlapsAttributes";
-            this.dgOverlapsAttributes.ReadOnly = true;
-            this.dgOverlapsAttributes.Width = 75;
-            // 
-            // dgCNCapplicationid
-            // 
-            this.dgCNCapplicationid.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
-            this.dgCNCapplicationid.HeaderText = "ID";
-            this.dgCNCapplicationid.Name = "dgCNCapplicationid";
-            this.dgCNCapplicationid.ReadOnly = true;
-            this.dgCNCapplicationid.Width = 43;
-            // 
-            // dgCNCmake
-            // 
-            this.dgCNCmake.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
-            this.dgCNCmake.HeaderText = "Make";
-            this.dgCNCmake.Name = "dgCNCmake";
-            this.dgCNCmake.ReadOnly = true;
-            this.dgCNCmake.Width = 59;
-            // 
-            // dgCNCmodel
-            // 
-            this.dgCNCmodel.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
-            this.dgCNCmodel.HeaderText = "Model";
-            this.dgCNCmodel.Name = "dgCNCmodel";
-            this.dgCNCmodel.ReadOnly = true;
-            this.dgCNCmodel.Width = 61;
-            // 
-            // dgCNCyear
-            // 
-            this.dgCNCyear.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
-            this.dgCNCyear.HeaderText = "Year";
-            this.dgCNCyear.Name = "dgCNCyear";
-            this.dgCNCyear.ReadOnly = true;
-            this.dgCNCyear.Width = 54;
-            // 
-            // dgCNCparttype
-            // 
-            this.dgCNCparttype.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
-            this.dgCNCparttype.HeaderText = "Part Type";
-            this.dgCNCparttype.Name = "dgCNCparttype";
-            this.dgCNCparttype.ReadOnly = true;
-            this.dgCNCparttype.Width = 78;
-            // 
-            // dgCNCposition
-            // 
-            this.dgCNCposition.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
-            this.dgCNCposition.HeaderText = "Position";
-            this.dgCNCposition.Name = "dgCNCposition";
-            this.dgCNCposition.ReadOnly = true;
-            this.dgCNCposition.Width = 69;
-            // 
-            // dgCNCqty
-            // 
-            this.dgCNCqty.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
-            this.dgCNCqty.HeaderText = "Qty";
-            this.dgCNCqty.Name = "dgCNCqty";
-            this.dgCNCqty.ReadOnly = true;
-            this.dgCNCqty.Width = 48;
-            // 
-            // dgCNCPart
-            // 
-            this.dgCNCPart.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
-            this.dgCNCPart.HeaderText = "Part";
-            this.dgCNCPart.Name = "dgCNCPart";
-            this.dgCNCPart.Width = 51;
-            // 
-            // dgCNCqualifiers
-            // 
-            this.dgCNCqualifiers.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
-            this.dgCNCqualifiers.HeaderText = "Qualifiers";
-            this.dgCNCqualifiers.Name = "dgCNCqualifiers";
-            this.dgCNCqualifiers.ReadOnly = true;
-            this.dgCNCqualifiers.Width = 75;
-            // 
-            // dgDuplicatesApplicationid
-            // 
-            this.dgDuplicatesApplicationid.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
-            this.dgDuplicatesApplicationid.HeaderText = "ID";
-            this.dgDuplicatesApplicationid.Name = "dgDuplicatesApplicationid";
-            this.dgDuplicatesApplicationid.ReadOnly = true;
-            this.dgDuplicatesApplicationid.Width = 43;
-            // 
-            // dgDuplicatesMake
-            // 
-            this.dgDuplicatesMake.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
-            this.dgDuplicatesMake.HeaderText = "Make";
-            this.dgDuplicatesMake.Name = "dgDuplicatesMake";
-            this.dgDuplicatesMake.ReadOnly = true;
-            this.dgDuplicatesMake.Width = 59;
-            // 
-            // dgDuplicatesModel
-            // 
-            this.dgDuplicatesModel.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
-            this.dgDuplicatesModel.HeaderText = "Model";
-            this.dgDuplicatesModel.Name = "dgDuplicatesModel";
-            this.dgDuplicatesModel.ReadOnly = true;
-            this.dgDuplicatesModel.Width = 61;
-            // 
-            // dgDuplicatesYear
-            // 
-            this.dgDuplicatesYear.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
-            this.dgDuplicatesYear.HeaderText = "Year";
-            this.dgDuplicatesYear.Name = "dgDuplicatesYear";
-            this.dgDuplicatesYear.ReadOnly = true;
-            this.dgDuplicatesYear.Width = 54;
-            // 
-            // dgDuplicatesParttype
-            // 
-            this.dgDuplicatesParttype.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
-            this.dgDuplicatesParttype.HeaderText = "Part Type";
-            this.dgDuplicatesParttype.Name = "dgDuplicatesParttype";
-            this.dgDuplicatesParttype.ReadOnly = true;
-            this.dgDuplicatesParttype.Width = 78;
-            // 
-            // dgDuplicatesPosition
-            // 
-            this.dgDuplicatesPosition.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
-            this.dgDuplicatesPosition.HeaderText = "Position";
-            this.dgDuplicatesPosition.Name = "dgDuplicatesPosition";
-            this.dgDuplicatesPosition.ReadOnly = true;
-            this.dgDuplicatesPosition.Width = 69;
-            // 
-            // dgDuplicatesQty
-            // 
-            this.dgDuplicatesQty.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
-            this.dgDuplicatesQty.HeaderText = "Qty";
-            this.dgDuplicatesQty.Name = "dgDuplicatesQty";
-            this.dgDuplicatesQty.ReadOnly = true;
-            this.dgDuplicatesQty.Width = 48;
-            // 
-            // dgDuplicatesPart
-            // 
-            this.dgDuplicatesPart.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
-            this.dgDuplicatesPart.HeaderText = "Part";
-            this.dgDuplicatesPart.Name = "dgDuplicatesPart";
-            this.dgDuplicatesPart.ReadOnly = true;
-            this.dgDuplicatesPart.Width = 51;
-            // 
-            // dgDuplicatesAttributes
-            // 
-            this.dgDuplicatesAttributes.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
-            this.dgDuplicatesAttributes.HeaderText = "Qualifiers";
-            this.dgDuplicatesAttributes.Name = "dgDuplicatesAttributes";
-            this.dgDuplicatesAttributes.ReadOnly = true;
-            this.dgDuplicatesAttributes.Width = 75;
+            this.dgPartsPositions.HeaderText = "Positions";
+            this.dgPartsPositions.Name = "dgPartsPositions";
             // 
             // Form1
             // 
@@ -1677,6 +1670,13 @@
             this.tabPage10.ResumeLayout(false);
             this.tabPage10.PerformLayout();
             this.tabPage2.ResumeLayout(false);
+            this.tabPage6.ResumeLayout(false);
+            this.groupBox1.ResumeLayout(false);
+            this.groupBox1.PerformLayout();
+            this.groupBoxDataExport.ResumeLayout(false);
+            this.groupBoxDataExport.PerformLayout();
+            this.groupBoxAssessment.ResumeLayout(false);
+            this.groupBoxAssessment.PerformLayout();
             this.tabPage3.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.dgDuplicates)).EndInit();
             this.tabPage5.ResumeLayout(false);
@@ -1687,17 +1687,10 @@
             ((System.ComponentModel.ISupportInitialize)(this.dgBasevids)).EndInit();
             this.tabPage8.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.dgVCdbCodes)).EndInit();
-            this.tabPage9.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.dgVCdbConfigs)).EndInit();
-            this.tabPage6.ResumeLayout(false);
-            this.groupBox1.ResumeLayout(false);
-            this.groupBox1.PerformLayout();
-            this.groupBoxDataExport.ResumeLayout(false);
-            this.groupBoxDataExport.PerformLayout();
-            this.groupBoxAssessment.ResumeLayout(false);
-            this.groupBoxAssessment.PerformLayout();
             this.tabPage1.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.dgParttypePosition)).EndInit();
+            this.tabPage9.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.dgVCdbConfigs)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -1720,8 +1713,6 @@
         private System.Windows.Forms.DataGridView dgOverlaps;
         private System.Windows.Forms.TabPage tabPage5;
         private System.Windows.Forms.DataGridView dgCNCoverlaps;
-        private System.Windows.Forms.DataGridViewTextBoxColumn dgPartsPart;
-        private System.Windows.Forms.DataGridViewTextBoxColumn dgPartsAppCount;
         private System.Windows.Forms.Label lblStatus;
         private System.Windows.Forms.TabPage tabPage6;
         private System.Windows.Forms.GroupBox groupBoxDataExport;
@@ -1823,16 +1814,25 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn dgVCdbConfigsQty;
         private System.Windows.Forms.DataGridViewTextBoxColumn dgVCdbConfigsPart;
         private System.Windows.Forms.DataGridViewTextBoxColumn dgVCdbConfigsQualifiers;
-        private System.Windows.Forms.DataGridViewTextBoxColumn dgDuplicatesApplicationid;
+        private System.Windows.Forms.DataGridViewTextBoxColumn dgOverlapsBaseVehicleid;
+        private System.Windows.Forms.DataGridViewTextBoxColumn dgOverlapsMake;
+        private System.Windows.Forms.DataGridViewTextBoxColumn dgOverlapsModel;
+        private System.Windows.Forms.DataGridViewTextBoxColumn dgOverlapsYear;
+        private System.Windows.Forms.DataGridViewTextBoxColumn dgOverlapsParttype;
+        private System.Windows.Forms.DataGridViewTextBoxColumn dgOverlapsPosition;
+        private System.Windows.Forms.DataGridViewTextBoxColumn dgOverlapsAttributes;
+        private System.Windows.Forms.DataGridViewTextBoxColumn dgOverlapsParts;
+        private System.Windows.Forms.DataGridViewTextBoxColumn dgDuplicatesBaseVehicleid;
         private System.Windows.Forms.DataGridViewTextBoxColumn dgDuplicatesMake;
         private System.Windows.Forms.DataGridViewTextBoxColumn dgDuplicatesModel;
         private System.Windows.Forms.DataGridViewTextBoxColumn dgDuplicatesYear;
         private System.Windows.Forms.DataGridViewTextBoxColumn dgDuplicatesParttype;
         private System.Windows.Forms.DataGridViewTextBoxColumn dgDuplicatesPosition;
-        private System.Windows.Forms.DataGridViewTextBoxColumn dgDuplicatesQty;
-        private System.Windows.Forms.DataGridViewTextBoxColumn dgDuplicatesPart;
         private System.Windows.Forms.DataGridViewTextBoxColumn dgDuplicatesAttributes;
+        private System.Windows.Forms.DataGridViewTextBoxColumn dgDuplicatesAppIds;
+        private System.Windows.Forms.DataGridViewTextBoxColumn dbCNCgroupnumber;
         private System.Windows.Forms.DataGridViewTextBoxColumn dgCNCapplicationid;
+        private System.Windows.Forms.DataGridViewTextBoxColumn dgCNCbasevehicleid;
         private System.Windows.Forms.DataGridViewTextBoxColumn dgCNCmake;
         private System.Windows.Forms.DataGridViewTextBoxColumn dgCNCmodel;
         private System.Windows.Forms.DataGridViewTextBoxColumn dgCNCyear;
@@ -1841,17 +1841,10 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn dgCNCqty;
         private System.Windows.Forms.DataGridViewTextBoxColumn dgCNCPart;
         private System.Windows.Forms.DataGridViewTextBoxColumn dgCNCqualifiers;
-        private System.Windows.Forms.DataGridViewTextBoxColumn dgOverlapsApplicationidA;
-        private System.Windows.Forms.DataGridViewTextBoxColumn dgOverlapsApplicationidB;
-        private System.Windows.Forms.DataGridViewTextBoxColumn dgOverlapsMake;
-        private System.Windows.Forms.DataGridViewTextBoxColumn dgOverlapsModel;
-        private System.Windows.Forms.DataGridViewTextBoxColumn dgOverlapsYear;
-        private System.Windows.Forms.DataGridViewTextBoxColumn dgOverlapsParttype;
-        private System.Windows.Forms.DataGridViewTextBoxColumn dgOverlapsPosition;
-        private System.Windows.Forms.DataGridViewTextBoxColumn dgOverlapsQty;
-        private System.Windows.Forms.DataGridViewTextBoxColumn dgOverlapsPartA;
-        private System.Windows.Forms.DataGridViewTextBoxColumn dgOverlapsPartB;
-        private System.Windows.Forms.DataGridViewTextBoxColumn dgOverlapsAttributes;
+        private System.Windows.Forms.DataGridViewTextBoxColumn dgPartsPart;
+        private System.Windows.Forms.DataGridViewTextBoxColumn dgPartsAppCount;
+        private System.Windows.Forms.DataGridViewTextBoxColumn dgPartsParttypes;
+        private System.Windows.Forms.DataGridViewTextBoxColumn dgPartsPositions;
     }
 }
 

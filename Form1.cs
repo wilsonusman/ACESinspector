@@ -16,11 +16,6 @@ using System.Security.Cryptography;
 
 namespace ACESinspector
 {
-
-    
-
-
-
     public partial class Form1 : Form
     {
         ACES aces = new ACES();
@@ -124,6 +119,8 @@ namespace ACESinspector
             key.CreateSubKey("ACESinspector");
             key = key.OpenSubKey("ACESinspector", true);
             if (key.GetValue("lastACESDirectoryPath") != null) { openFileDialog.InitialDirectory = key.GetValue("lastACESDirectoryPath").ToString(); }
+            string partTypeNameListString = ""; string positionNameListString = "";
+
 
             openFileDialog.Title = "Open ACES XML file";
             openFileDialog.RestoreDirectory = false;
@@ -133,7 +130,7 @@ namespace ACESinspector
             {
                 lblStatsTitle.Text = "";
                 lblStatsACESversion.Text = "";
-                lblStatsVCdbVersion.Text = "";
+                lblStatsVCdbVersion.Text = ""; lblStatsVCdbVersion.ForeColor = SystemColors.ControlText;
                 lblStatsPCdbVersion.Text = "";
                 lblStatsQdbVersion.Text = "";
                 lblStatsAppsCount.Text = "";
@@ -185,7 +182,18 @@ namespace ACESinspector
                     lblInvalidParttypePositionCount.Text = "(not yet analyzed)";
                     lblInvalidVCdbCodesCount.Text = "(not yet analyzed)";
 
-                    foreach (string part in aces.distinctParts) { dgParts.Rows.Add(part, Convert.ToInt32(aces.partsAppsCounts[part].ToString())); }
+                    
+                    foreach (string part in aces.distinctParts)
+                    {
+                        string[] partTypeIdStrings = aces.partsPartTypes[part].Split(',');
+                        partTypeNameListString = ""; foreach (string partTypeIdString in partTypeIdStrings) { partTypeNameListString += pcdb.niceParttype(Convert.ToInt32(partTypeIdString)) + ",";}
+                        partTypeNameListString = partTypeNameListString.Substring(0, partTypeNameListString.Length - 1);
+                        string[] positionIdStrings = aces.partsPositions[part].Split(',');
+                        positionNameListString = ""; foreach (string positionIdString in positionIdStrings) { positionNameListString += pcdb.nicePosition(Convert.ToInt32(positionIdString)) + ","; }
+                        positionNameListString = positionNameListString.Substring(0, positionNameListString.Length - 1);
+
+                        dgParts.Rows.Add(part, Convert.ToInt32(aces.partsAppsCounts[part].ToString()), partTypeNameListString, positionNameListString);
+                    }
                     progressBar1.Value = 0; lblProgressPercent.Text = ""; lblStatus.Text = "Successfully imported ACES xml";
                     btnSelectAssessmentFile.Enabled = true; btnSelectAppExportFile.Enabled = true;
 
@@ -459,7 +467,10 @@ namespace ACESinspector
             lblStatus.Text = "Overlaps"; lblOverlapsCount.Text = "(analyzing)";
             await Task.Run(() => aces.overlaps(vcdb, pcdb, progressIndicator));
             lblOverlapsCount.Text = aces.overlapsErrors.Count.ToString();
-            foreach (string error in aces.overlapsErrors) { dgOverlaps.Rows.Add(error.Split('\t')); }
+            foreach (string error in aces.overlapsErrors)
+            {
+                dgOverlaps.Rows.Add(error.Split('\t'));
+            }
 
             lblStatus.Text = "Base vehicles"; lblInvalidBasevehilcesCount.Text = "(analyzing)";
             await Task.Run(() => aces.invalidBasevids(vcdb, pcdb, progressIndicator));
@@ -588,6 +599,60 @@ namespace ACESinspector
 
         private void toolTip1_Popup(object sender, PopupEventArgs e)
         {
+
+        }
+
+        private void dgCNCoverlaps_SortCompare(object sender, DataGridViewSortCompareEventArgs e)
+        {
+            //Column 0 is group number - it needs to be compared numerically for sort instead of the default alpha
+            if (e.Column.Index == 0)
+            {
+                e.SortResult = int.Parse(e.CellValue1.ToString()).CompareTo(int.Parse(e.CellValue2.ToString()));
+                e.Handled = true;//pass by the default sorting
+            }
+
+            //Column 1 is app id - it needs to be compared numerically for sort instead of the default alpha
+            if (e.Column.Index == 1)
+            {
+                e.SortResult = int.Parse(e.CellValue1.ToString()).CompareTo(int.Parse(e.CellValue2.ToString()));
+                e.Handled = true;//pass by the default sorting
+            }
+
+            //Column 2 is basevid - it needs to be compared numerically for sort instead of the default alpha
+            if (e.Column.Index == 2)
+            {
+                e.SortResult = int.Parse(e.CellValue1.ToString()).CompareTo(int.Parse(e.CellValue2.ToString()));
+                e.Handled = true;//pass by the default sorting
+            }
+
+
+            //Column 5 is year - it needs to be compared numerically for sort instead of the default alpha
+            if (e.Column.Index == 5)
+            {
+                e.SortResult = int.Parse(e.CellValue1.ToString()).CompareTo(int.Parse(e.CellValue2.ToString()));
+                e.Handled = true;//pass by the default sorting
+            }
+        }
+
+        private void dgDuplicates_SortCompare(object sender, DataGridViewSortCompareEventArgs e)
+        {
+            //Column 0 is basevid - it needs to be compared numerically for sort instead of the default alpha
+            if (e.Column.Index == 0)
+            {
+                e.SortResult = int.Parse(e.CellValue1.ToString()).CompareTo(int.Parse(e.CellValue2.ToString()));
+                e.Handled = true;//pass by the default sorting
+            }
+
+        }
+
+        private void dgOverlaps_SortCompare(object sender, DataGridViewSortCompareEventArgs e)
+        {
+            //Column 0 is group number - it needs to be compared numerically for sort instead of the default alpha
+            if (e.Column.Index == 0)
+            {
+                e.SortResult = int.Parse(e.CellValue1.ToString()).CompareTo(int.Parse(e.CellValue2.ToString()));
+                e.Handled = true;//pass by the default sorting
+            }
 
         }
     }
