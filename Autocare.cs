@@ -621,7 +621,14 @@ namespace ACESinspector
                             OleDbDataReader reader = command.ExecuteReader();
                             if (!reader.Read())
                             {
+
+                                // check that attribute "U/K" is not one of the choices 
+
                                 vcdbConfigurationsErrors.Add(apps[i].id + "\t" + vcdb.niceMakeOfBasevid(apps[i].basevehilceid) + "\t" + vcdb.niceModelOfBasevid(apps[i].basevehilceid) + "\t" + vcdb.niceYearOfBasevid(apps[i].basevehilceid) + "\t" + pcdb.niceParttype(apps[i].parttypeid) + "\t" + pcdb.nicePosition(apps[i].positionid) + "\t" + apps[i].quantity + "\t" + apps[i].part + "\t" + apps[i].niceAttributesString(vcdb, false) + "\t" + apps[i].notes);
+
+
+
+
                                 analysisErrors++;
                             }
                             reader.Close();
@@ -783,7 +790,7 @@ namespace ACESinspector
         }
 
 
-                public int import(string _filePath, string _schemaString, IProgress<int> progress)
+        public int import(string _filePath, string _schemaString, IProgress<int> progress)
         {
             // if schema string is "", select XSD according to what ACES version is claimed by the XML
 
@@ -1628,6 +1635,16 @@ namespace ACESinspector
             if (myAttribute.name == "VehicleType") { return 11; }
             return 12;
         }
+
+       // public bool attributeHasUKasOption(int baseVehicleid, VCdbAttribute attribute)
+        //{
+
+
+
+        //}
+
+
+
 
         public string import()
         {

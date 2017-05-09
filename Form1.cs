@@ -70,29 +70,20 @@ namespace ACESinspector
             btnAnalyze.Enabled = false;
             dgParts.Width = Width - 36;
             dgParts.Height = Height - 248;
-
             dgDuplicates.Width = Width - 36;
             dgDuplicates.Height =Height - 248;
-
             dgOverlaps.Width = this.Width - 36;
             dgOverlaps.Height = this.Height - 248;
-
             dgCNCoverlaps.Width = this.Width - 36;
             dgCNCoverlaps.Height = this.Height - 248;
-
             dgBasevids.Width = this.Width - 36;
             dgBasevids.Height = this.Height - 248;
-
             dgVCdbCodes.Width = this.Width - 36;
             dgVCdbCodes.Height = this.Height - 248;
-
             dgParttypePosition.Width = this.Width - 36;
             dgParttypePosition.Height = this.Height - 248;
-            
             dgVCdbConfigs.Width = this.Width - 36;
             dgVCdbConfigs.Height = this.Height - 248;
-
-
 
             pictureBoxCNCoverlaps.Visible = false;
             pictureBoxDuplicates.Visible = false;
@@ -102,7 +93,13 @@ namespace ACESinspector
             pictureBoxParttypePosition.Visible = false;
             pictureBoxInvalidConfigurations.Visible = false;
 
-
+            dgBasevids.Visible = false;
+            dgDuplicates.Visible = false;
+            dgCNCoverlaps.Visible = false;
+            dgOverlaps.Visible = false;
+            dgVCdbCodes.Visible = false;
+            dgParttypePosition.Visible = false;
+            dgVCdbConfigs.Visible = false;
 
             tabControl1.Width = this.Width - 20;
             tabControl1.Height = this.Height - 215;
@@ -134,6 +131,10 @@ namespace ACESinspector
 
         private async void btnSelectACESfile_Click(object sender, EventArgs e)
         {
+            btnSelectACESfile.Enabled = false;
+            btnSelectVCdbFile.Enabled = false;
+            btnSelectPCdbFile.Enabled = false;
+
             var progressIndicator = new Progress<int>(ReportImportProgress);
 
             OpenFileDialog openFileDialog = new OpenFileDialog();
@@ -168,14 +169,45 @@ namespace ACESinspector
                 lblInvalidConfigurationsCount.Text = "";
                 lblStatus.BackColor = SystemColors.ButtonFace;
 
+                progressBarDuplicates.Value = 0;
+                progressBarCNCoverlaps.Value = 0;
+                progressBarOverlaps.Value = 0;
+                progressBarInvalidBasevehicles.Value = 0;
+                progressBarInvalidVCdbCodes.Value = 0;
+                progressBarParttypePosition.Value = 0;
+                progressBarInvalidConfigurations.Value = 0;
+
+                pictureBoxCNCoverlaps.Visible = false;
+                pictureBoxDuplicates.Visible = false;
+                pictureBoxOverlaps.Visible = false;
+                pictureBoxInvalidBasevehicles.Visible = false;
+                pictureBoxInvalidVCdbCodes.Visible = false;
+                pictureBoxParttypePosition.Visible = false;
+                pictureBoxInvalidConfigurations.Visible = false;
+
                 dgParts.Rows.Clear();
+
                 dgBasevids.Rows.Clear();
+                dgBasevids.Visible = false;
+
                 dgDuplicates.Rows.Clear();
+                dgDuplicates.Visible = false;
+
                 dgCNCoverlaps.Rows.Clear();
+                dgCNCoverlaps.Visible = false;
+
                 dgOverlaps.Rows.Clear();
+                dgOverlaps.Visible = false;
+
                 dgVCdbCodes.Rows.Clear();
+                dgVCdbCodes.Visible = false;
+
                 dgParttypePosition.Rows.Clear();
+                dgParttypePosition.Visible = false;
+
                 dgVCdbConfigs.Rows.Clear();
+                dgVCdbConfigs.Visible = false;
+
 
                 aces.clear();
                 lblStatus.Text = "Importing ACES xml file";
@@ -184,6 +216,12 @@ namespace ACESinspector
                 
 
                 var result = await Task.Run(() => aces.import(openFileDialog.FileName, "", progressIndicator));
+
+                btnSelectACESfile.Enabled = true;
+                btnSelectVCdbFile.Enabled = true;
+                btnSelectPCdbFile.Enabled = true;
+
+
 
                 if (aces.xmlValidationErrors.Count == 0 && aces.appsCount > 0)
                 {
@@ -488,6 +526,9 @@ namespace ACESinspector
         private async void btnAnalyze_Click(object sender, EventArgs e)
         {
             btnAnalyze.Enabled = false;
+            btnSelectACESfile.Enabled = false;
+            btnSelectVCdbFile.Enabled = false;
+            btnSelectPCdbFile.Enabled = false;
 
             lblStatsVCdbVersion.Text = aces.VcdbVersionDate; lblStatsVCdbVersion.ForeColor = SystemColors.ControlText;
             lblStatsPCdbVersion.Text = aces.PcdbVersionDate; lblStatsPCdbVersion.ForeColor = SystemColors.ControlText;
@@ -530,55 +571,59 @@ namespace ACESinspector
             //await Task.Run(() => aces.disperateAttributes(vcdb, pcdb, progressIndicator));
 
 
-            lblStatus.Text = "Duplicates"; lblDuplicateApps.Text = "(analyzing)";
+            lblStatus.Text = "Analyzing"; lblDuplicateApps.Text = "(analyzing)";
             await Task.Run(() => aces.duplicates(vcdb, pcdb, progressDuplicates));
             lblDuplicateApps.Text = aces.duplicateErrors.Count.ToString();
-            pictureBoxDuplicates.Visible = true; if (aces.duplicateErrors.Count > 0) { pictureBoxDuplicates.BackColor = Color.Yellow; } else { pictureBoxDuplicates.BackColor = Color.Green; }
+            pictureBoxDuplicates.Visible = true; if (aces.duplicateErrors.Count > 0) { dgDuplicates.Visible = true; pictureBoxDuplicates.BackColor = Color.Yellow; } else { pictureBoxDuplicates.BackColor = Color.Green; }
             foreach (string error in aces.duplicateErrors) { dgDuplicates.Rows.Add(error.Split('\t')); }
 
-            lblStatus.Text = "CNC overlaps"; lblCNCoverlapsCount.Text = "(analyzing)";
+            lblCNCoverlapsCount.Text = "(analyzing)";
             await Task.Run(() => aces.CNCoverlaps(vcdb, pcdb, progressCNCoverlaps));
             lblCNCoverlapsCount.Text = aces.CNCoverlapsErrors.Count.ToString();
-            pictureBoxCNCoverlaps.Visible = true; if (aces.CNCoverlapsErrors.Count > 0) { pictureBoxCNCoverlaps.BackColor = Color.Red; } else { pictureBoxCNCoverlaps.BackColor = Color.Green; }
+            pictureBoxCNCoverlaps.Visible = true; if (aces.CNCoverlapsErrors.Count > 0) { dgCNCoverlaps.Visible = true; pictureBoxCNCoverlaps.BackColor = Color.Red; } else { pictureBoxCNCoverlaps.BackColor = Color.Green; }
             foreach (string error in aces.CNCoverlapsErrors) { dgCNCoverlaps.Rows.Add(error.Split('\t')); }
 
-            lblStatus.Text = "Overlaps"; lblOverlapsCount.Text = "(analyzing)";
+            lblOverlapsCount.Text = "(analyzing)";
             await Task.Run(() => aces.overlaps(vcdb, pcdb, progressOverlaps));
             lblOverlapsCount.Text = aces.overlapsErrors.Count.ToString();
-            pictureBoxOverlaps.Visible = true; if (aces.overlapsErrors.Count > 0) {pictureBoxOverlaps.BackColor = Color.Red;}else { pictureBoxOverlaps.BackColor = Color.Green; }
+            pictureBoxOverlaps.Visible = true; if (aces.overlapsErrors.Count > 0) { dgOverlaps.Visible = true; pictureBoxOverlaps.BackColor = Color.Red;}else { pictureBoxOverlaps.BackColor = Color.Green; }
             foreach (string error in aces.overlapsErrors)
             {
                 dgOverlaps.Rows.Add(error.Split('\t'));
             }
 
 
-            lblStatus.Text = "Base vehicles"; lblInvalidBasevehilcesCount.Text = "(analyzing)";
+            lblInvalidBasevehilcesCount.Text = "(analyzing)";
             await Task.Run(() => aces.invalidBasevids(vcdb, pcdb, progressInvalidBasevehicles));
             lblInvalidBasevehilcesCount.Text = aces.basevehicleidsErrors.Count.ToString();
-            pictureBoxInvalidBasevehicles.Visible = true; if (aces.basevehicleidsErrors.Count > 0) { pictureBoxInvalidBasevehicles.BackColor = Color.Red; } else { pictureBoxInvalidBasevehicles.BackColor = Color.Green; }
+            pictureBoxInvalidBasevehicles.Visible = true; if (aces.basevehicleidsErrors.Count > 0) { dgBasevids.Visible = true; pictureBoxInvalidBasevehicles.BackColor = Color.Red; } else { pictureBoxInvalidBasevehicles.BackColor = Color.Green; }
             foreach (string error in aces.basevehicleidsErrors) { dgBasevids.Rows.Add(error.Split('\t')); }
 
-            lblStatus.Text = "VCdb codes"; lblInvalidVCdbCodesCount.Text = "(analyzing)";
+            lblInvalidVCdbCodesCount.Text = "(analyzing)";
             await Task.Run(() => aces.invalidAttributes(vcdb, pcdb, progressInvalidVCdbCodes));
             lblInvalidVCdbCodesCount.Text = aces.vcdbCodesErrors.Count.ToString();
-            pictureBoxInvalidVCdbCodes.Visible = true; if (aces.vcdbCodesErrors.Count > 0) { pictureBoxInvalidVCdbCodes.BackColor = Color.Red; } else { pictureBoxInvalidVCdbCodes.BackColor = Color.Green; }
+            pictureBoxInvalidVCdbCodes.Visible = true; if (aces.vcdbCodesErrors.Count > 0) { dgVCdbCodes.Visible = true; pictureBoxInvalidVCdbCodes.BackColor = Color.Red; } else { pictureBoxInvalidVCdbCodes.BackColor = Color.Green; }
             foreach (string error in aces.vcdbCodesErrors) { dgVCdbCodes.Rows.Add(error.Split('\t')); }
 
-            lblStatus.Text = "Parttype/Position"; lblInvalidParttypePositionCount.Text = "(analyzing)";
+            lblInvalidParttypePositionCount.Text = "(analyzing)";
             await Task.Run(() => aces.invalidParttypePositions(vcdb, pcdb, progressParttypePosition));
             lblInvalidParttypePositionCount.Text = aces.parttypePositionErrors.Count.ToString();
-            pictureBoxParttypePosition.Visible = true; if (aces.parttypePositionErrors.Count > 0) { pictureBoxParttypePosition.BackColor = Color.Red; } else { pictureBoxParttypePosition.BackColor = Color.Green; }
+            pictureBoxParttypePosition.Visible = true; if (aces.parttypePositionErrors.Count > 0) { dgParttypePosition.Visible = true; pictureBoxParttypePosition.BackColor = Color.Red; } else { pictureBoxParttypePosition.BackColor = Color.Green; }
             foreach (string error in aces.parttypePositionErrors) { dgParttypePosition.Rows.Add(error.Split('\t')); }
             
 
-            lblStatus.Text = "VCdb configs"; lblInvalidConfigurationsCount.Text = "(analyzing)";
+            lblInvalidConfigurationsCount.Text = "(analyzing)";
             await Task.Run(() => aces.invalidConfigs(vcdb, pcdb, progressInvalidConfigurations));
             lblInvalidConfigurationsCount.Text = aces.vcdbConfigurationsErrors.Count.ToString();
-            pictureBoxInvalidConfigurations.Visible = true; if (aces.vcdbConfigurationsErrors.Count > 0) { pictureBoxInvalidConfigurations.BackColor = Color.Red; } else { pictureBoxInvalidConfigurations.BackColor = Color.Green; }
+            pictureBoxInvalidConfigurations.Visible = true; if (aces.vcdbConfigurationsErrors.Count > 0) { dgVCdbConfigs.Visible = true; pictureBoxInvalidConfigurations.BackColor = Color.Red; } else { pictureBoxInvalidConfigurations.BackColor = Color.Green; }
             foreach (string error in aces.vcdbConfigurationsErrors) {dgVCdbConfigs.Rows.Add(error.Split('\t')); }
 
 
             aces.analysisComplete = true;
+            btnSelectACESfile.Enabled = true;
+            btnSelectVCdbFile.Enabled = true;
+            btnSelectPCdbFile.Enabled = true;
+
 
             if (lblAssessmentFilePath.Text != "") { btnAssessmentSave.Enabled = true; }
 
@@ -606,13 +651,10 @@ namespace ACESinspector
                 lblStatsVCdbVersion.Text = aces.VcdbVersionDate + "  (validated against VCdb:" + vcdb.version + ")";
             }
 
-
-            progressBar1.Value = 0; lblProgressPercent.Text = ""; 
+            lblProgressPercent.Text = ""; 
 
             lblStatsErrorsCount.Text = aces.analysisErrors.ToString();
             lblStatsWarningsCount.Text = aces.analysisWarnings.ToString();
-            btnAnalyze.Enabled = true;
-
         }
 
         private void groupBoxFilters_Enter(object sender, EventArgs e)

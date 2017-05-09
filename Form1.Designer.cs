@@ -554,6 +554,7 @@
             this.lblStatsErrorsCount.Size = new System.Drawing.Size(60, 20);
             this.lblStatsErrorsCount.TabIndex = 17;
             this.lblStatsErrorsCount.Text = "label11";
+            this.lblStatsErrorsCount.Visible = false;
             // 
             // lblStatsWarningsCount
             // 
@@ -564,6 +565,7 @@
             this.lblStatsWarningsCount.Size = new System.Drawing.Size(60, 20);
             this.lblStatsWarningsCount.TabIndex = 16;
             this.lblStatsWarningsCount.Text = "label11";
+            this.lblStatsWarningsCount.Visible = false;
             // 
             // lblStatsPartsCount
             // 
@@ -644,6 +646,7 @@
             this.label10.Size = new System.Drawing.Size(91, 20);
             this.label10.TabIndex = 8;
             this.label10.Text = "Total Errors";
+            this.label10.Visible = false;
             // 
             // label9
             // 
@@ -654,6 +657,7 @@
             this.label9.Size = new System.Drawing.Size(115, 20);
             this.label9.TabIndex = 7;
             this.label9.Text = "Total Warnings";
+            this.label9.Visible = false;
             // 
             // label8
             // 
