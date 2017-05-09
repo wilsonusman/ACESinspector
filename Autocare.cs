@@ -36,8 +36,10 @@ namespace ACESinspector
         public string niceAttributesString(VCdb vcdb, bool includeNotes)
         {// returns human-readable (Limited; V6 2.3L;) rendition of VCdb-coded attributes in this app
             string returnString = "";
-            foreach (VCdbAttribute myAttribute in VCdbAttributes) { returnString += vcdb.niceAttribute(myAttribute)+";";}
-            if (includeNotes) { returnString += notes; }
+            foreach (VCdbAttribute myAttribute in VCdbAttributes) { returnString += " " + vcdb.niceAttribute(myAttribute)+";";}
+            if (includeNotes) { returnString += " " + notes; }
+            returnString=returnString.Trim();
+            if (returnString != "" && returnString.Substring(returnString.Length - 1,1) == ";") { returnString = returnString.Substring(0, returnString.Length - 1); }
             return returnString;
         }
 
@@ -46,6 +48,8 @@ namespace ACESinspector
             string returnString = "";
             foreach (VCdbAttribute myAttribute in VCdbAttributes) { returnString += myAttribute.name + ":" + myAttribute.value.ToString() + ";"; }
             if (includeNotes) { returnString += notes; }
+            returnString.Trim();
+            if (returnString !="" && returnString.Substring(returnString.Length - 1, 1) == ";") { returnString = returnString.Substring(0, returnString.Length - 1); }
             return returnString;
         }
 
@@ -176,40 +180,81 @@ namespace ACESinspector
     }
 
 
-    public class buyersguideApplication //: IComparable<buyersguideApplication>
+    public class buyersguideApplication : IComparable<buyersguideApplication>
     {
         public string part;
         public string MakeName;
         public string ModelName;
         public int startYear;
         public int endYear;
-        /*
+                
         public int CompareTo(buyersguideApplication other)
-        {// this is the secret sauce. detecting overlaps, CNC's and duplicates is done by ordering all apps in such a ways as to do a row-to-row comparison of apps.
-            // this function is use by Array.Sort() after all apps have been imported from the XML into memory
+        {// this function is use by Array.Sort() after all apps have been imported from the XML into memory
             int strCmpResults = 0;
 
             strCmpResults = string.Compare(this.part, other.part);
             if(strCmpResults > 0)
-            {//A part > B part
+            {//partA > partB
                 return (+1);
             }
             else
-            {//A part <= B part
+            {// partA <= partB
                 if (strCmpResults == 0)
-                {//A part == B part
-                    return 0;
+                {//partA == partB
+
+                    strCmpResults = string.Compare(this.MakeName, other.MakeName);
+                    if (strCmpResults > 0)
+                    {//makeA > makeB
+                        return (+1);
+                    }
+                    else
+                    {//makeA <= makeB
+                        if (strCmpResults == 0)
+                        {//makeA == makeB
+                            strCmpResults = string.Compare(this.ModelName, other.ModelName);
+                            if (strCmpResults > 0)
+                            {//modelA > modelB
+                                return (+1);
+                            }
+                            else
+                            {//modelA <= modelB
+                                if (strCmpResults == 0)
+                                {
+                                    if (this.startYear > other.startYear)
+                                    {
+                                        return (+1);
+                                    }
+                                    else
+                                    {// startyearA <= startyearB
+                                        if(this.startYear == other.startYear)
+                                        {
+                                            return 0;
+                                        }
+                                        else
+                                        {// startyearA < startyearB
+                                            return (-1);
+                                        }
+                                    }
+                                }
+                                else
+                                {//modelA < modelB
+                                    return (-1);
+                                }
+                            }
+                        }
+                        else
+                        {//makeA < makeB
+                            return (-1);
+                        }
+                    }
                 }
                 else
-                {
-
-
+                {// partA < partB
+                    return (-1);
                 }
-
             }
-
         }
-        */
+        
 
 
     }
@@ -273,6 +318,7 @@ namespace ACESinspector
         public List<string> vcdbCodesErrors = new List<string>();
         public List<string> vcdbConfigurationsErrors = new List<string>();
         public List<string> parttypePositionErrors = new List<string>();
+        public List<string> disperateAttributeErrors = new List<string>();
         public List<String> xmlValidationErrors = new List<string>();
 
 
@@ -350,13 +396,12 @@ namespace ACESinspector
             // hashtable for temp storage of [basevid_parttype_position_qualifiers_mfrlable]="appId1,appId2,AppId3..."
             // any element that has more than one appId in the second dimension, is a vehicle with duplicates.
             Dictionary<String, String> duplicatesHashtable = new Dictionary<string, string>();
-            int i; int percentProgress = 0; string hashkey = "";
-            int tempBaseVehicleid;
+            int i; int percentProgress = 0; string hashkey = ""; int appidTemp = 0;
 
             for (i = 0; i <= appsCount - 1; i++)
             {
                 //build a hashkey that defines a vehicle. use Tabs characters to delimit the hashstring so it can be parsed apart later for presenation
-                hashkey = apps[i].basevehilceid.ToString() + "\t" + apps[i].parttypeid.ToString() + "\t" + apps[i].positionid + "\t" + apps[i].niceAttributesString(vcdb,true) + "\t" + apps[i].mfrlabel + "\t" + apps[i].part;
+                hashkey = apps[i].basevehilceid.ToString() + "\t" + apps[i].parttypeid.ToString() + "\t" + apps[i].positionid.ToString() + "\t" + apps[i].namevalpairString(true) + "\t" + apps[i].mfrlabel + "\t" + apps[i].part;
                 if (duplicatesHashtable.ContainsKey(hashkey))
                 {
                     duplicatesHashtable[hashkey] += "," + apps[i].id.ToString();
@@ -377,9 +422,9 @@ namespace ACESinspector
             {
                 if (entry.Value.Contains(","))
                 {
-                    string[] fields = entry.Key.Split('\t');
-                    tempBaseVehicleid = Convert.ToInt32(fields[0]);
-                    duplicateErrors.Add(tempBaseVehicleid.ToString() + "\t" + vcdb.niceMakeOfBasevid(tempBaseVehicleid) + "\t" + vcdb.niceModelOfBasevid(tempBaseVehicleid) + "\t" + vcdb.niceYearOfBasevid(tempBaseVehicleid) + "\t" + pcdb.niceParttype(Convert.ToInt32(fields[1])) + "\t" + pcdb.nicePosition(Convert.ToInt32(fields[2])) + "\t" + fields[3] + "\t" + entry.Value);
+                    string[] appidStringsArray = entry.Value.Split(',');
+                    appidTemp = Convert.ToInt32(appidStringsArray[0]);
+                    duplicateErrors.Add(apps[appidTemp].basevehilceid.ToString() + "\t" + vcdb.niceMakeOfBasevid(apps[appidTemp].basevehilceid) + "\t" + vcdb.niceModelOfBasevid(apps[appidTemp].basevehilceid) + "\t" + vcdb.niceYearOfBasevid(apps[appidTemp].basevehilceid) + "\t" + pcdb.niceParttype(apps[appidTemp].parttypeid) + "\t" + pcdb.nicePosition(apps[appidTemp].positionid) + "\t" + apps[appidTemp].niceAttributesString(vcdb,true) + "\t" + entry.Value);
                     analysisWarnings++;
                 }
             }
@@ -414,32 +459,33 @@ namespace ACESinspector
         */
 
 
-
-
-
-
         public List<string> overlaps(VCdb vcdb, PCdb pcdb, IProgress<int> progress)
         {
             // hashtable for temp storage of [basevid_parttype_position_qualifiers_mfrlable]="partA,partB,partC..."
             // any element that has more than one part in the second dimension, is a vehicle with overlaps.
-            Dictionary<String, String> overlapsHashtable = new Dictionary<string, string>();
-            int i; int percentProgress = 0; string hashkey = "";
-            int tempBaseVehicleid;
+            Dictionary<string, List<string>> overlapsHashtable = new Dictionary<string, List<String>>();
+            List<String> partsListtemp;
+            int basevidTemp = 0;
+            string partsString = "";
+            VCdbAttribute myVCdbAttribute = new VCdbAttribute(); string niceAttributesString="";
+
+            int i; int percentProgress = 0; string hashkey = ""; int appidTemp = 0;
 
             for (i = 0; i <= appsCount - 1; i++)
             {
-                //build a hashkey that defines a vehicle. us Tabs characters to delimit the hashstring so it can be parsed apart later for presenation
-                hashkey = apps[i].basevehilceid.ToString() + "\t" + apps[i].parttypeid.ToString()+ "\t" + apps[i].positionid + "\t" + apps[i].namevalpairString(true) + "\t" + apps[i].mfrlabel;
+                //build a hashkey that defines a vehicle. use Tabs characters to delimit the hashstring so it can be parsed apart later for presenation
+                hashkey = apps[i].basevehilceid.ToString() + "\t" + apps[i].parttypeid.ToString()+ "\t" + apps[i].positionid + "\t" + apps[i].namevalpairString(false) + "\t" + apps[i].notes + "\t" + apps[i].mfrlabel;
                 if (overlapsHashtable.ContainsKey(hashkey))
                 {
                     if(!overlapsHashtable[hashkey].Contains(apps[i].part))
                     {
-                        overlapsHashtable[hashkey] += "," + apps[i].part;
+                        overlapsHashtable[hashkey].Add(apps[i].part);
                     }
                 }
                 else
                 {
-                    overlapsHashtable.Add(hashkey, apps[i].part);
+                    overlapsHashtable.Add(hashkey, partsListtemp = new List<string>());
+                    overlapsHashtable[hashkey].Add(apps[i].part);
                 }
 
                 if (progress != null)
@@ -449,14 +495,26 @@ namespace ACESinspector
                 }
             }
 
-            foreach (KeyValuePair<string, string> entry in overlapsHashtable)
+            foreach (KeyValuePair<string, List<string>> entry in overlapsHashtable)
             {
-                if(entry.Value.Contains(","))
+                if(entry.Value.Count>1)
                 {
                     string[] fields = entry.Key.Split('\t');
-                    tempBaseVehicleid = Convert.ToInt32(fields[0]);
-                    overlapsErrors.Add(tempBaseVehicleid.ToString() + "\t" + vcdb.niceMakeOfBasevid(tempBaseVehicleid) + "\t" + vcdb.niceModelOfBasevid(tempBaseVehicleid) + "\t" + vcdb.niceYearOfBasevid(tempBaseVehicleid) + "\t" + pcdb.niceParttype(Convert.ToInt32(fields[1])) + "\t" + pcdb.nicePosition(Convert.ToInt32(fields[2])) + "\t" + fields[3] + "\t" + entry.Value);
-                    analysisWarnings++;
+                    basevidTemp=Convert.ToInt32(fields[0]);
+                    partsString = String.Join(", ", entry.Value);
+                    niceAttributesString = "";
+
+                    if (fields[3].Trim() != "")
+                    {
+                        string[] attributes = fields[3].Split(';');
+                        foreach (string attribute in attributes) { string[] attributePieces = attribute.Split(':'); myVCdbAttribute.name = attributePieces[0]; myVCdbAttribute.value = Convert.ToInt32(attributePieces[1]); niceAttributesString += vcdb.niceAttribute(myVCdbAttribute) + "; "; }
+                    }
+
+                    if (fields[4].Trim() != "") { niceAttributesString += " " + fields[4].Trim(); }
+                    niceAttributesString = niceAttributesString.Trim();
+                    if (niceAttributesString != "" && niceAttributesString.Substring(niceAttributesString.Length - 1, 1) == ";") { niceAttributesString = niceAttributesString.Substring(0, niceAttributesString.Length - 1); }
+                    overlapsErrors.Add(basevidTemp.ToString() + "\t" + vcdb.niceMakeOfBasevid(basevidTemp) + "\t" + vcdb.niceModelOfBasevid(basevidTemp) + "\t" + vcdb.niceYearOfBasevid(basevidTemp) + "\t" + pcdb.niceParttype(Convert.ToInt32(fields[1])) + "\t" + pcdb.nicePosition(Convert.ToInt32(fields[2])) + "\t" + niceAttributesString + "\t" + partsString);
+                    analysisErrors++;
                 }
             }
             return overlapsErrors;
@@ -628,11 +686,104 @@ namespace ACESinspector
                 }
             }
             return parttypePositionErrors;
-       }
+        }
+
+
+        public List<string> disperateAttributes(VCdb vcdb, PCdb pcdb, IProgress<int> progress)
+        {
+            // find vehicles (basevid/parttype/position/mfrlabel) that contain apples-to-oranges qualifier pairings
+            // for example 2015 Cherokee takes two different brake pads: PadsA fit "Rear Disc", PadsB fit "V6 3.2L Engine"   
+            // counterman: "does your Cherokee have the V6 engine or does it have Rear Disc brakes?" WTF
+            // The algorithm here is to verify that any attributes (just the names, not the id values) in use are in use across the whole vehilce (within a distinct basevid/parttype/position/mfrlabel)
+            // this concept was suggested by Courtney Pedler of Autology Data
+
+
+            int i; int percentProgress = 0;
+            BaseVehicle basevidTemp = new BaseVehicle();
+            string vehiclesKey = "";
+            bool found = false;
+            List<VCdbAttribute> VCdbAttributesTemp;
+            List<string> vcdbAttributeNamesFullVehicle = new List<string>();
+            List<string> vcdbAttributeNamesThisApp = new List<string>();
+            Dictionary<string, List<int>> vehiclesAppidLists = new Dictionary<string, List<int>>();
+            List<int> appsListtemp;
+
+            for (i = 0; i <= appsCount - 1; i++)
+            {
+                vehiclesKey = apps[i].basevehilceid.ToString() + "_" + apps[i].parttypeid.ToString() + "_" + apps[i].positionid.ToString() + "_" + apps[i].mfrlabel;
+                if(!vehiclesAppidLists.ContainsKey(vehiclesKey))
+                {// establish a new basevid/parttype/position/mfrlabel dictionary entry with this app's element number in the list
+                    vehiclesAppidLists.Add(vehiclesKey, appsListtemp = new List<int>());
+                }
+                vehiclesAppidLists[vehiclesKey].Add(i);// add the "apps" array element index to the list of apps that have this vehicle (basevid/parttype/position/mfrlabel)
+            }
+
+            for (i = 0; i <= vehiclesAppidLists.Count - 1; i++)
+            {
+                if (vehiclesAppidLists.ElementAt(i).Value.Count > 1)
+                {   // this vehicle (basevid/parttype/position/mfrlabel) has multiple applied parts
+                    // see if any of the apps contain vcdb-coded attributes
+
+                    vcdbAttributeNamesFullVehicle.Clear();
+                    foreach (int appid in vehiclesAppidLists.ElementAt(i).Value)
+                    {
+                        if (apps[appid].VCdbAttributes.Count > 0)
+                        {
+                            foreach (VCdbAttribute attributeTemp in apps[appid].VCdbAttributes)
+                            {
+                                if (!vcdbAttributeNamesFullVehicle.Contains(attributeTemp.name))
+                                {
+                                    vcdbAttributeNamesFullVehicle.Add(attributeTemp.name);
+                                }
+                            }
+                        }
+                    }
+
+                    if (vcdbAttributeNamesFullVehicle.Count > 0)
+                    {
+                        // vcdbAttributeNamesFullVehicle now contains a distinct list of attributes used against this vehicle (basevid/parttype/position/mfrlabel)
+                        // re-check all apps in list to verify that all have every distinct attribute in use (regardless of the attribute values)
+                        foreach (int appid in vehiclesAppidLists.ElementAt(i).Value)
+                        {
+                            vcdbAttributeNamesThisApp.Clear();
+                            foreach (VCdbAttribute attributeTemp in apps[appid].VCdbAttributes)
+                            {
+                                vcdbAttributeNamesThisApp.Add(attributeTemp.name);
+                            }
+
+                            foreach(string vcdbAttributeName in vcdbAttributeNamesFullVehicle)
+                            {
+                                if(!vcdbAttributeNamesThisApp.Contains(vcdbAttributeName))
+                                {
+                                    disperateAttributeErrors.Add(vcdb.niceMakeOfBasevid(apps[appid].basevehilceid)+"\t"+ vcdb.niceModelOfBasevid(apps[appid].basevehilceid)+"\t"+ vcdb.niceYearOfBasevid(apps[appid].basevehilceid)+"\t"+pcdb.niceParttype(apps[appid].parttypeid)+"\t"+pcdb.nicePosition(apps[appid].positionid)+"\t"+apps[appid].part+"\t"+apps[appid].niceAttributesString(vcdb,true));
+                                }
+                            }
 
 
 
-        public int import(string _filePath, string _schemaString, IProgress<int> progress)
+
+
+                        }
+
+
+
+                    }
+
+
+
+
+                }
+            }
+
+
+
+
+                return disperateAttributeErrors;
+
+        }
+
+
+                public int import(string _filePath, string _schemaString, IProgress<int> progress)
         {
             // if schema string is "", select XSD according to what ACES version is claimed by the XML
 
@@ -810,7 +961,7 @@ namespace ACESinspector
                 using (StreamWriter sw = new StreamWriter(_filePath))
                 {
                     sw.Write("<?xml version=\"1.0\"?><?mso-application progid=\"Excel.Sheet\"?><Workbook xmlns=\"urn:schemas-microsoft-com:office:spreadsheet\" xmlns:o=\"urn:schemas-microsoft-com:office:office\" xmlns:x=\"urn:schemas-microsoft-com:office:excel\" xmlns:ss=\"urn:schemas-microsoft-com:office:spreadsheet\" xmlns:html=\"http://www.w3.org/TR/REC-html40\"><DocumentProperties xmlns=\"urn:schemas-microsoft-com:office:office\"><Author>ACESinspector</Author><LastAuthor>ACESinspector</LastAuthor><Created>2017-02-20T01:10:23Z</Created><LastSaved>2017-02-20T02:49:36Z</LastSaved><Version>14.00</Version></DocumentProperties><OfficeDocumentSettings xmlns=\"urn:schemas-microsoft-com:office:office\"><AllowPNG/></OfficeDocumentSettings><ExcelWorkbook xmlns=\"urn:schemas-microsoft-com:office:excel\"><WindowHeight>7500</WindowHeight><WindowWidth>15315</WindowWidth><WindowTopX>120</WindowTopX><WindowTopY>150</WindowTopY><TabRatio>785</TabRatio><ProtectStructure>False</ProtectStructure><ProtectWindows>False</ProtectWindows></ExcelWorkbook><Styles><Style ss:ID=\"Default\" ss:Name=\"Normal\"><Alignment ss:Vertical=\"Bottom\"/><Borders/><Font ss:FontName=\"Calibri\" x:Family=\"Swiss\" ss:Size=\"11\" ss:Color=\"#000000\"/><Interior/><NumberFormat/><Protection/></Style><Style ss:ID=\"s62\"><NumberFormat ss:Format=\"Short Date\"/></Style><Style ss:ID=\"s64\" ss:Name=\"Hyperlink\"><Font ss:FontName=\"Calibri\" x:Family=\"Swiss\" ss:Size=\"11\" ss:Color=\"#0000FF\" ss:Underline=\"Single\"/></Style><Style ss:ID=\"s65\"><Font ss:FontName=\"Calibri\" x:Family=\"Swiss\" ss:Size=\"11\" ss:Color=\"#000000\" ss:Bold=\"1\"/><Interior ss:Color=\"#D9D9D9\" ss:Pattern=\"Solid\"/></Style></Styles><Worksheet ss:Name=\"Stats\"><Table ss:ExpandedColumnCount=\"2\" x:FullColumns=\"1\" x:FullRows=\"1\" ss:DefaultRowHeight=\"15\"><Column ss:Width=\"116.25\"/><Column ss:Width=\"225\"/>");
-                    sw.Write("<Row><Cell><Data ss:Type=\"String\">Input Filename</Data></Cell><Cell><Data ss:Type=\"String\">" + filePath + "</Data></Cell></Row>");
+                    sw.Write("<Row><Cell><Data ss:Type=\"String\">Input Filename</Data></Cell><Cell><Data ss:Type=\"String\">" + Path.GetFileName(filePath) + "</Data></Cell></Row>");
                     sw.Write("<Row><Cell><Data ss:Type=\"String\">Title</Data></Cell><Cell><Data ss:Type=\"String\">" + DocumentTitle + "</Data></Cell></Row>");
                     sw.Write("<Row><Cell><Data ss:Type=\"String\">VcdbVersionDate</Data></Cell><Cell ss:StyleID=\"s62\"><Data ss:Type=\"String\">" + version + "</Data></Cell></Row>");
                     sw.Write("<Row><Cell><Data ss:Type=\"String\">Application count</Data></Cell><Cell><Data ss:Type=\"Number\">"+appsCount.ToString()+"</Data></Cell></Row><Row>");
@@ -946,9 +1097,9 @@ namespace ACESinspector
 
 
 
-        public string exportBuyersGuide(string _filePath, VCdb vcdb)
+        public string exportBuyersGuide(string _filePath, VCdb vcdb, IProgress<int> progress)
         {
-            
+            int i; bool deletedElement; string lineString = ""; int percentProgress = 0;
             List<buyersguideApplication> bg = new List<buyersguideApplication>();
             foreach (App app in apps)
             {
@@ -960,8 +1111,76 @@ namespace ACESinspector
                 bgAppTemp.endYear = bgAppTemp.startYear;
                 bg.Add(bgAppTemp);
             }
+            bg.Sort();
 
-            return "";
+
+            deletedElement = true;
+            while (deletedElement)
+            {
+                deletedElement = false;
+                for (i = 0; i <= bg.Count() - 2; i++)
+                {
+                    if (bg[i].part == bg[i + 1].part &&  bg[i].MakeName == bg[i + 1].MakeName && bg[i].ModelName == bg[i + 1].ModelName &&   (bg[i + 1].startYear - bg[i].endYear)<=1)
+                    {
+                        bg[i].endYear = bg[i + 1].startYear;
+                        deletedElement = true;
+                        break;
+                    }
+                }
+                if (deletedElement)
+                {
+                    bg.RemoveAt(i + 1);
+                    if (progress != null)
+                    {// only report progress on whole percentage steps (100 total reports). reporting on every iteration is too process intensive
+                        percentProgress = Convert.ToInt32(((double)i / (double)bg.Count()) * 100);
+                        if ((double)percentProgress % (double)1 == 0) { progress.Report(percentProgress); }
+                    }
+
+                }
+            }
+
+
+            try
+            {
+                using (StreamWriter sw = new StreamWriter(_filePath))
+                {
+                    lineString = bg[0].part + "\t";
+                    for (i=0; i<=bg.Count()-1; i++)
+                    {
+                        if (i == (bg.Count() - 1) || bg[i].part != bg[i + 1].part)
+                        {// new part (or final element)
+
+                            if (bg[i].startYear == bg[i].endYear)
+                            {
+                                lineString += bg[i].MakeName + " " + bg[i].ModelName + " (" + bg[i].startYear.ToString() + ")";
+                            }
+                            else
+                            {
+                                lineString += bg[i].MakeName + " " + bg[i].ModelName + " (" + bg[i].startYear.ToString() + "-" + bg[i].endYear.ToString() + ")";
+                            }
+                            sw.WriteLine(lineString);
+                            if (i < (bg.Count() - 1)) { lineString = bg[i + 1].part + "\t"; }
+                        }
+                        else
+                        {// same part as last element
+
+                            if (bg[i].startYear == bg[i].endYear)
+                            {
+                                lineString += bg[i].MakeName + " " + bg[i].ModelName + " (" + bg[i].startYear.ToString() + "), ";
+                            }
+                            else
+                            {
+                                lineString += bg[i].MakeName + " " + bg[i].ModelName + " (" + bg[i].startYear.ToString() + "-" + bg[i].endYear.ToString() + "), ";
+                            }
+                        }
+                    }
+                }
+                return "Buyer's guide exported to " + _filePath;
+            }
+            catch (Exception ex)
+            {
+                return ex.ToString();
+            }
         }
 
 
@@ -1107,7 +1326,8 @@ namespace ACESinspector
                 case "EngineDesignation": gotValue = enginedesignation.TryGetValue(attribute.value, out niceValue); break;
                 case "EngineVIN": gotValue = enginevin.TryGetValue(attribute.value, out niceValue); break;
                 case "EngineVersion": gotValue = engineversion.TryGetValue(attribute.value, out niceValue); break;
-                case "EngineMfr": gotValue = enginebase.TryGetValue(attribute.value, out niceValue); break;
+                //case "EngineMfr": gotValue = enginebase.TryGetValue(attribute.value, out niceValue); break;   // changed in 1.0.1.12 - Edgenet's devteam spotted this error
+                case "EngineMfr": gotValue =  mfr.TryGetValue(attribute.value, out niceValue); break;
                 case "FuelDeliveryType": gotValue = fueldeliverytype.TryGetValue(attribute.value, out niceValue); break;
                 case "FuelDeliverySubType": gotValue = fueldeliverysubtype.TryGetValue(attribute.value, out niceValue); break;
                 case "FuelSystemControlType": gotValue = fuelsystemcontroltype.TryGetValue(attribute.value, out niceValue); break;
@@ -1138,29 +1358,29 @@ namespace ACESinspector
                 switch (attribute.name)
                 {
                     case "MfrBodyCode": returnValue = "Body code " + niceValue; break;
-                    case "BodyNumDoors": returnValue = niceValue + " Door; "; break;
-                    case "EngineVIN": returnValue = "VIN:" + niceValue + "; "; break;
-                    case "TransmissionMfrCode": returnValue = niceValue + " Transmission; "; break;
-                    case "TransmissionControlType": returnValue = niceValue + " Transmission; "; break;
-                    case "TransmissionNumSpeeds": returnValue = niceValue + " Speed Transmission; "; break;
-                    case "TransmissionMfr": returnValue = niceValue + " Transmission; "; break;
-                    case "BedLength": returnValue = niceValue + " Inch Bed; "; break;
-                    case "BedType": returnValue = niceValue + " Bed; "; break;
-                    case "WheelBase": returnValue = niceValue + " Inch Wheelbase; "; break;
-                    case "BrakeSystem": returnValue = niceValue + " Brakes; "; break;
-                    case "FrontBrakeType": returnValue = "Front " + niceValue + "; "; break;
-                    case "RearBrakeType": returnValue = "Rear " + niceValue + "; "; break;
-                    case "FrontSpringType": returnValue = "Front " + niceValue + " Suspenssion; "; break;
-                    case "RearSpringType": returnValue = "Rear " + niceValue + " Suspenssion; "; break;
-                    case "SteeringSystem": returnValue = niceValue + " Steering; "; break;
-                    case "SteeringType": returnValue = niceValue + " Steering; "; break;
-                    case "ValvesPerEngine": returnValue = niceValue + " Valve; "; break;
+                    case "BodyNumDoors": returnValue = niceValue + " Door"; break;
+                    case "EngineVIN": returnValue = "VIN:" + niceValue; break;
+                    case "TransmissionMfrCode": returnValue = niceValue + " Transmission"; break;
+                    case "TransmissionControlType": returnValue = niceValue + " Transmission"; break;
+                    case "TransmissionNumSpeeds": returnValue = niceValue + " Speed Transmission"; break;
+                    case "TransmissionMfr": returnValue = niceValue + " Transmission"; break;
+                    case "BedLength": returnValue = niceValue + " Inch Bed"; break;
+                    case "BedType": returnValue = niceValue + " Bed"; break;
+                    case "WheelBase": returnValue = niceValue + " Inch Wheelbase"; break;
+                    case "BrakeSystem": returnValue = niceValue + " Brakes"; break;
+                    case "FrontBrakeType": returnValue = "Front " + niceValue; break;
+                    case "RearBrakeType": returnValue = "Rear " + niceValue; break;
+                    case "FrontSpringType": returnValue = "Front " + niceValue + " Suspenssion"; break;
+                    case "RearSpringType": returnValue = "Rear " + niceValue + " Suspenssion"; break;
+                    case "SteeringSystem": returnValue = niceValue + " Steering"; break;
+                    case "SteeringType": returnValue = niceValue + " Steering"; break;
+                    case "ValvesPerEngine": returnValue = niceValue + " Valve"; break;
                     default: returnValue = niceValue; break;
                 }
             }
             else
             {
-                returnValue = "invalid (" + attribute.name + "=" + attribute.value + "); ";
+                returnValue = "invalid (" + attribute.name + "=" + attribute.value + ")";
             }
             return returnValue;
         }
@@ -1186,7 +1406,8 @@ namespace ACESinspector
                 case "EngineDesignation": return enginedesignation.TryGetValue(attribute.value, out niceValue);
                 case "EngineVIN": return enginevin.TryGetValue(attribute.value, out niceValue);
                 case "EngineVersion": return engineversion.TryGetValue(attribute.value, out niceValue);
-                case "EngineMfr": return enginebase.TryGetValue(attribute.value, out niceValue);
+                //case "EngineMfr": return enginebase.TryGetValue(attribute.value, out niceValue); // changed in 1.0.1.12 - Edgenet's devteam spotted this error
+                case "EngineMfr": return mfr.TryGetValue(attribute.value, out niceValue);
                 case "FuelDeliveryType": return fueldeliverytype.TryGetValue(attribute.value, out niceValue);
                 case "FuelDeliverySubType": return fueldeliverysubtype.TryGetValue(attribute.value, out niceValue);
                 case "FuelSystemControlType": return fuelsystemcontroltype.TryGetValue(attribute.value, out niceValue);
@@ -1441,7 +1662,7 @@ namespace ACESinspector
                 reader.Close();
 
                 command.CommandText = "SELECT enginebaseid,liter,cc,cid,cylinders,blocktype from enginebase;"; reader = command.ExecuteReader();
-                while (reader.Read()) { i = Convert.ToInt32(reader.GetValue(0).ToString()); enginebase.Add(i, reader.GetValue(5).ToString() + reader.GetValue(4).ToString() + " " + reader.GetValue(1).ToString() + "L"); }
+                while (reader.Read()) { i = Convert.ToInt32(reader.GetValue(0).ToString()); enginebase.Add(i, reader.GetValue(5).ToString().Trim() + reader.GetValue(4).ToString().Trim() + " " + reader.GetValue(1).ToString().Trim() + "L"); }
                 reader.Close();
 
                 command.CommandText = "SELECT submodelid,submodelname from submodel"; reader = command.ExecuteReader();
@@ -1525,7 +1746,7 @@ namespace ACESinspector
                 reader.Close();
 
                 command.CommandText = "SELECT transmissionbase.transmissionbaseid,transmissioncontroltypename, transmissiontypename, transmissionnumspeeds from transmissionbase, transmissiontype, transmissionnumspeeds, transmissioncontroltype WHERE transmissionbase.transmissiontypeid = transmissiontype.transmissiontypeid AND transmissionbase.transmissionnumspeedsid = transmissionnumspeeds.transmissionnumspeedsid AND transmissionbase.transmissioncontroltypeid = transmissioncontroltype.transmissioncontroltypeid;"; reader = command.ExecuteReader();
-                while (reader.Read()) { i = Convert.ToInt32(reader.GetValue(0).ToString()); transmissionbase.Add(i, reader.GetValue(1).ToString() + " " + reader.GetValue(2).ToString() + " Speed " + reader.GetValue(3).ToString()); }
+                while (reader.Read()) { i = Convert.ToInt32(reader.GetValue(0).ToString()); transmissionbase.Add(i, reader.GetValue(1).ToString().Trim() + " " + reader.GetValue(2).ToString().Trim() + " Speed " + reader.GetValue(3).ToString().Trim()); }
                 reader.Close();
 
                 command.CommandText = "SELECT transmissiontypeid,transmissiontypename from transmissiontype;"; reader = command.ExecuteReader();

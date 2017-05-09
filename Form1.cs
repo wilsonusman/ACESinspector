@@ -59,10 +59,13 @@ namespace ACESinspector
             lblProgressPercent.Text = "";
             lblAssessmentFilePath.Text = "";
             lblAppExportFilePath.Text = "";
+            lblBgExportFilePath.Text = "";
             btnAssessmentSave.Enabled = false;
             btnSelectAssessmentFile.Enabled = false;
             btnAppExportSave.Enabled = false;
             btnSelectAppExportFile.Enabled = false;
+            btnSelectBgExportFile.Enabled = false;
+            btnBgExportSave.Enabled = false;
 
             btnAnalyze.Enabled = false;
             dgParts.Width = Width - 36;
@@ -90,6 +93,17 @@ namespace ACESinspector
             dgVCdbConfigs.Height = this.Height - 248;
 
 
+
+            pictureBoxCNCoverlaps.Visible = false;
+            pictureBoxDuplicates.Visible = false;
+            pictureBoxOverlaps.Visible = false;
+            pictureBoxInvalidBasevehicles.Visible = false;
+            pictureBoxInvalidVCdbCodes.Visible = false;
+            pictureBoxParttypePosition.Visible = false;
+            pictureBoxInvalidConfigurations.Visible = false;
+
+
+
             tabControl1.Width = this.Width - 20;
             tabControl1.Height = this.Height - 215;
             await Task.Run(() => loadLastVCdb(vcdb));
@@ -99,7 +113,15 @@ namespace ACESinspector
             await Task.Run(() => loadLastPCdb(vcdb));
             if (pcdb.version != "") { lblPCdbFilePath.Text = "Version: " + pcdb.version; }
             btnSelectPCdbFile.Enabled = true;
-            lblAppVersion.Left = this.Width - 55;
+            lblAppVersion.Left = this.Width - 65;
+
+
+            RegistryKey key = Registry.CurrentUser.OpenSubKey("Software", true);
+            key.CreateSubKey("ACESinspector");
+            key = key.OpenSubKey("ACESinspector", true);
+            if (key.GetValue("lastAssessmentDirectoryPath") != null) { lblAssessmentFilePath.Text = key.GetValue("lastAssessmentDirectoryPath").ToString(); }
+            if (key.GetValue("lastAppExportDirectoryPath") != null) { lblAppExportFilePath.Text = key.GetValue("lastAppExportDirectoryPath").ToString(); }
+            if (key.GetValue("lastBuyersGuideDirectoryPath") != null) { lblBgExportFilePath.Text = key.GetValue("lastBuyersGuideDirectoryPath").ToString(); }
 
         }
 
@@ -195,9 +217,14 @@ namespace ACESinspector
                         dgParts.Rows.Add(part, Convert.ToInt32(aces.partsAppsCounts[part].ToString()), partTypeNameListString, positionNameListString);
                     }
                     progressBar1.Value = 0; lblProgressPercent.Text = ""; lblStatus.Text = "Successfully imported ACES xml";
-                    btnSelectAssessmentFile.Enabled = true; btnSelectAppExportFile.Enabled = true;
+                    btnSelectAssessmentFile.Enabled = true; btnSelectAppExportFile.Enabled = true; btnSelectBgExportFile.Enabled = true;
 
-                    if (vcdb.version!="" && aces.successfulImport){btnAnalyze.Enabled = true;}
+                    if (vcdb.version!="" && aces.successfulImport)
+                    {
+                        btnAnalyze.Enabled = true;
+                        try {if(Directory.Exists(lblAppExportFilePath.Text)){ btnAppExportSave.Enabled = true;}}catch (Exception){ }// Fail silently.
+                        try {if(Directory.Exists(lblBgExportFilePath.Text)) {btnBgExportSave.Enabled = true; }} catch (Exception) { }// Fail silently.
+                    }
 
                     key.SetValue("lastACESDirectoryPath", Path.GetDirectoryName(openFileDialog.FileName));
 
@@ -406,10 +433,13 @@ namespace ACESinspector
             progressBar1.Width = Width - 150;
             lblProgressPercent.Left = Width - 60;
             //lblProgressPercent.Text = "100%";
-            lblAppVersion.Left = this.Width - 55;
+            lblAppVersion.Left = this.Width - 65;
 
 
-            
+
+
+
+
 
         }
 
@@ -417,6 +447,41 @@ namespace ACESinspector
         {
             progressBar1.Value = value;
             lblProgressPercent.Text = value.ToString() + "%";
+        }
+
+        void ReportAnalyzeProgressDuplicates(int value)
+        {
+            progressBarDuplicates.Value = value;
+        }
+
+        void ReportAnalyzeProgressCNCoverlaps(int value)
+        {
+            progressBarCNCoverlaps.Value = value;
+        }
+
+        void ReportAnalyzeProgressOverlaps(int value)
+        {
+            progressBarOverlaps.Value = value;
+        }
+
+        void ReportAnalyzeProgressInvalidBasevehicles(int value)
+        {
+            progressBarInvalidBasevehicles.Value = value;
+        }
+
+        void ReportAnalyzeProgressInvalidVCdbCodes (int value)
+        {
+            progressBarInvalidVCdbCodes.Value = value;
+        }
+
+        void ReportAnalyzeProgressParttypePosition(int value)
+        {
+            progressBarParttypePosition.Value = value;
+        }
+
+        void ReportAnalyzeProgressInvalidConfigurations(int value)
+        {
+            progressBarInvalidConfigurations.Value = value;
         }
 
 
@@ -451,48 +516,68 @@ namespace ACESinspector
 
             lblStatsErrorsCount.Text = "(analyzing)";
             lblStatsWarningsCount.Text = "(analyzing)";
+
             var progressIndicator = new Progress<int>(ReportAnalyzeProgress);
+
+            var progressDuplicates = new Progress<int>(ReportAnalyzeProgressDuplicates);
+            var progressCNCoverlaps = new Progress<int>(ReportAnalyzeProgressCNCoverlaps);
+            var progressOverlaps = new Progress<int>(ReportAnalyzeProgressOverlaps);
+            var progressInvalidBasevehicles = new Progress<int>(ReportAnalyzeProgressInvalidBasevehicles);
+            var progressInvalidVCdbCodes = new Progress<int>(ReportAnalyzeProgressInvalidVCdbCodes);
+            var progressParttypePosition = new Progress<int>(ReportAnalyzeProgressParttypePosition);
+            var progressInvalidConfigurations = new Progress<int>(ReportAnalyzeProgressInvalidConfigurations);
+
+            //await Task.Run(() => aces.disperateAttributes(vcdb, pcdb, progressIndicator));
 
 
             lblStatus.Text = "Duplicates"; lblDuplicateApps.Text = "(analyzing)";
-            await Task.Run(() => aces.duplicates(vcdb, pcdb, progressIndicator));
+            await Task.Run(() => aces.duplicates(vcdb, pcdb, progressDuplicates));
             lblDuplicateApps.Text = aces.duplicateErrors.Count.ToString();
+            pictureBoxDuplicates.Visible = true; if (aces.duplicateErrors.Count > 0) { pictureBoxDuplicates.BackColor = Color.Yellow; } else { pictureBoxDuplicates.BackColor = Color.Green; }
             foreach (string error in aces.duplicateErrors) { dgDuplicates.Rows.Add(error.Split('\t')); }
 
             lblStatus.Text = "CNC overlaps"; lblCNCoverlapsCount.Text = "(analyzing)";
-            await Task.Run(() => aces.CNCoverlaps(vcdb, pcdb, progressIndicator));
+            await Task.Run(() => aces.CNCoverlaps(vcdb, pcdb, progressCNCoverlaps));
             lblCNCoverlapsCount.Text = aces.CNCoverlapsErrors.Count.ToString();
+            pictureBoxCNCoverlaps.Visible = true; if (aces.CNCoverlapsErrors.Count > 0) { pictureBoxCNCoverlaps.BackColor = Color.Red; } else { pictureBoxCNCoverlaps.BackColor = Color.Green; }
             foreach (string error in aces.CNCoverlapsErrors) { dgCNCoverlaps.Rows.Add(error.Split('\t')); }
 
             lblStatus.Text = "Overlaps"; lblOverlapsCount.Text = "(analyzing)";
-            await Task.Run(() => aces.overlaps(vcdb, pcdb, progressIndicator));
+            await Task.Run(() => aces.overlaps(vcdb, pcdb, progressOverlaps));
             lblOverlapsCount.Text = aces.overlapsErrors.Count.ToString();
+            pictureBoxOverlaps.Visible = true; if (aces.overlapsErrors.Count > 0) {pictureBoxOverlaps.BackColor = Color.Red;}else { pictureBoxOverlaps.BackColor = Color.Green; }
             foreach (string error in aces.overlapsErrors)
             {
                 dgOverlaps.Rows.Add(error.Split('\t'));
             }
 
+
             lblStatus.Text = "Base vehicles"; lblInvalidBasevehilcesCount.Text = "(analyzing)";
-            await Task.Run(() => aces.invalidBasevids(vcdb, pcdb, progressIndicator));
+            await Task.Run(() => aces.invalidBasevids(vcdb, pcdb, progressInvalidBasevehicles));
             lblInvalidBasevehilcesCount.Text = aces.basevehicleidsErrors.Count.ToString();
+            pictureBoxInvalidBasevehicles.Visible = true; if (aces.basevehicleidsErrors.Count > 0) { pictureBoxInvalidBasevehicles.BackColor = Color.Red; } else { pictureBoxInvalidBasevehicles.BackColor = Color.Green; }
             foreach (string error in aces.basevehicleidsErrors) { dgBasevids.Rows.Add(error.Split('\t')); }
 
             lblStatus.Text = "VCdb codes"; lblInvalidVCdbCodesCount.Text = "(analyzing)";
-            await Task.Run(() => aces.invalidAttributes(vcdb, pcdb, progressIndicator));
+            await Task.Run(() => aces.invalidAttributes(vcdb, pcdb, progressInvalidVCdbCodes));
             lblInvalidVCdbCodesCount.Text = aces.vcdbCodesErrors.Count.ToString();
+            pictureBoxInvalidVCdbCodes.Visible = true; if (aces.vcdbCodesErrors.Count > 0) { pictureBoxInvalidVCdbCodes.BackColor = Color.Red; } else { pictureBoxInvalidVCdbCodes.BackColor = Color.Green; }
             foreach (string error in aces.vcdbCodesErrors) { dgVCdbCodes.Rows.Add(error.Split('\t')); }
 
             lblStatus.Text = "Parttype/Position"; lblInvalidParttypePositionCount.Text = "(analyzing)";
-            await Task.Run(() => aces.invalidParttypePositions(vcdb, pcdb, progressIndicator));
+            await Task.Run(() => aces.invalidParttypePositions(vcdb, pcdb, progressParttypePosition));
             lblInvalidParttypePositionCount.Text = aces.parttypePositionErrors.Count.ToString();
+            pictureBoxParttypePosition.Visible = true; if (aces.parttypePositionErrors.Count > 0) { pictureBoxParttypePosition.BackColor = Color.Red; } else { pictureBoxParttypePosition.BackColor = Color.Green; }
             foreach (string error in aces.parttypePositionErrors) { dgParttypePosition.Rows.Add(error.Split('\t')); }
-
-
+            
 
             lblStatus.Text = "VCdb configs"; lblInvalidConfigurationsCount.Text = "(analyzing)";
-            await Task.Run(() => aces.invalidConfigs(vcdb, pcdb, progressIndicator));
+            await Task.Run(() => aces.invalidConfigs(vcdb, pcdb, progressInvalidConfigurations));
             lblInvalidConfigurationsCount.Text = aces.vcdbConfigurationsErrors.Count.ToString();
+            pictureBoxInvalidConfigurations.Visible = true; if (aces.vcdbConfigurationsErrors.Count > 0) { pictureBoxInvalidConfigurations.BackColor = Color.Red; } else { pictureBoxInvalidConfigurations.BackColor = Color.Green; }
             foreach (string error in aces.vcdbConfigurationsErrors) {dgVCdbConfigs.Rows.Add(error.Split('\t')); }
+
+
             aces.analysisComplete = true;
 
             if (lblAssessmentFilePath.Text != "") { btnAssessmentSave.Enabled = true; }
@@ -553,7 +638,11 @@ namespace ACESinspector
                 if (result == DialogResult.OK && !string.IsNullOrWhiteSpace(fbd.SelectedPath))
                 {
                     lblAssessmentFilePath.Text = fbd.SelectedPath;
-                    if(aces.analysisComplete) { btnAssessmentSave.Enabled = true; }
+                    RegistryKey key = Registry.CurrentUser.OpenSubKey("Software", true);
+                    key.CreateSubKey("ACESinspector");
+                    key = key.OpenSubKey("ACESinspector", true);
+                    key.SetValue("lastAssessmentDirectoryPath", fbd.SelectedPath);
+                    if (aces.analysisComplete) { btnAssessmentSave.Enabled = true; }
                 }
             }
         }
@@ -576,6 +665,10 @@ namespace ACESinspector
                 if (result == DialogResult.OK && !string.IsNullOrWhiteSpace(fbd.SelectedPath) && aces.appsCount > 0)
                 {
                     lblAppExportFilePath.Text = fbd.SelectedPath; btnAppExportSave.Enabled = true;
+                    RegistryKey key = Registry.CurrentUser.OpenSubKey("Software", true);
+                    key.CreateSubKey("ACESinspector");
+                    key = key.OpenSubKey("ACESinspector", true);
+                    key.SetValue("lastAppExportDirectoryPath", fbd.SelectedPath);
                 }
             }
 
@@ -591,10 +684,34 @@ namespace ACESinspector
 
         }
 
-        private void btnBGExportSave_Click(object sender, EventArgs e)
+        private void btnSelectBgExportFile_Click(object sender, EventArgs e)
         {
-            aces.exportBuyersGuide("", vcdb);
+            using (var fbd = new FolderBrowserDialog())
+            {
+                DialogResult result = fbd.ShowDialog();
+                if (result == DialogResult.OK && !string.IsNullOrWhiteSpace(fbd.SelectedPath) && aces.appsCount > 0)
+                {
+                    lblBgExportFilePath.Text = fbd.SelectedPath; btnBgExportSave.Enabled = true;
+                    RegistryKey key = Registry.CurrentUser.OpenSubKey("Software", true);
+                    key.CreateSubKey("ACESinspector");
+                    key = key.OpenSubKey("ACESinspector", true);
+                    key.SetValue("lastBuyersGuideDirectoryPath", fbd.SelectedPath);
 
+                }
+            }
+
+        }
+
+        private async void btnBGExportSave_Click(object sender, EventArgs e)
+        {
+            var progressIndicator = new Progress<int>(ReportAnalyzeProgress);
+            btnAnalyze.Enabled = false; btnBgExportSave.Enabled = false; btnSelectBgExportFile.Enabled = false;
+
+            lblStatus.Text = "Exporting buyer's guide"; 
+            await Task.Run(() => aces.exportBuyersGuide(lblBgExportFilePath.Text + @"\BuyersGuide.txt", vcdb, progressIndicator));
+            lblStatus.Text = ""; progressBar1.Value = 0; btnAnalyze.Enabled = true; btnBgExportSave.Enabled = true; btnSelectBgExportFile.Enabled = true;
+
+            //            MessageBox.Show(result);
         }
 
         private void toolTip1_Popup(object sender, PopupEventArgs e)
@@ -655,5 +772,6 @@ namespace ACESinspector
             }
 
         }
+
     }
 }
