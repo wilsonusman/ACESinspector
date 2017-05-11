@@ -45,6 +45,7 @@ namespace ACESinspector
             lblStatsQdbVersion.Text = "";
             lblStatsWarningsCount.Text = "";
             lblStatsErrorsCount.Text = "";
+            lblParttypeDisagreement.Text = "";
             lblDuplicateApps.Text = "";
             lblOverlapsCount.Text = "";
             lblCNCoverlapsCount.Text = "";
@@ -70,6 +71,8 @@ namespace ACESinspector
             btnAnalyze.Enabled = false;
             dgParts.Width = Width - 36;
             dgParts.Height = Height - 248;
+            dgParttypeDisagreement.Width = Width - 36;
+            dgParttypeDisagreement.Height = Height - 248;
             dgDuplicates.Width = Width - 36;
             dgDuplicates.Height =Height - 248;
             dgOverlaps.Width = this.Width - 36;
@@ -85,6 +88,7 @@ namespace ACESinspector
             dgVCdbConfigs.Width = this.Width - 36;
             dgVCdbConfigs.Height = this.Height - 248;
 
+            pictureBoxParttypeDisagreement.Visible = false;
             pictureBoxCNCoverlaps.Visible = false;
             pictureBoxDuplicates.Visible = false;
             pictureBoxOverlaps.Visible = false;
@@ -94,6 +98,7 @@ namespace ACESinspector
             pictureBoxInvalidConfigurations.Visible = false;
 
             dgBasevids.Visible = false;
+            dgParttypeDisagreement.Visible = false;
             dgDuplicates.Visible = false;
             dgCNCoverlaps.Visible = false;
             dgOverlaps.Visible = false;
@@ -144,7 +149,6 @@ namespace ACESinspector
             if (key.GetValue("lastACESDirectoryPath") != null) { openFileDialog.InitialDirectory = key.GetValue("lastACESDirectoryPath").ToString(); }
             string partTypeNameListString = ""; string positionNameListString = "";
 
-
             openFileDialog.Title = "Open ACES XML file";
             openFileDialog.RestoreDirectory = false;
             openFileDialog.Filter = "XML files (*.xml)|*.xml";
@@ -160,6 +164,7 @@ namespace ACESinspector
                 lblStatsPartsCount.Text = "";
                 lblStatsWarningsCount.Text = "";
                 lblStatsErrorsCount.Text = "";
+                lblParttypeDisagreement.Text = "";
                 lblDuplicateApps.Text = "";
                 lblCNCoverlapsCount.Text = "";
                 lblOverlapsCount.Text = "";
@@ -177,6 +182,7 @@ namespace ACESinspector
                 progressBarParttypePosition.Value = 0;
                 progressBarInvalidConfigurations.Value = 0;
 
+                pictureBoxParttypeDisagreement.Visible = false;
                 pictureBoxCNCoverlaps.Visible = false;
                 pictureBoxDuplicates.Visible = false;
                 pictureBoxOverlaps.Visible = false;
@@ -186,6 +192,9 @@ namespace ACESinspector
                 pictureBoxInvalidConfigurations.Visible = false;
 
                 dgParts.Rows.Clear();
+
+                dgParttypeDisagreement.Rows.Clear();
+                dgParttypeDisagreement.Visible = false;
 
                 dgBasevids.Rows.Clear();
                 dgBasevids.Visible = false;
@@ -245,17 +254,19 @@ namespace ACESinspector
                     
                     foreach (string part in aces.distinctParts)
                     {
-                        string[] partTypeIdStrings = aces.partsPartTypes[part].Split(',');
+                        string[] partTypeIdStrings = aces.partsPartTypes[part].Split('\t');
                         partTypeNameListString = ""; foreach (string partTypeIdString in partTypeIdStrings) { partTypeNameListString += pcdb.niceParttype(Convert.ToInt32(partTypeIdString)) + ",";}
                         partTypeNameListString = partTypeNameListString.Substring(0, partTypeNameListString.Length - 1);
-                        string[] positionIdStrings = aces.partsPositions[part].Split(',');
+                        if (partTypeIdStrings.Count() > 1) {dgParttypeDisagreement.Rows.Add(part, partTypeNameListString);}
+                        string[] positionIdStrings = aces.partsPositions[part].Split('\t');
                         positionNameListString = ""; foreach (string positionIdString in positionIdStrings) { positionNameListString += pcdb.nicePosition(Convert.ToInt32(positionIdString)) + ","; }
                         positionNameListString = positionNameListString.Substring(0, positionNameListString.Length - 1);
-
                         dgParts.Rows.Add(part, Convert.ToInt32(aces.partsAppsCounts[part].ToString()), partTypeNameListString, positionNameListString);
                     }
                     progressBar1.Value = 0; lblProgressPercent.Text = ""; lblStatus.Text = "Successfully imported ACES xml";
                     btnSelectAssessmentFile.Enabled = true; btnSelectAppExportFile.Enabled = true; btnSelectBgExportFile.Enabled = true;
+                    pictureBoxParttypeDisagreement.Visible = true; lblParttypeDisagreement.Text = dgParttypeDisagreement.Rows.Count.ToString();
+                    if (dgParttypeDisagreement.Rows.Count > 0) {pictureBoxParttypeDisagreement.BackColor = Color.Yellow; dgParttypeDisagreement.Visible = true; } else {  pictureBoxParttypeDisagreement.BackColor = Color.Green; dgParttypeDisagreement.Visible = false; }
 
                     if (vcdb.version!="" && aces.successfulImport)
                     {
@@ -450,6 +461,8 @@ namespace ACESinspector
         {
             dgParts.Width = this.Width - 36;
             dgParts.Height = this.Height - 248;
+            dgParttypeDisagreement.Width = Width - 36;
+            dgParttypeDisagreement.Height = Height - 248;
             dgDuplicates.Width = this.Width - 36;
             dgDuplicates.Height = this.Height - 248;
             dgOverlaps.Width = this.Width - 36;
@@ -569,6 +582,10 @@ namespace ACESinspector
             var progressInvalidConfigurations = new Progress<int>(ReportAnalyzeProgressInvalidConfigurations);
 
             //await Task.Run(() => aces.disperateAttributes(vcdb, pcdb, progressIndicator));
+
+
+            lblParttypeDisagreement.Text = dgParttypeDisagreement.Rows.Count.ToString();
+
 
 
             lblStatus.Text = "Analyzing"; lblDuplicateApps.Text = "(analyzing)";

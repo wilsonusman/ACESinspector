@@ -43,14 +43,14 @@
     </dependentAssembly>
   </dependency>
   <dependency>
-    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="ACESinspector.exe" size="355648">
+    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="ACESinspector.exe" size="352768">
       <assemblyIdentity name="ACESinspector" version="1.0.1.12" language="neutral" processorArchitecture="x86" />
       <hash>
         <dsig:Transforms>
           <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
         </dsig:Transforms>
         <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
-        <dsig:DigestValue>VwEq/HFAYfOs6zujuFq8+Xfn/5j+HjynDyA9eFwrq+g=</dsig:DigestValue>
+        <dsig:DigestValue>J9oKYUH7M09JpDkYSlS4/ua4fpzo2Z0BxGMCIanG7y0=</dsig:DigestValue>
       </hash>
     </dependentAssembly>
   </dependency>

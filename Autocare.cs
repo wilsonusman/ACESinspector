@@ -536,7 +536,7 @@ namespace ACESinspector
                 {
                     CNCoverlapsErrors.Add(groupnumber.ToString() + "\t" + apps[i].id.ToString() + "\t" + apps[i].basevehilceid.ToString() + "\t" + vcdb.niceMakeOfBasevid(apps[i].basevehilceid) + "\t" + vcdb.niceModelOfBasevid(apps[i].basevehilceid) + "\t" + vcdb.niceYearOfBasevid(apps[i].basevehilceid).ToString() + "\t" + pcdb.niceParttype(apps[i].parttypeid) + "\t" + pcdb.nicePosition(apps[i].positionid) + "\t" + apps[i].quantity.ToString() + "\t" + apps[i].part + "\t" + apps[i].niceAttributesString(vcdb,true));
                     CNCoverlapsErrors.Add(groupnumber.ToString() + "\t" + apps[i + 1].id.ToString() + "\t" + apps[i+1].basevehilceid.ToString() + "\t" + vcdb.niceMakeOfBasevid(apps[i].basevehilceid) + "\t" + vcdb.niceModelOfBasevid(apps[i].basevehilceid) + "\t" + vcdb.niceYearOfBasevid(apps[i].basevehilceid).ToString() + "\t" + pcdb.niceParttype(apps[i + 1].parttypeid) + "\t" + pcdb.nicePosition(apps[i + 1].positionid) + "\t" + apps[i + 1].quantity.ToString() + "\t" + apps[i + 1].part + "\t" + apps[i+1].niceAttributesString(vcdb, true));
-                    analysisWarnings++; groupnumber++;
+                    analysisErrors++; groupnumber++;
                 }
                 if (progress != null)
                 {// only report progress on whole percentage steps (100 total reports). reporting on every iteration is too process intensive
@@ -601,11 +601,16 @@ namespace ACESinspector
         }
 
 
+
+
+
         public List<string> invalidConfigs(VCdb vcdb, PCdb pcdb, IProgress<int> progress)
         {
-            int i; string sqlString = ""; int percentProgress = 0;
+            int i; int j; int percentProgress = 0;
             BaseVehicle basevidTemp = new BaseVehicle();
             bool appHasInvalidAttribute;
+            App tempApp = new App();
+            List<VCdbAttribute> tempAttributesList = new List<VCdbAttribute>();
 
             for (i = 0; i <= appsCount - 1; i++)
             {
@@ -614,29 +619,27 @@ namespace ACESinspector
                     appHasInvalidAttribute = false; foreach (VCdbAttribute myAttribute in apps[i].VCdbAttributes) { if (!vcdb.validAttribute(myAttribute)) { appHasInvalidAttribute = true; } }
                     if (!appHasInvalidAttribute)
                     {// dont include invalid attributed apps in vcdb config analysis - these are handled in the "invalid attributes" analysis
-                        sqlString = vcdb.configValidationSQLForApp(apps[i]);
-                        try
+
+                        tempApp = apps[i];
+                        if(!vcdb.configIsValid(tempApp))
                         {
-                            OleDbCommand command = new OleDbCommand(sqlString, vcdb.vcdbConnection);
-                            OleDbDataReader reader = command.ExecuteReader();
-                            if (!reader.Read())
+                            // this apps's combination of attribute values is not found in the specified VCdb.
+                            // create a new list of attributes for this app the have excluded and attribute the has U/K as an option
+                            tempAttributesList.Clear();
+                            for (j=0; j<= tempApp.VCdbAttributes.Count-1; j++)
                             {
+                                if(!vcdb.attributeHasUKasOption(tempApp.basevehilceid,tempApp.VCdbAttributes[j].name))
+                                {
+                                    tempAttributesList.Add(tempApp.VCdbAttributes[j]);
+                                }
+                            }
 
-                                // check that attribute "U/K" is not one of the choices 
-
+                            tempApp.VCdbAttributes = tempAttributesList;
+                            if (!vcdb.configIsValid(tempApp))
+                            {
                                 vcdbConfigurationsErrors.Add(apps[i].id + "\t" + vcdb.niceMakeOfBasevid(apps[i].basevehilceid) + "\t" + vcdb.niceModelOfBasevid(apps[i].basevehilceid) + "\t" + vcdb.niceYearOfBasevid(apps[i].basevehilceid) + "\t" + pcdb.niceParttype(apps[i].parttypeid) + "\t" + pcdb.nicePosition(apps[i].positionid) + "\t" + apps[i].quantity + "\t" + apps[i].part + "\t" + apps[i].niceAttributesString(vcdb, false) + "\t" + apps[i].notes);
-
-
-
-
                                 analysisErrors++;
                             }
-                            reader.Close();
-                        }
-                        catch (Exception ex)
-                        {
-                            Console.WriteLine(ex.Message);
-                            Console.WriteLine(sqlString);
                         }
                     }
                 }
@@ -880,12 +883,12 @@ namespace ACESinspector
                     {
                         // check for the existance of this parttypeid in the comma-seperated list before adding it.
                         found = false;
-                        string[] chunks = partsPartTypes[apps[appsCount].part].Split(',');
+                        string[] chunks = partsPartTypes[apps[appsCount].part].Split('\t');
                         foreach(string chunk in chunks)
                         {
                             if(Convert.ToInt32(chunk) == Convert.ToInt32(apps[appsCount].parttypeid.ToString())){found = true; break;}
                         }
-                        if (!found) { partsPartTypes[apps[appsCount].part] += "," + apps[appsCount].parttypeid.ToString(); }
+                        if (!found) { partsPartTypes[apps[appsCount].part] += "\t" + apps[appsCount].parttypeid.ToString(); }
 
                     }
                     else
@@ -899,12 +902,12 @@ namespace ACESinspector
                     {
                         // check for the existance of this positonid in the comma-seperated list before adding it.
                         found = false;
-                        string[] chunks = partsPositions[apps[appsCount].part].Split(',');
+                        string[] chunks = partsPositions[apps[appsCount].part].Split('\t');
                         foreach (string chunk in chunks)
                         {
                             if (Convert.ToInt32(chunk) == Convert.ToInt32(apps[appsCount].positionid.ToString())) { found = true; break; }
                         }
-                        if (!found) { partsPositions[apps[appsCount].part] += "," + apps[appsCount].positionid.ToString(); }
+                        if (!found) { partsPositions[apps[appsCount].part] += "\t" + apps[appsCount].positionid.ToString(); }
 
                     }
                     else
@@ -975,8 +978,7 @@ namespace ACESinspector
                     sw.Write("<Cell><Data ss:Type=\"String\">Unique Part count</Data></Cell><Cell><Data ss:Type=\"Number\">"+distinctParts.Count.ToString()+"</Data></Cell></Row>");
                     sw.Write("<Row><Cell><Data ss:Type=\"String\">Unique MfrLabel count</Data></Cell><Cell><Data ss:Type=\"Number\">" + distinctMfrLabels.Count.ToString() + "</Data></Cell></Row>");
                     sw.Write("<Row><Cell><Data ss:Type=\"String\">Unique Parttypes count</Data></Cell><Cell><Data ss:Type=\"Number\">" + distinctPartTypes.Count.ToString() + "</Data></Cell></Row>");
-                    sw.Write("<Row><Cell><Data ss:Type=\"String\">Validator Tool</Data></Cell><Cell><Data ss:Type=\"String\">ACESinspector version "+ codeVersion + "</Data></Cell></Row>");
-                    sw.Write("<Row><Cell><Data ss:Type=\"String\">Validator project home</Data></Cell><Cell ss:StyleID=\"s64\" ss:HRef=\"https://autopartsource.com/ACESinspector\"><Data ss:Type=\"String\">autopartsource.com/ACESinspector</Data></Cell></Row>");
+                    sw.Write("<Row><Cell><Data ss:Type=\"String\">Validation tool</Data></Cell><Cell ss:StyleID=\"s64\" ss:HRef=\"https://autopartsource.com/ACESinspector\"><Data ss:Type=\"String\">ACESinspector version " + codeVersion + "</Data></Cell></Row>");
                     sw.Write("</Table><WorksheetOptions xmlns=\"urn:schemas-microsoft-com:office:excel\"><PageSetup><Header x:Margin=\"0.3\"/><Footer x:Margin=\"0.3\"/><PageMargins x:Bottom=\"0.75\" x:Left=\"0.7\" x:Right=\"0.7\" x:Top=\"0.75\"/></PageSetup><Selected/><ProtectObjects>False</ProtectObjects><ProtectScenarios>False</ProtectScenarios></WorksheetOptions></Worksheet>");
 
                     
@@ -1025,7 +1027,7 @@ namespace ACESinspector
                         {
                             string[] fileds = line.Split('\t');
                             //sw.Write("<Row><Cell><Data ss:Type=\"Number\">" + fileds[0] + "</Data></Cell><Cell><Data ss:Type=\"String\">" + fileds[1] + "</Data></Cell><Cell><Data ss:Type=\"String\">" + fileds[2] + "</Data></Cell><Cell><Data ss:Type=\"String\">" + fileds[3] + "</Data></Cell><Cell><Data ss:Type=\"String\">" + fileds[4] + "</Data></Cell><Cell><Data ss:Type=\"String\">" + fileds[5] + "</Data></Cell><Cell><Data ss:Type=\"String\">" + fileds[6] + "</Data></Cell><Cell><Data ss:Type=\"String\">" + fileds[7] + "</Data></Cell></Row>");
-                            sw.Write("<Row><Cell><Data ss:Type=\"Number\">" + fileds[0] + "</Data></Cell><Cell><Data ss:Type=\"Number\">" + fileds[1] + "</Data></Cell><Cell><Data ss:Type=\"Number\">" + fileds[2] + "</Data></Cell><Cell><Data ss:Type=\"String\">" + fileds[3] + "</Data></Cell><Cell><Data ss:Type=\"String\">" + fileds[4] + "</Data></Cell><Cell><Data ss:Type=\"Number\">" + fileds[5] + "</Data></Cell><Cell><Data ss:Type=\"String\">" + fileds[6] + "</Data></Cell><Cell><Data ss:Type=\"String\">" + fileds[7] + "</Data></Cell><Cell><Data ss:Type=\"Number\">" + fileds[8] + "</Data></Cell><Cell><Data ss:Type=\"String\">" + fileds[9] + "</Data></Cell><Cell><Data ss:Type=\"String\">" + fileds[10] + "</Data></Cell></Row>");
+                            sw.Write("<Row><Cell><Data ss:Type=\"Number\">" + fileds[0] + "</Data></Cell><Cell><Data ss:Type=\"Number\">" + fileds[1] + "</Data></Cell><Cell><Data ss:Type=\"Number\">" + fileds[2] + "</Data></Cell><Cell><Data ss:Type=\"String\">" + fileds[3] + "</Data></Cell><Cell><Data ss:Type=\"String\">" + fileds[4] + "</Data></Cell><Cell><Data ss:Type=\"String\">" + fileds[5] + "</Data></Cell><Cell><Data ss:Type=\"String\">" + fileds[6] + "</Data></Cell><Cell><Data ss:Type=\"String\">" + fileds[7] + "</Data></Cell><Cell><Data ss:Type=\"Number\">" + fileds[8] + "</Data></Cell><Cell><Data ss:Type=\"String\">" + fileds[9] + "</Data></Cell><Cell><Data ss:Type=\"String\">" + fileds[10] + "</Data></Cell></Row>");
                         }
                         excelTabColorXMLtag = "<TabColorIndex>10</TabColorIndex>";
                         sw.Write("</Table><WorksheetOptions xmlns=\"urn:schemas-microsoft-com:office:excel\"><PageSetup><Header x:Margin=\"0.3\"/><Footer x:Margin=\"0.3\"/><PageMargins x:Bottom=\"0.75\" x:Left=\"0.7\" x:Right=\"0.7\" x:Top=\"0.75\"/></PageSetup>" + excelTabColorXMLtag + "<FreezePanes/><FrozenNoSplit/><SplitHorizontal>1</SplitHorizontal><TopRowBottomPane>1</TopRowBottomPane><ActivePane>2</ActivePane><Panes><Pane><Number>3</Number></Pane><Pane><Number>2</Number><ActiveRow>0</ActiveRow></Pane></Panes><ProtectObjects>False</ProtectObjects><ProtectScenarios>False</ProtectScenarios></WorksheetOptions></Worksheet>");
@@ -1035,7 +1037,7 @@ namespace ACESinspector
 
                     if (basevehicleidsErrors.Count > 0)
                     {
-                        sw.Write("<Worksheet ss:Name =\"Invalid Base Vids\"><Table ss:ExpandedColumnCount=\"7\" x:FullColumns=\"1\" x:FullRows=\"1\" ss:DefaultRowHeight=\"15\"><Column ss:AutoFitWidth=\"0\" ss:Width=\"45\"/><Column ss:Width=\"77.25\"/><Column ss:Index=\"4\" ss:AutoFitWidth=\"0\" ss:Width=\"96\"/><Column ss:AutoFitWidth=\"0\" ss:Width=\"73.5\"/><Column ss:AutoFitWidth=\"0\" ss:Width=\"253.5\"/><Column ss:AutoFitWidth=\"0\" ss:Width=\"371.25\"/><Row><Cell ss:StyleID=\"s65\"><Data ss:Type=\"String\">App Id</Data></Cell><Cell ss:StyleID=\"s65\"><Data ss:Type=\"String\">Invalid BaseVid</Data></Cell><Cell ss:StyleID=\"s65\"><Data ss:Type=\"String\">Part</Data></Cell><Cell ss:StyleID=\"s65\"><Data ss:Type=\"String\">Part Type</Data></Cell><Cell ss:StyleID=\"s65\"><Data ss:Type=\"String\">Position</Data></Cell><Cell ss:StyleID=\"s65\"><Data ss:Type=\"String\">Qualifiers</Data></Cell><Cell ss:StyleID=\"s65\"><Data ss:Type=\"String\">Notes</Data></Cell></Row>");
+                        sw.Write("<Worksheet ss:Name =\"Invalid Base Vids\"><Table ss:ExpandedColumnCount=\"7\" x:FullColumns=\"1\" x:FullRows=\"1\" ss:DefaultRowHeight=\"15\"><Column ss:AutoFitWidth=\"0\" ss:Width=\"45\"/><Column ss:Width=\"77.25\"/><Column ss:Index=\"4\" ss:AutoFitWidth=\"0\" ss:Width=\"96\"/><Column ss:AutoFitWidth=\"0\" ss:Width=\"73.5\"/><Column ss:AutoFitWidth=\"0\" ss:Width=\"253.5\"/><Column ss:AutoFitWidth=\"0\" ss:Width=\"371.25\"/><Row><Cell ss:StyleID=\"s65\"><Data ss:Type=\"String\">App Id</Data></Cell><Cell ss:StyleID=\"s65\"><Data ss:Type=\"String\">Invalid BaseVid</Data></Cell><Cell ss:StyleID=\"s65\"><Data ss:Type=\"String\">Part Type</Data></Cell><Cell ss:StyleID=\"s65\"><Data ss:Type=\"String\">Position</Data></Cell><Cell ss:StyleID=\"s65\"><Data ss:Type=\"String\">Quantity</Data></Cell><Cell ss:StyleID=\"s65\"><Data ss:Type=\"String\">Part</Data></Cell><Cell ss:StyleID=\"s65\"><Data ss:Type=\"String\">Qualifiers</Data></Cell></Row>");
                         foreach (string line in basevehicleidsErrors)
                         {
                             string[] fileds = line.Split('\t');
@@ -1481,6 +1483,36 @@ namespace ACESinspector
             }
         }
 
+
+
+        public bool configIsValid(App app)
+        {
+            bool returnValue = false;
+            string sqlString = "";
+            if(app.VCdbAttributes.Count == 0){return true;}// apps with no attributes are inherently valid from a configuration standpoint
+
+            sqlString = configValidationSQLForApp(app);
+            try
+            {
+                OleDbCommand command = new OleDbCommand(sqlString, vcdbConnection);
+                OleDbDataReader reader = command.ExecuteReader();
+                if(reader.Read()){returnValue = true;}
+                reader.Close();
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+                Console.WriteLine(sqlString);
+            }
+            return returnValue;
+        }
+
+
+
+
+
+
+
         // Build the "from" and "where" sql tables and join clauses for vcdb validation query based on the attributes in the reference app.
         // The purpose is to tease out a list of attribute names for knowing which tables to validate against. You could simply validate every app against a monolithic "all-in-one" 
         // join of the entire vcdb - this is process-intensive (very slow). If we only include the tables in the join that the app referes-to, the query is faster and more memory effecient.
@@ -1606,14 +1638,14 @@ namespace ACESinspector
             if (myAttribute.name == "ValvesPerEngine") { return 3; }
             if (myAttribute.name == "CylinderHeadType") { return 3; }
             if (myAttribute.name == "FuelType") { return 3; }
-            if (myAttribute.name == "PowerOutput") { return 3; }
+            if (myAttribute.name == "PowerOutput") { return 3; } // is this depricated in VCdb recently?
 
             if (myAttribute.name == "BodyNumDoors") { return 4; }
             if (myAttribute.name == "BodyType") { return 4; }
 
             if (myAttribute.name == "MfrBodyCode") { return 5; }
 
-            if (myAttribute.name == "TransElecControlled") { return 6; }
+            if (myAttribute.name == "TransElecControlled") { return 6; } // is this depricated in VCdb recently?
             if (myAttribute.name == "TransmissionBase") { return 6; }
             if (myAttribute.name == "TransmissionControlType") { return 6; }
             if (myAttribute.name == "TransmissionMfr") { return 6; }
@@ -1636,12 +1668,70 @@ namespace ACESinspector
             return 12;
         }
 
-       // public bool attributeHasUKasOption(int baseVehicleid, VCdbAttribute attribute)
-        //{
+        public bool attributeHasUKasOption(int baseVehicleid, string attributeName)
+        {
+            bool returnValue = false;
+            App app = new App();
+            VCdbAttribute myVCdbAttribute = new VCdbAttribute();
+            int idForUK = -1;
 
+            if (attributeName == "DriveType") { idForUK=4; }
+            if (attributeName == "BrakeABS") { idForUK=4; } // 9=N/A
+            if (attributeName == "BrakeSystem") { idForUK=4; }
+            if (attributeName == "FrontBrakeType") { idForUK=4; }
+            if (attributeName == "RearBrakeType") { idForUK=4; }
+            if (attributeName == "EngineVersion") { idForUK=50; }//2=N/A, 3=N/R
+            if (attributeName == "EngineMfr") { idForUK=4; }//2=N/A, 3=N/R
+            if (attributeName == "FuelDeliverySubType") { idForUK = 4; }//2=N/A, 3=N/R
+            if (attributeName == "FuelSystemControlType") { idForUK = 4; }//2=N/A, 3=N/R
+            if (attributeName == "FuelSystemDesign") { idForUK = 4; }//2=N/A, 3=N/R
+            //if (attributeName == "Aspiration") { 16; } // 16=N/A
+            if (attributeName == "IgnitionSystemType") { idForUK = 4; }//2=N/A, 3=N/R
+            if (attributeName == "ValvesPerEngine") { idForUK = 16; }//17=N/R, 25=N/A
+            if (attributeName == "CylinderHeadType") { idForUK = 4; }//2=N/A, 3=N/R
+            if (attributeName == "FuelType") { idForUK = 18; }//20=N/A
+            if (attributeName == "BodyNumDoors") { idForUK = 4; }
+            if (attributeName == "BodyType") { idForUK = 40; }
+            if (attributeName == "MfrBodyCode") { idForUK = 4; }//2=N/A, 3=N/R
+            if (attributeName == "TransmissionControlType") { idForUK = 4; }//3=N/R
+            if (attributeName == "TransmissionMfr") { idForUK = 4; }//2=N/A, 3=N/R
+            if (attributeName == "TransmissionMfrCode") { idForUK = 4; }//2=N/A, 3=N/R
+            if (attributeName == "TransmissionNumSpeeds") { idForUK = 4; }//2=N/A, 3=N/R
+            if (attributeName == "TransmissionType") { idForUK = 4; }//7=N/A, 3=N/R
+            if (attributeName == "WheelBase") { idForUK = 4; }//2=N/A
+            if (attributeName == "SteeringSystem") { idForUK = 4; }//2=N/A
+            if (attributeName == "SteeringType") { idForUK = 4; }//2=N/A
+            if (attributeName == "BedLength") { idForUK = 42; }//2=N/A, 3=N/R
+            if (attributeName == "BedType") { idForUK = 14; }//2=N/A, 3=N/R
+            if (attributeName == "FrontSpringType") { idForUK = 4; }//2=N/A
+            if (attributeName == "RearSpringType") { idForUK = 4; }//2=N/A
 
+            if (idForUK == -1) { return false; }
+            myVCdbAttribute.name = attributeName;
+            myVCdbAttribute.value = idForUK;
 
-        //}
+            app.basevehilceid = baseVehicleid;
+            app.VCdbAttributes.Add(myVCdbAttribute);
+
+            string sqlString = configValidationSQLForApp(app);
+
+            try
+            {
+                OleDbCommand command = new OleDbCommand(sqlString, vcdbConnection);
+                OleDbDataReader reader = command.ExecuteReader();
+                if (reader.Read())
+                {// got a configuration hit on a "U/K" option
+                    returnValue = true;
+                }
+                reader.Close();
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+                Console.WriteLine(sqlString);
+            }
+            return returnValue;
+        }
 
 
 
