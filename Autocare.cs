@@ -311,6 +311,7 @@ namespace ACESinspector
         public List<int> distinctPartTypes = new List<int>();
 
 
+        public List<string> parttypeDisagreementErrors = new List<string>();
         public List<string> duplicateErrors = new List<string>();
         public List<string> overlapsErrors = new List<string>();
         public List<string> CNCoverlapsErrors = new List<string>();
@@ -364,6 +365,7 @@ namespace ACESinspector
             partsAppsCounts.Clear();
             partsPartTypes.Clear();
             partsPositions.Clear();
+            parttypeDisagreementErrors.Clear();
             duplicateErrors.Clear();
             overlapsErrors.Clear();
             CNCoverlapsErrors.Clear();
@@ -469,7 +471,7 @@ namespace ACESinspector
             string partsString = "";
             VCdbAttribute myVCdbAttribute = new VCdbAttribute(); string niceAttributesString="";
 
-            int i; int percentProgress = 0; string hashkey = ""; int appidTemp = 0;
+            int i; int percentProgress = 0; string hashkey = ""; 
 
             for (i = 0; i <= appsCount - 1; i++)
             {
@@ -985,7 +987,7 @@ namespace ACESinspector
                     sw.Write("<Worksheet ss:Name=\"Parts\"><Table ss:ExpandedColumnCount=\"4\" x:FullColumns=\"1\" x:FullRows=\"1\" ss:DefaultRowHeight=\"15\"><Column ss:Width=\"100\"/><Column ss:Width=\"100\"/><Column ss:Width=\"100\"/><Column ss:Width=\"100\"/><Row><Cell ss:StyleID=\"s65\"><Data ss:Type=\"String\">Part</Data></Cell><Cell ss:StyleID=\"s65\"><Data ss:Type=\"String\">Applications Count</Data></Cell><Cell ss:StyleID=\"s65\"><Data ss:Type=\"String\">Part Types</Data></Cell><Cell ss:StyleID=\"s65\"><Data ss:Type=\"String\">Positions</Data></Cell></Row>");
                     foreach (string distinctPart in distinctParts)
                     {
-                        string[] partTypeIdStrings = partsPartTypes[distinctPart].Split(',');
+                        string[] partTypeIdStrings = partsPartTypes[distinctPart].Split('\t');
                         partTypeNameListString = ""; foreach (string partTypeIdString in partTypeIdStrings) { partTypeNameListString += pcdb.niceParttype(Convert.ToInt32(partTypeIdString)) + ","; }
                         partTypeNameListString = partTypeNameListString.Substring(0, partTypeNameListString.Length - 1);
                         string[] positionIdStrings = partsPositions[distinctPart].Split(',');
@@ -1006,6 +1008,17 @@ namespace ACESinspector
                         sw.Write("</Table><WorksheetOptions xmlns=\"urn:schemas-microsoft-com:office:excel\"><PageSetup><Header x:Margin=\"0.3\"/><Footer x:Margin=\"0.3\"/><PageMargins x:Bottom=\"0.75\" x:Left=\"0.7\" x:Right=\"0.7\" x:Top=\"0.75\"/></PageSetup><ProtectObjects>False</ProtectObjects><ProtectScenarios>False</ProtectScenarios></WorksheetOptions></Worksheet>");
                     }
 
+                    if (parttypeDisagreementErrors.Count > 0)
+                    {
+                        sw.Write("<Worksheet ss:Name=\"Parttype Disagreement\"><Table ss:ExpandedColumnCount=\"2\" x:FullColumns=\"1\" x:FullRows=\"1\" ss:DefaultRowHeight=\"15\"><Column ss:AutoFitWidth=\"0\" ss:Width=\"45\"/><Column ss:AutoFitWidth=\"0\" ss:Width=\"78.75\"/><Row><Cell ss:StyleID=\"s65\"><Data ss:Type=\"String\">Part</Data></Cell><Cell ss:StyleID=\"s65\"><Data ss:Type=\"String\">Parttypes</Data></Cell></Row>");
+                        foreach (string line in parttypeDisagreementErrors)
+                        {
+                            string[] fileds = line.Split('\t');
+                            sw.Write("<Row><Cell><Data ss:Type=\"String\">" + fileds[0] + "</Data></Cell><Cell><Data ss:Type=\"String\">" + fileds[1] + "</Data></Cell></Row>");
+                        }
+                        excelTabColorXMLtag = "<TabColorIndex>13</TabColorIndex>";
+                        sw.Write("</Table><WorksheetOptions xmlns=\"urn:schemas-microsoft-com:office:excel\"><PageSetup><Header x:Margin=\"0.3\"/><Footer x:Margin=\"0.3\"/><PageMargins x:Bottom=\"0.75\" x:Left=\"0.7\" x:Right=\"0.7\" x:Top=\"0.75\"/></PageSetup>" + excelTabColorXMLtag + "<FreezePanes/><FrozenNoSplit/><SplitHorizontal>1</SplitHorizontal><TopRowBottomPane>1</TopRowBottomPane><ActivePane>2</ActivePane><Panes><Pane><Number>3</Number></Pane><Pane><Number>2</Number><ActiveRow>0</ActiveRow></Pane></Panes><ProtectObjects>False</ProtectObjects><ProtectScenarios>False</ProtectScenarios></WorksheetOptions></Worksheet>");
+                    }
 
                     if (overlapsErrors.Count > 0)
                     {
@@ -1685,7 +1698,6 @@ namespace ACESinspector
             if (attributeName == "FuelDeliverySubType") { idForUK = 4; }//2=N/A, 3=N/R
             if (attributeName == "FuelSystemControlType") { idForUK = 4; }//2=N/A, 3=N/R
             if (attributeName == "FuelSystemDesign") { idForUK = 4; }//2=N/A, 3=N/R
-            //if (attributeName == "Aspiration") { 16; } // 16=N/A
             if (attributeName == "IgnitionSystemType") { idForUK = 4; }//2=N/A, 3=N/R
             if (attributeName == "ValvesPerEngine") { idForUK = 16; }//17=N/R, 25=N/A
             if (attributeName == "CylinderHeadType") { idForUK = 4; }//2=N/A, 3=N/R

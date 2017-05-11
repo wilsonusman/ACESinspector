@@ -1161,7 +1161,7 @@
             this.tabPageParttypePosition.Name = "tabPageParttypePosition";
             this.tabPageParttypePosition.Size = new System.Drawing.Size(837, 423);
             this.tabPageParttypePosition.TabIndex = 10;
-            this.tabPageParttypePosition.Text = "PartType-Position";
+            this.tabPageParttypePosition.Text = "Parttype-Position";
             this.tabPageParttypePosition.UseVisualStyleBackColor = true;
             // 
             // dgParttypePosition

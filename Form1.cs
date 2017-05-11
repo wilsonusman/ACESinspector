@@ -257,7 +257,7 @@ namespace ACESinspector
                         string[] partTypeIdStrings = aces.partsPartTypes[part].Split('\t');
                         partTypeNameListString = ""; foreach (string partTypeIdString in partTypeIdStrings) { partTypeNameListString += pcdb.niceParttype(Convert.ToInt32(partTypeIdString)) + ",";}
                         partTypeNameListString = partTypeNameListString.Substring(0, partTypeNameListString.Length - 1);
-                        if (partTypeIdStrings.Count() > 1) {dgParttypeDisagreement.Rows.Add(part, partTypeNameListString);}
+                        if (partTypeIdStrings.Count() > 1) {dgParttypeDisagreement.Rows.Add(part, partTypeNameListString); aces.parttypeDisagreementErrors.Add(part +"\t" + partTypeNameListString); }
                         string[] positionIdStrings = aces.partsPositions[part].Split('\t');
                         positionNameListString = ""; foreach (string positionIdString in positionIdStrings) { positionNameListString += pcdb.nicePosition(Convert.ToInt32(positionIdString)) + ","; }
                         positionNameListString = positionNameListString.Substring(0, positionNameListString.Length - 1);
