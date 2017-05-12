@@ -37,8 +37,30 @@
             this.lblPCdbFilePath = new System.Windows.Forms.Label();
             this.btnAnalyze = new System.Windows.Forms.Button();
             this.dgParts = new System.Windows.Forms.DataGridView();
+            this.dgPartsPart = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.dgPartsAppCount = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.dgPartsParttypes = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.dgPartsPositions = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.tabPageStats = new System.Windows.Forms.TabPage();
+            this.pictureBoxParttypeDisagreement = new System.Windows.Forms.PictureBox();
+            this.progressBarParttypeDisagreement = new System.Windows.Forms.ProgressBar();
+            this.lblParttypeDisagreement = new System.Windows.Forms.Label();
+            this.label18 = new System.Windows.Forms.Label();
+            this.pictureBoxInvalidConfigurations = new System.Windows.Forms.PictureBox();
+            this.pictureBoxParttypePosition = new System.Windows.Forms.PictureBox();
+            this.pictureBoxInvalidVCdbCodes = new System.Windows.Forms.PictureBox();
+            this.pictureBoxInvalidBasevehicles = new System.Windows.Forms.PictureBox();
+            this.pictureBoxOverlaps = new System.Windows.Forms.PictureBox();
+            this.pictureBoxDuplicates = new System.Windows.Forms.PictureBox();
+            this.pictureBoxCNCoverlaps = new System.Windows.Forms.PictureBox();
+            this.progressBarInvalidConfigurations = new System.Windows.Forms.ProgressBar();
+            this.progressBarParttypePosition = new System.Windows.Forms.ProgressBar();
+            this.progressBarInvalidVCdbCodes = new System.Windows.Forms.ProgressBar();
+            this.progressBarInvalidBasevehicles = new System.Windows.Forms.ProgressBar();
+            this.progressBarOverlaps = new System.Windows.Forms.ProgressBar();
+            this.progressBarCNCoverlaps = new System.Windows.Forms.ProgressBar();
+            this.progressBarDuplicates = new System.Windows.Forms.ProgressBar();
             this.lblInvalidParttypePositionCount = new System.Windows.Forms.Label();
             this.label19 = new System.Windows.Forms.Label();
             this.lblInvalidVCdbCodesCount = new System.Windows.Forms.Label();
@@ -71,10 +93,10 @@
             this.label4 = new System.Windows.Forms.Label();
             this.label3 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
-            this.tabPageParts = new System.Windows.Forms.TabPage();
             this.tabPageExports = new System.Windows.Forms.TabPage();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.btnSelectBgExportFile = new System.Windows.Forms.Button();
             this.btnBgExportSave = new System.Windows.Forms.Button();
             this.lblBgExportFilePath = new System.Windows.Forms.Label();
             this.groupBoxDataExport = new System.Windows.Forms.GroupBox();
@@ -91,6 +113,11 @@
             this.lblAssessmentFilePath = new System.Windows.Forms.Label();
             this.btnAssessmentSave = new System.Windows.Forms.Button();
             this.btnSelectAssessmentFile = new System.Windows.Forms.Button();
+            this.tabPageParts = new System.Windows.Forms.TabPage();
+            this.tabPagePartsMultiTypes = new System.Windows.Forms.TabPage();
+            this.dgParttypeDisagreement = new System.Windows.Forms.DataGridView();
+            this.dgParttypeDisagreementPart = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.dgParttypeDisagreementParttypes = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.tabPageDuplicates = new System.Windows.Forms.TabPage();
             this.dgDuplicates = new System.Windows.Forms.DataGridView();
             this.dgDuplicatesBaseVehicleid = new System.Windows.Forms.DataGridViewTextBoxColumn();
@@ -103,48 +130,6 @@
             this.dgDuplicatesAppIds = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.tabPageCNCoverlaps = new System.Windows.Forms.TabPage();
             this.dgCNCoverlaps = new System.Windows.Forms.DataGridView();
-            this.tabPageOverlaps = new System.Windows.Forms.TabPage();
-            this.dgOverlaps = new System.Windows.Forms.DataGridView();
-            this.tabPageInvalidBasevids = new System.Windows.Forms.TabPage();
-            this.dgBasevids = new System.Windows.Forms.DataGridView();
-            this.tabPageInvalidVCdbCodes = new System.Windows.Forms.TabPage();
-            this.dgVCdbCodes = new System.Windows.Forms.DataGridView();
-            this.tabPageParttypePosition = new System.Windows.Forms.TabPage();
-            this.dgParttypePosition = new System.Windows.Forms.DataGridView();
-            this.tabPageInvalidConfigs = new System.Windows.Forms.TabPage();
-            this.dgVCdbConfigs = new System.Windows.Forms.DataGridView();
-            this.lblStatus = new System.Windows.Forms.Label();
-            this.button3 = new System.Windows.Forms.Button();
-            this.progressBar1 = new System.Windows.Forms.ProgressBar();
-            this.lblProgressPercent = new System.Windows.Forms.Label();
-            this.lblAppVersion = new System.Windows.Forms.Label();
-            this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
-            this.btnSelectBgExportFile = new System.Windows.Forms.Button();
-            this.progressBarDuplicates = new System.Windows.Forms.ProgressBar();
-            this.progressBarCNCoverlaps = new System.Windows.Forms.ProgressBar();
-            this.progressBarOverlaps = new System.Windows.Forms.ProgressBar();
-            this.progressBarInvalidBasevehicles = new System.Windows.Forms.ProgressBar();
-            this.progressBarInvalidVCdbCodes = new System.Windows.Forms.ProgressBar();
-            this.progressBarParttypePosition = new System.Windows.Forms.ProgressBar();
-            this.progressBarInvalidConfigurations = new System.Windows.Forms.ProgressBar();
-            this.pictureBoxCNCoverlaps = new System.Windows.Forms.PictureBox();
-            this.pictureBoxDuplicates = new System.Windows.Forms.PictureBox();
-            this.pictureBoxOverlaps = new System.Windows.Forms.PictureBox();
-            this.pictureBoxInvalidBasevehicles = new System.Windows.Forms.PictureBox();
-            this.pictureBoxInvalidVCdbCodes = new System.Windows.Forms.PictureBox();
-            this.pictureBoxParttypePosition = new System.Windows.Forms.PictureBox();
-            this.pictureBoxInvalidConfigurations = new System.Windows.Forms.PictureBox();
-            this.tabPagePartsMultiTypes = new System.Windows.Forms.TabPage();
-            this.dgParttypeDisagreement = new System.Windows.Forms.DataGridView();
-            this.pictureBoxParttypeDisagreement = new System.Windows.Forms.PictureBox();
-            this.label18 = new System.Windows.Forms.Label();
-            this.lblParttypeDisagreement = new System.Windows.Forms.Label();
-            this.dgPartsPart = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.dgPartsAppCount = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.dgPartsParttypes = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.dgPartsPositions = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.dgParttypeDisagreementPart = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.dgParttypeDisagreementParttypes = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.dbCNCgroupnumber = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.dgCNCapplicationid = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.dgCNCbasevehicleid = new System.Windows.Forms.DataGridViewTextBoxColumn();
@@ -156,6 +141,8 @@
             this.dgCNCqty = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.dgCNCPart = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.dgCNCqualifiers = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.tabPageOverlaps = new System.Windows.Forms.TabPage();
+            this.dgOverlaps = new System.Windows.Forms.DataGridView();
             this.dgOverlapsBaseVehicleid = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.dgOverlapsMake = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.dgOverlapsModel = new System.Windows.Forms.DataGridViewTextBoxColumn();
@@ -164,6 +151,8 @@
             this.dgOverlapsPosition = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.dgOverlapsAttributes = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.dgOverlapsParts = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.tabPageInvalidBasevids = new System.Windows.Forms.TabPage();
+            this.dgBasevids = new System.Windows.Forms.DataGridView();
             this.dgBasevidsApplicationid = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.dgBasevidsBasevid = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.dgBasevidsParttype = new System.Windows.Forms.DataGridViewTextBoxColumn();
@@ -171,6 +160,8 @@
             this.dgBasevidsQty = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.dgBasevidsPart = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.dgBasevidsQualifiers = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.tabPageInvalidVCdbCodes = new System.Windows.Forms.TabPage();
+            this.dgVCdbCodes = new System.Windows.Forms.DataGridView();
             this.dgVCdbCodesApplicationid = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.dgVCdbCodesMake = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.dgVCdbCodesModel = new System.Windows.Forms.DataGridViewTextBoxColumn();
@@ -181,6 +172,8 @@
             this.dgVCdbCodesPart = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.dgVCdbCodesQualifiers = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.dgVCdbCodesNotes = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.tabPageParttypePosition = new System.Windows.Forms.TabPage();
+            this.dgParttypePosition = new System.Windows.Forms.DataGridView();
             this.dataGridViewTextBoxColumn1 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.dataGridViewTextBoxColumn3 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.dataGridViewTextBoxColumn4 = new System.Windows.Forms.DataGridViewTextBoxColumn();
@@ -190,6 +183,8 @@
             this.dataGridViewTextBoxColumn8 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.dataGridViewTextBoxColumn9 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.dataGridViewTextBoxColumn10 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.tabPageInvalidConfigs = new System.Windows.Forms.TabPage();
+            this.dgVCdbConfigs = new System.Windows.Forms.DataGridView();
             this.dgVCdbConfigsApplicationid = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.dgVCdbConfigsMake = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.dgVCdbConfigsModel = new System.Windows.Forms.DataGridViewTextBoxColumn();
@@ -199,15 +194,32 @@
             this.dgVCdbConfigsQty = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.dgVCdbConfigsPart = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.dgVCdbConfigsQualifiers = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.progressBarParttypeDisagreement = new System.Windows.Forms.ProgressBar();
+            this.lblStatus = new System.Windows.Forms.Label();
+            this.button3 = new System.Windows.Forms.Button();
+            this.progressBar1 = new System.Windows.Forms.ProgressBar();
+            this.lblProgressPercent = new System.Windows.Forms.Label();
+            this.lblAppVersion = new System.Windows.Forms.Label();
+            this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
+            this.btnSelectReferenceACESfile = new System.Windows.Forms.Button();
+            this.lblReferenceACESfilePath = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.dgParts)).BeginInit();
             this.tabControl1.SuspendLayout();
             this.tabPageStats.SuspendLayout();
-            this.tabPageParts.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBoxParttypeDisagreement)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBoxInvalidConfigurations)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBoxParttypePosition)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBoxInvalidVCdbCodes)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBoxInvalidBasevehicles)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBoxOverlaps)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBoxDuplicates)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBoxCNCoverlaps)).BeginInit();
             this.tabPageExports.SuspendLayout();
             this.groupBox1.SuspendLayout();
             this.groupBoxDataExport.SuspendLayout();
             this.groupBoxAssessment.SuspendLayout();
+            this.tabPageParts.SuspendLayout();
+            this.tabPagePartsMultiTypes.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.dgParttypeDisagreement)).BeginInit();
             this.tabPageDuplicates.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgDuplicates)).BeginInit();
             this.tabPageCNCoverlaps.SuspendLayout();
@@ -222,16 +234,6 @@
             ((System.ComponentModel.ISupportInitialize)(this.dgParttypePosition)).BeginInit();
             this.tabPageInvalidConfigs.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgVCdbConfigs)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBoxCNCoverlaps)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBoxDuplicates)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBoxOverlaps)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBoxInvalidBasevehicles)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBoxInvalidVCdbCodes)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBoxParttypePosition)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBoxInvalidConfigurations)).BeginInit();
-            this.tabPagePartsMultiTypes.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.dgParttypeDisagreement)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBoxParttypeDisagreement)).BeginInit();
             this.SuspendLayout();
             // 
             // btnSelectACESfile
@@ -240,7 +242,7 @@
             this.btnSelectACESfile.Name = "btnSelectACESfile";
             this.btnSelectACESfile.Size = new System.Drawing.Size(134, 23);
             this.btnSelectACESfile.TabIndex = 2;
-            this.btnSelectACESfile.Text = "Select ACES xml file";
+            this.btnSelectACESfile.Text = "Select ACES file";
             this.btnSelectACESfile.UseVisualStyleBackColor = true;
             this.btnSelectACESfile.Click += new System.EventHandler(this.btnSelectACESfile_Click);
             // 
@@ -256,7 +258,7 @@
             // 
             // btnSelectVCdbFile
             // 
-            this.btnSelectVCdbFile.Location = new System.Drawing.Point(12, 41);
+            this.btnSelectVCdbFile.Location = new System.Drawing.Point(12, 70);
             this.btnSelectVCdbFile.Name = "btnSelectVCdbFile";
             this.btnSelectVCdbFile.Size = new System.Drawing.Size(134, 23);
             this.btnSelectVCdbFile.TabIndex = 4;
@@ -268,7 +270,7 @@
             // 
             this.lblVCdbFilePath.AutoSize = true;
             this.lblVCdbFilePath.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblVCdbFilePath.Location = new System.Drawing.Point(153, 44);
+            this.lblVCdbFilePath.Location = new System.Drawing.Point(153, 73);
             this.lblVCdbFilePath.Name = "lblVCdbFilePath";
             this.lblVCdbFilePath.Size = new System.Drawing.Size(45, 16);
             this.lblVCdbFilePath.TabIndex = 5;
@@ -276,7 +278,7 @@
             // 
             // btnSelectPCdbFile
             // 
-            this.btnSelectPCdbFile.Location = new System.Drawing.Point(12, 70);
+            this.btnSelectPCdbFile.Location = new System.Drawing.Point(12, 99);
             this.btnSelectPCdbFile.Name = "btnSelectPCdbFile";
             this.btnSelectPCdbFile.Size = new System.Drawing.Size(134, 23);
             this.btnSelectPCdbFile.TabIndex = 6;
@@ -288,7 +290,7 @@
             // 
             this.lblPCdbFilePath.AutoSize = true;
             this.lblPCdbFilePath.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblPCdbFilePath.Location = new System.Drawing.Point(153, 73);
+            this.lblPCdbFilePath.Location = new System.Drawing.Point(153, 102);
             this.lblPCdbFilePath.Name = "lblPCdbFilePath";
             this.lblPCdbFilePath.Size = new System.Drawing.Size(45, 16);
             this.lblPCdbFilePath.TabIndex = 7;
@@ -316,6 +318,38 @@
             this.dgParts.Name = "dgParts";
             this.dgParts.Size = new System.Drawing.Size(838, 424);
             this.dgParts.TabIndex = 0;
+            // 
+            // dgPartsPart
+            // 
+            this.dgPartsPart.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
+            this.dgPartsPart.HeaderText = "Part";
+            this.dgPartsPart.Name = "dgPartsPart";
+            this.dgPartsPart.ReadOnly = true;
+            this.dgPartsPart.Width = 51;
+            // 
+            // dgPartsAppCount
+            // 
+            this.dgPartsAppCount.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
+            this.dgPartsAppCount.HeaderText = "Application Count";
+            this.dgPartsAppCount.Name = "dgPartsAppCount";
+            this.dgPartsAppCount.ReadOnly = true;
+            this.dgPartsAppCount.Width = 105;
+            // 
+            // dgPartsParttypes
+            // 
+            this.dgPartsParttypes.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
+            this.dgPartsParttypes.HeaderText = "Part Types";
+            this.dgPartsParttypes.Name = "dgPartsParttypes";
+            this.dgPartsParttypes.ReadOnly = true;
+            this.dgPartsParttypes.Width = 77;
+            // 
+            // dgPartsPositions
+            // 
+            this.dgPartsPositions.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
+            this.dgPartsPositions.HeaderText = "Positions";
+            this.dgPartsPositions.Name = "dgPartsPositions";
+            this.dgPartsPositions.ReadOnly = true;
+            this.dgPartsPositions.Width = 74;
             // 
             // tabControl1
             // 
@@ -395,6 +429,154 @@
             this.tabPageStats.Text = "Statistics";
             this.tabPageStats.UseVisualStyleBackColor = true;
             // 
+            // pictureBoxParttypeDisagreement
+            // 
+            this.pictureBoxParttypeDisagreement.BackColor = System.Drawing.Color.Yellow;
+            this.pictureBoxParttypeDisagreement.Location = new System.Drawing.Point(9, 247);
+            this.pictureBoxParttypeDisagreement.Name = "pictureBoxParttypeDisagreement";
+            this.pictureBoxParttypeDisagreement.Size = new System.Drawing.Size(128, 15);
+            this.pictureBoxParttypeDisagreement.TabIndex = 47;
+            this.pictureBoxParttypeDisagreement.TabStop = false;
+            // 
+            // progressBarParttypeDisagreement
+            // 
+            this.progressBarParttypeDisagreement.Location = new System.Drawing.Point(9, 247);
+            this.progressBarParttypeDisagreement.Name = "progressBarParttypeDisagreement";
+            this.progressBarParttypeDisagreement.Size = new System.Drawing.Size(128, 15);
+            this.progressBarParttypeDisagreement.TabIndex = 50;
+            // 
+            // lblParttypeDisagreement
+            // 
+            this.lblParttypeDisagreement.AutoSize = true;
+            this.lblParttypeDisagreement.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblParttypeDisagreement.Location = new System.Drawing.Point(332, 242);
+            this.lblParttypeDisagreement.Name = "lblParttypeDisagreement";
+            this.lblParttypeDisagreement.Size = new System.Drawing.Size(42, 20);
+            this.lblParttypeDisagreement.TabIndex = 49;
+            this.lblParttypeDisagreement.Text = "label";
+            // 
+            // label18
+            // 
+            this.label18.AutoSize = true;
+            this.label18.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label18.Location = new System.Drawing.Point(145, 242);
+            this.label18.Name = "label18";
+            this.label18.Size = new System.Drawing.Size(180, 20);
+            this.label18.TabIndex = 48;
+            this.label18.Text = "Parttype Disagreements";
+            // 
+            // pictureBoxInvalidConfigurations
+            // 
+            this.pictureBoxInvalidConfigurations.BackColor = System.Drawing.Color.Red;
+            this.pictureBoxInvalidConfigurations.Location = new System.Drawing.Point(9, 399);
+            this.pictureBoxInvalidConfigurations.Name = "pictureBoxInvalidConfigurations";
+            this.pictureBoxInvalidConfigurations.Size = new System.Drawing.Size(128, 17);
+            this.pictureBoxInvalidConfigurations.TabIndex = 45;
+            this.pictureBoxInvalidConfigurations.TabStop = false;
+            // 
+            // pictureBoxParttypePosition
+            // 
+            this.pictureBoxParttypePosition.BackColor = System.Drawing.Color.Red;
+            this.pictureBoxParttypePosition.Location = new System.Drawing.Point(9, 377);
+            this.pictureBoxParttypePosition.Name = "pictureBoxParttypePosition";
+            this.pictureBoxParttypePosition.Size = new System.Drawing.Size(128, 16);
+            this.pictureBoxParttypePosition.TabIndex = 44;
+            this.pictureBoxParttypePosition.TabStop = false;
+            // 
+            // pictureBoxInvalidVCdbCodes
+            // 
+            this.pictureBoxInvalidVCdbCodes.BackColor = System.Drawing.Color.Red;
+            this.pictureBoxInvalidVCdbCodes.Location = new System.Drawing.Point(9, 355);
+            this.pictureBoxInvalidVCdbCodes.Name = "pictureBoxInvalidVCdbCodes";
+            this.pictureBoxInvalidVCdbCodes.Size = new System.Drawing.Size(128, 16);
+            this.pictureBoxInvalidVCdbCodes.TabIndex = 43;
+            this.pictureBoxInvalidVCdbCodes.TabStop = false;
+            // 
+            // pictureBoxInvalidBasevehicles
+            // 
+            this.pictureBoxInvalidBasevehicles.BackColor = System.Drawing.Color.Red;
+            this.pictureBoxInvalidBasevehicles.Location = new System.Drawing.Point(9, 333);
+            this.pictureBoxInvalidBasevehicles.Name = "pictureBoxInvalidBasevehicles";
+            this.pictureBoxInvalidBasevehicles.Size = new System.Drawing.Size(128, 16);
+            this.pictureBoxInvalidBasevehicles.TabIndex = 42;
+            this.pictureBoxInvalidBasevehicles.TabStop = false;
+            // 
+            // pictureBoxOverlaps
+            // 
+            this.pictureBoxOverlaps.BackColor = System.Drawing.Color.Red;
+            this.pictureBoxOverlaps.Location = new System.Drawing.Point(9, 311);
+            this.pictureBoxOverlaps.Name = "pictureBoxOverlaps";
+            this.pictureBoxOverlaps.Size = new System.Drawing.Size(128, 16);
+            this.pictureBoxOverlaps.TabIndex = 41;
+            this.pictureBoxOverlaps.TabStop = false;
+            // 
+            // pictureBoxDuplicates
+            // 
+            this.pictureBoxDuplicates.BackColor = System.Drawing.Color.Yellow;
+            this.pictureBoxDuplicates.Location = new System.Drawing.Point(9, 268);
+            this.pictureBoxDuplicates.Name = "pictureBoxDuplicates";
+            this.pictureBoxDuplicates.Size = new System.Drawing.Size(128, 15);
+            this.pictureBoxDuplicates.TabIndex = 40;
+            this.pictureBoxDuplicates.TabStop = false;
+            // 
+            // pictureBoxCNCoverlaps
+            // 
+            this.pictureBoxCNCoverlaps.BackColor = System.Drawing.Color.Red;
+            this.pictureBoxCNCoverlaps.Location = new System.Drawing.Point(9, 289);
+            this.pictureBoxCNCoverlaps.Name = "pictureBoxCNCoverlaps";
+            this.pictureBoxCNCoverlaps.Size = new System.Drawing.Size(128, 16);
+            this.pictureBoxCNCoverlaps.TabIndex = 39;
+            this.pictureBoxCNCoverlaps.TabStop = false;
+            // 
+            // progressBarInvalidConfigurations
+            // 
+            this.progressBarInvalidConfigurations.Location = new System.Drawing.Point(9, 399);
+            this.progressBarInvalidConfigurations.Name = "progressBarInvalidConfigurations";
+            this.progressBarInvalidConfigurations.Size = new System.Drawing.Size(128, 17);
+            this.progressBarInvalidConfigurations.TabIndex = 38;
+            // 
+            // progressBarParttypePosition
+            // 
+            this.progressBarParttypePosition.Location = new System.Drawing.Point(9, 377);
+            this.progressBarParttypePosition.Name = "progressBarParttypePosition";
+            this.progressBarParttypePosition.Size = new System.Drawing.Size(128, 16);
+            this.progressBarParttypePosition.TabIndex = 37;
+            // 
+            // progressBarInvalidVCdbCodes
+            // 
+            this.progressBarInvalidVCdbCodes.Location = new System.Drawing.Point(9, 355);
+            this.progressBarInvalidVCdbCodes.Name = "progressBarInvalidVCdbCodes";
+            this.progressBarInvalidVCdbCodes.Size = new System.Drawing.Size(128, 16);
+            this.progressBarInvalidVCdbCodes.TabIndex = 36;
+            // 
+            // progressBarInvalidBasevehicles
+            // 
+            this.progressBarInvalidBasevehicles.Location = new System.Drawing.Point(9, 333);
+            this.progressBarInvalidBasevehicles.Name = "progressBarInvalidBasevehicles";
+            this.progressBarInvalidBasevehicles.Size = new System.Drawing.Size(128, 16);
+            this.progressBarInvalidBasevehicles.TabIndex = 35;
+            // 
+            // progressBarOverlaps
+            // 
+            this.progressBarOverlaps.Location = new System.Drawing.Point(9, 311);
+            this.progressBarOverlaps.Name = "progressBarOverlaps";
+            this.progressBarOverlaps.Size = new System.Drawing.Size(128, 16);
+            this.progressBarOverlaps.TabIndex = 34;
+            // 
+            // progressBarCNCoverlaps
+            // 
+            this.progressBarCNCoverlaps.Location = new System.Drawing.Point(9, 289);
+            this.progressBarCNCoverlaps.Name = "progressBarCNCoverlaps";
+            this.progressBarCNCoverlaps.Size = new System.Drawing.Size(128, 16);
+            this.progressBarCNCoverlaps.TabIndex = 33;
+            // 
+            // progressBarDuplicates
+            // 
+            this.progressBarDuplicates.Location = new System.Drawing.Point(9, 268);
+            this.progressBarDuplicates.Name = "progressBarDuplicates";
+            this.progressBarDuplicates.Size = new System.Drawing.Size(128, 15);
+            this.progressBarDuplicates.TabIndex = 32;
+            // 
             // lblInvalidParttypePositionCount
             // 
             this.lblInvalidParttypePositionCount.AutoSize = true;
@@ -411,9 +593,9 @@
             this.label19.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label19.Location = new System.Drawing.Point(145, 377);
             this.label19.Name = "label19";
-            this.label19.Size = new System.Drawing.Size(132, 20);
+            this.label19.Size = new System.Drawing.Size(179, 20);
             this.label19.TabIndex = 30;
-            this.label19.Text = "PartType/Position";
+            this.label19.Text = "PartType/Position Errors";
             // 
             // lblInvalidVCdbCodesCount
             // 
@@ -719,17 +901,6 @@
             this.label2.TabIndex = 0;
             this.label2.Text = "Title";
             // 
-            // tabPageParts
-            // 
-            this.tabPageParts.Controls.Add(this.dgParts);
-            this.tabPageParts.Location = new System.Drawing.Point(4, 22);
-            this.tabPageParts.Name = "tabPageParts";
-            this.tabPageParts.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPageParts.Size = new System.Drawing.Size(837, 423);
-            this.tabPageParts.TabIndex = 1;
-            this.tabPageParts.Text = "Parts";
-            this.tabPageParts.UseVisualStyleBackColor = true;
-            // 
             // tabPageExports
             // 
             this.tabPageExports.Controls.Add(this.groupBox2);
@@ -764,6 +935,16 @@
             this.groupBox1.TabIndex = 2;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Buyer\'s Guide Export";
+            // 
+            // btnSelectBgExportFile
+            // 
+            this.btnSelectBgExportFile.Location = new System.Drawing.Point(6, 19);
+            this.btnSelectBgExportFile.Name = "btnSelectBgExportFile";
+            this.btnSelectBgExportFile.Size = new System.Drawing.Size(107, 23);
+            this.btnSelectBgExportFile.TabIndex = 2;
+            this.btnSelectBgExportFile.Text = "Select Output Path";
+            this.btnSelectBgExportFile.UseVisualStyleBackColor = true;
+            this.btnSelectBgExportFile.Click += new System.EventHandler(this.btnSelectBgExportFile_Click);
             // 
             // btnBgExportSave
             // 
@@ -938,6 +1119,56 @@
             this.btnSelectAssessmentFile.UseVisualStyleBackColor = true;
             this.btnSelectAssessmentFile.Click += new System.EventHandler(this.btnSelectAssessmentFile_Click);
             // 
+            // tabPageParts
+            // 
+            this.tabPageParts.Controls.Add(this.dgParts);
+            this.tabPageParts.Location = new System.Drawing.Point(4, 22);
+            this.tabPageParts.Name = "tabPageParts";
+            this.tabPageParts.Padding = new System.Windows.Forms.Padding(3);
+            this.tabPageParts.Size = new System.Drawing.Size(837, 423);
+            this.tabPageParts.TabIndex = 1;
+            this.tabPageParts.Text = "Parts";
+            this.tabPageParts.UseVisualStyleBackColor = true;
+            // 
+            // tabPagePartsMultiTypes
+            // 
+            this.tabPagePartsMultiTypes.Controls.Add(this.dgParttypeDisagreement);
+            this.tabPagePartsMultiTypes.Location = new System.Drawing.Point(4, 22);
+            this.tabPagePartsMultiTypes.Name = "tabPagePartsMultiTypes";
+            this.tabPagePartsMultiTypes.Size = new System.Drawing.Size(837, 423);
+            this.tabPagePartsMultiTypes.TabIndex = 11;
+            this.tabPagePartsMultiTypes.Text = "Parttype Disagreement";
+            this.tabPagePartsMultiTypes.UseVisualStyleBackColor = true;
+            // 
+            // dgParttypeDisagreement
+            // 
+            this.dgParttypeDisagreement.AllowUserToAddRows = false;
+            this.dgParttypeDisagreement.AllowUserToDeleteRows = false;
+            this.dgParttypeDisagreement.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dgParttypeDisagreement.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
+            this.dgParttypeDisagreementPart,
+            this.dgParttypeDisagreementParttypes});
+            this.dgParttypeDisagreement.Location = new System.Drawing.Point(3, 3);
+            this.dgParttypeDisagreement.Name = "dgParttypeDisagreement";
+            this.dgParttypeDisagreement.Size = new System.Drawing.Size(838, 424);
+            this.dgParttypeDisagreement.TabIndex = 1;
+            // 
+            // dgParttypeDisagreementPart
+            // 
+            this.dgParttypeDisagreementPart.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
+            this.dgParttypeDisagreementPart.HeaderText = "Part";
+            this.dgParttypeDisagreementPart.Name = "dgParttypeDisagreementPart";
+            this.dgParttypeDisagreementPart.ReadOnly = true;
+            this.dgParttypeDisagreementPart.Width = 51;
+            // 
+            // dgParttypeDisagreementParttypes
+            // 
+            this.dgParttypeDisagreementParttypes.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
+            this.dgParttypeDisagreementParttypes.HeaderText = "Part Types";
+            this.dgParttypeDisagreementParttypes.Name = "dgParttypeDisagreementParttypes";
+            this.dgParttypeDisagreementParttypes.ReadOnly = true;
+            this.dgParttypeDisagreementParttypes.Width = 83;
+            // 
             // tabPageDuplicates
             // 
             this.tabPageDuplicates.Controls.Add(this.dgDuplicates);
@@ -1065,430 +1296,6 @@
             this.dgCNCoverlaps.TabIndex = 3;
             this.dgCNCoverlaps.SortCompare += new System.Windows.Forms.DataGridViewSortCompareEventHandler(this.dgCNCoverlaps_SortCompare);
             // 
-            // tabPageOverlaps
-            // 
-            this.tabPageOverlaps.Controls.Add(this.dgOverlaps);
-            this.tabPageOverlaps.Location = new System.Drawing.Point(4, 22);
-            this.tabPageOverlaps.Name = "tabPageOverlaps";
-            this.tabPageOverlaps.Size = new System.Drawing.Size(837, 423);
-            this.tabPageOverlaps.TabIndex = 3;
-            this.tabPageOverlaps.Text = "Overlaps";
-            this.tabPageOverlaps.UseVisualStyleBackColor = true;
-            // 
-            // dgOverlaps
-            // 
-            this.dgOverlaps.AllowUserToAddRows = false;
-            this.dgOverlaps.AllowUserToDeleteRows = false;
-            this.dgOverlaps.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dgOverlaps.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
-            this.dgOverlapsBaseVehicleid,
-            this.dgOverlapsMake,
-            this.dgOverlapsModel,
-            this.dgOverlapsYear,
-            this.dgOverlapsParttype,
-            this.dgOverlapsPosition,
-            this.dgOverlapsAttributes,
-            this.dgOverlapsParts});
-            this.dgOverlaps.Location = new System.Drawing.Point(3, 3);
-            this.dgOverlaps.Name = "dgOverlaps";
-            this.dgOverlaps.Size = new System.Drawing.Size(838, 424);
-            this.dgOverlaps.TabIndex = 2;
-            this.dgOverlaps.SortCompare += new System.Windows.Forms.DataGridViewSortCompareEventHandler(this.dgOverlaps_SortCompare);
-            // 
-            // tabPageInvalidBasevids
-            // 
-            this.tabPageInvalidBasevids.Controls.Add(this.dgBasevids);
-            this.tabPageInvalidBasevids.Location = new System.Drawing.Point(4, 22);
-            this.tabPageInvalidBasevids.Name = "tabPageInvalidBasevids";
-            this.tabPageInvalidBasevids.Size = new System.Drawing.Size(837, 423);
-            this.tabPageInvalidBasevids.TabIndex = 6;
-            this.tabPageInvalidBasevids.Text = "Invalid Basevehicles";
-            this.tabPageInvalidBasevids.UseVisualStyleBackColor = true;
-            // 
-            // dgBasevids
-            // 
-            this.dgBasevids.AllowUserToAddRows = false;
-            this.dgBasevids.AllowUserToDeleteRows = false;
-            this.dgBasevids.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dgBasevids.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
-            this.dgBasevidsApplicationid,
-            this.dgBasevidsBasevid,
-            this.dgBasevidsParttype,
-            this.dgBasevidsPosition,
-            this.dgBasevidsQty,
-            this.dgBasevidsPart,
-            this.dgBasevidsQualifiers});
-            this.dgBasevids.Location = new System.Drawing.Point(3, 3);
-            this.dgBasevids.Name = "dgBasevids";
-            this.dgBasevids.Size = new System.Drawing.Size(838, 424);
-            this.dgBasevids.TabIndex = 2;
-            // 
-            // tabPageInvalidVCdbCodes
-            // 
-            this.tabPageInvalidVCdbCodes.Controls.Add(this.dgVCdbCodes);
-            this.tabPageInvalidVCdbCodes.Location = new System.Drawing.Point(4, 22);
-            this.tabPageInvalidVCdbCodes.Name = "tabPageInvalidVCdbCodes";
-            this.tabPageInvalidVCdbCodes.Size = new System.Drawing.Size(837, 423);
-            this.tabPageInvalidVCdbCodes.TabIndex = 7;
-            this.tabPageInvalidVCdbCodes.Text = "Invalid VCdb codes";
-            this.tabPageInvalidVCdbCodes.UseVisualStyleBackColor = true;
-            // 
-            // dgVCdbCodes
-            // 
-            this.dgVCdbCodes.AllowUserToAddRows = false;
-            this.dgVCdbCodes.AllowUserToDeleteRows = false;
-            this.dgVCdbCodes.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dgVCdbCodes.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
-            this.dgVCdbCodesApplicationid,
-            this.dgVCdbCodesMake,
-            this.dgVCdbCodesModel,
-            this.dgVCdbCodesYear,
-            this.dgVCdbCodesParttype,
-            this.dgVCdbCodesPosition,
-            this.dgVCdbCodesQty,
-            this.dgVCdbCodesPart,
-            this.dgVCdbCodesQualifiers,
-            this.dgVCdbCodesNotes});
-            this.dgVCdbCodes.Location = new System.Drawing.Point(3, 3);
-            this.dgVCdbCodes.Name = "dgVCdbCodes";
-            this.dgVCdbCodes.Size = new System.Drawing.Size(838, 425);
-            this.dgVCdbCodes.TabIndex = 2;
-            // 
-            // tabPageParttypePosition
-            // 
-            this.tabPageParttypePosition.Controls.Add(this.dgParttypePosition);
-            this.tabPageParttypePosition.Location = new System.Drawing.Point(4, 22);
-            this.tabPageParttypePosition.Name = "tabPageParttypePosition";
-            this.tabPageParttypePosition.Size = new System.Drawing.Size(837, 423);
-            this.tabPageParttypePosition.TabIndex = 10;
-            this.tabPageParttypePosition.Text = "Parttype-Position";
-            this.tabPageParttypePosition.UseVisualStyleBackColor = true;
-            // 
-            // dgParttypePosition
-            // 
-            this.dgParttypePosition.AllowUserToAddRows = false;
-            this.dgParttypePosition.AllowUserToDeleteRows = false;
-            this.dgParttypePosition.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dgParttypePosition.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
-            this.dataGridViewTextBoxColumn1,
-            this.dataGridViewTextBoxColumn3,
-            this.dataGridViewTextBoxColumn4,
-            this.dataGridViewTextBoxColumn5,
-            this.dataGridViewTextBoxColumn6,
-            this.dataGridViewTextBoxColumn7,
-            this.dataGridViewTextBoxColumn8,
-            this.dataGridViewTextBoxColumn9,
-            this.dataGridViewTextBoxColumn10});
-            this.dgParttypePosition.Location = new System.Drawing.Point(3, 3);
-            this.dgParttypePosition.Name = "dgParttypePosition";
-            this.dgParttypePosition.Size = new System.Drawing.Size(838, 424);
-            this.dgParttypePosition.TabIndex = 4;
-            // 
-            // tabPageInvalidConfigs
-            // 
-            this.tabPageInvalidConfigs.Controls.Add(this.dgVCdbConfigs);
-            this.tabPageInvalidConfigs.Location = new System.Drawing.Point(4, 22);
-            this.tabPageInvalidConfigs.Name = "tabPageInvalidConfigs";
-            this.tabPageInvalidConfigs.Size = new System.Drawing.Size(837, 423);
-            this.tabPageInvalidConfigs.TabIndex = 8;
-            this.tabPageInvalidConfigs.Text = "Invalid Configurations";
-            this.tabPageInvalidConfigs.UseVisualStyleBackColor = true;
-            // 
-            // dgVCdbConfigs
-            // 
-            this.dgVCdbConfigs.AllowUserToAddRows = false;
-            this.dgVCdbConfigs.AllowUserToDeleteRows = false;
-            this.dgVCdbConfigs.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dgVCdbConfigs.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
-            this.dgVCdbConfigsApplicationid,
-            this.dgVCdbConfigsMake,
-            this.dgVCdbConfigsModel,
-            this.dgVCdbConfigsYear,
-            this.dgVCdbConfigsParttype,
-            this.dgVCdbConfigsPosition,
-            this.dgVCdbConfigsQty,
-            this.dgVCdbConfigsPart,
-            this.dgVCdbConfigsQualifiers});
-            this.dgVCdbConfigs.Location = new System.Drawing.Point(3, 3);
-            this.dgVCdbConfigs.Name = "dgVCdbConfigs";
-            this.dgVCdbConfigs.Size = new System.Drawing.Size(838, 424);
-            this.dgVCdbConfigs.TabIndex = 3;
-            // 
-            // lblStatus
-            // 
-            this.lblStatus.AutoSize = true;
-            this.lblStatus.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblStatus.Location = new System.Drawing.Point(86, 131);
-            this.lblStatus.Name = "lblStatus";
-            this.lblStatus.Size = new System.Drawing.Size(619, 20);
-            this.lblStatus.TabIndex = 13;
-            this.lblStatus.Text = "l1 label1 label1 label1 label1 label1 label1 label1 label1 label1 label1 label1 l" +
-    "abel1 label1";
-            // 
-            // button3
-            // 
-            this.button3.Location = new System.Drawing.Point(12, 99);
-            this.button3.Name = "button3";
-            this.button3.Size = new System.Drawing.Size(95, 23);
-            this.button3.TabIndex = 14;
-            this.button3.Text = "Select Qdb";
-            this.button3.UseVisualStyleBackColor = true;
-            this.button3.Visible = false;
-            // 
-            // progressBar1
-            // 
-            this.progressBar1.Location = new System.Drawing.Point(86, 151);
-            this.progressBar1.MarqueeAnimationSpeed = 0;
-            this.progressBar1.Name = "progressBar1";
-            this.progressBar1.Size = new System.Drawing.Size(709, 10);
-            this.progressBar1.Step = 1;
-            this.progressBar1.Style = System.Windows.Forms.ProgressBarStyle.Continuous;
-            this.progressBar1.TabIndex = 15;
-            // 
-            // lblProgressPercent
-            // 
-            this.lblProgressPercent.AutoSize = true;
-            this.lblProgressPercent.Location = new System.Drawing.Point(801, 149);
-            this.lblProgressPercent.Name = "lblProgressPercent";
-            this.lblProgressPercent.Size = new System.Drawing.Size(33, 13);
-            this.lblProgressPercent.TabIndex = 16;
-            this.lblProgressPercent.Text = "100%";
-            // 
-            // lblAppVersion
-            // 
-            this.lblAppVersion.AutoSize = true;
-            this.lblAppVersion.Location = new System.Drawing.Point(790, 0);
-            this.lblAppVersion.Name = "lblAppVersion";
-            this.lblAppVersion.Size = new System.Drawing.Size(16, 13);
-            this.lblAppVersion.TabIndex = 33;
-            this.lblAppVersion.Text = "...";
-            // 
-            // toolTip1
-            // 
-            this.toolTip1.Popup += new System.Windows.Forms.PopupEventHandler(this.toolTip1_Popup);
-            // 
-            // btnSelectBgExportFile
-            // 
-            this.btnSelectBgExportFile.Location = new System.Drawing.Point(6, 19);
-            this.btnSelectBgExportFile.Name = "btnSelectBgExportFile";
-            this.btnSelectBgExportFile.Size = new System.Drawing.Size(107, 23);
-            this.btnSelectBgExportFile.TabIndex = 2;
-            this.btnSelectBgExportFile.Text = "Select Output Path";
-            this.btnSelectBgExportFile.UseVisualStyleBackColor = true;
-            this.btnSelectBgExportFile.Click += new System.EventHandler(this.btnSelectBgExportFile_Click);
-            // 
-            // progressBarDuplicates
-            // 
-            this.progressBarDuplicates.Location = new System.Drawing.Point(9, 268);
-            this.progressBarDuplicates.Name = "progressBarDuplicates";
-            this.progressBarDuplicates.Size = new System.Drawing.Size(128, 15);
-            this.progressBarDuplicates.TabIndex = 32;
-            // 
-            // progressBarCNCoverlaps
-            // 
-            this.progressBarCNCoverlaps.Location = new System.Drawing.Point(9, 289);
-            this.progressBarCNCoverlaps.Name = "progressBarCNCoverlaps";
-            this.progressBarCNCoverlaps.Size = new System.Drawing.Size(128, 16);
-            this.progressBarCNCoverlaps.TabIndex = 33;
-            // 
-            // progressBarOverlaps
-            // 
-            this.progressBarOverlaps.Location = new System.Drawing.Point(9, 311);
-            this.progressBarOverlaps.Name = "progressBarOverlaps";
-            this.progressBarOverlaps.Size = new System.Drawing.Size(128, 16);
-            this.progressBarOverlaps.TabIndex = 34;
-            // 
-            // progressBarInvalidBasevehicles
-            // 
-            this.progressBarInvalidBasevehicles.Location = new System.Drawing.Point(9, 333);
-            this.progressBarInvalidBasevehicles.Name = "progressBarInvalidBasevehicles";
-            this.progressBarInvalidBasevehicles.Size = new System.Drawing.Size(128, 16);
-            this.progressBarInvalidBasevehicles.TabIndex = 35;
-            // 
-            // progressBarInvalidVCdbCodes
-            // 
-            this.progressBarInvalidVCdbCodes.Location = new System.Drawing.Point(9, 355);
-            this.progressBarInvalidVCdbCodes.Name = "progressBarInvalidVCdbCodes";
-            this.progressBarInvalidVCdbCodes.Size = new System.Drawing.Size(128, 16);
-            this.progressBarInvalidVCdbCodes.TabIndex = 36;
-            // 
-            // progressBarParttypePosition
-            // 
-            this.progressBarParttypePosition.Location = new System.Drawing.Point(9, 377);
-            this.progressBarParttypePosition.Name = "progressBarParttypePosition";
-            this.progressBarParttypePosition.Size = new System.Drawing.Size(128, 16);
-            this.progressBarParttypePosition.TabIndex = 37;
-            // 
-            // progressBarInvalidConfigurations
-            // 
-            this.progressBarInvalidConfigurations.Location = new System.Drawing.Point(9, 399);
-            this.progressBarInvalidConfigurations.Name = "progressBarInvalidConfigurations";
-            this.progressBarInvalidConfigurations.Size = new System.Drawing.Size(128, 17);
-            this.progressBarInvalidConfigurations.TabIndex = 38;
-            // 
-            // pictureBoxCNCoverlaps
-            // 
-            this.pictureBoxCNCoverlaps.BackColor = System.Drawing.Color.Red;
-            this.pictureBoxCNCoverlaps.Location = new System.Drawing.Point(9, 289);
-            this.pictureBoxCNCoverlaps.Name = "pictureBoxCNCoverlaps";
-            this.pictureBoxCNCoverlaps.Size = new System.Drawing.Size(128, 16);
-            this.pictureBoxCNCoverlaps.TabIndex = 39;
-            this.pictureBoxCNCoverlaps.TabStop = false;
-            // 
-            // pictureBoxDuplicates
-            // 
-            this.pictureBoxDuplicates.BackColor = System.Drawing.Color.Yellow;
-            this.pictureBoxDuplicates.Location = new System.Drawing.Point(9, 268);
-            this.pictureBoxDuplicates.Name = "pictureBoxDuplicates";
-            this.pictureBoxDuplicates.Size = new System.Drawing.Size(128, 15);
-            this.pictureBoxDuplicates.TabIndex = 40;
-            this.pictureBoxDuplicates.TabStop = false;
-            // 
-            // pictureBoxOverlaps
-            // 
-            this.pictureBoxOverlaps.BackColor = System.Drawing.Color.Red;
-            this.pictureBoxOverlaps.Location = new System.Drawing.Point(9, 311);
-            this.pictureBoxOverlaps.Name = "pictureBoxOverlaps";
-            this.pictureBoxOverlaps.Size = new System.Drawing.Size(128, 16);
-            this.pictureBoxOverlaps.TabIndex = 41;
-            this.pictureBoxOverlaps.TabStop = false;
-            // 
-            // pictureBoxInvalidBasevehicles
-            // 
-            this.pictureBoxInvalidBasevehicles.BackColor = System.Drawing.Color.Red;
-            this.pictureBoxInvalidBasevehicles.Location = new System.Drawing.Point(9, 333);
-            this.pictureBoxInvalidBasevehicles.Name = "pictureBoxInvalidBasevehicles";
-            this.pictureBoxInvalidBasevehicles.Size = new System.Drawing.Size(128, 16);
-            this.pictureBoxInvalidBasevehicles.TabIndex = 42;
-            this.pictureBoxInvalidBasevehicles.TabStop = false;
-            // 
-            // pictureBoxInvalidVCdbCodes
-            // 
-            this.pictureBoxInvalidVCdbCodes.BackColor = System.Drawing.Color.Red;
-            this.pictureBoxInvalidVCdbCodes.Location = new System.Drawing.Point(9, 355);
-            this.pictureBoxInvalidVCdbCodes.Name = "pictureBoxInvalidVCdbCodes";
-            this.pictureBoxInvalidVCdbCodes.Size = new System.Drawing.Size(128, 16);
-            this.pictureBoxInvalidVCdbCodes.TabIndex = 43;
-            this.pictureBoxInvalidVCdbCodes.TabStop = false;
-            // 
-            // pictureBoxParttypePosition
-            // 
-            this.pictureBoxParttypePosition.BackColor = System.Drawing.Color.Red;
-            this.pictureBoxParttypePosition.Location = new System.Drawing.Point(9, 377);
-            this.pictureBoxParttypePosition.Name = "pictureBoxParttypePosition";
-            this.pictureBoxParttypePosition.Size = new System.Drawing.Size(128, 16);
-            this.pictureBoxParttypePosition.TabIndex = 44;
-            this.pictureBoxParttypePosition.TabStop = false;
-            // 
-            // pictureBoxInvalidConfigurations
-            // 
-            this.pictureBoxInvalidConfigurations.BackColor = System.Drawing.Color.Red;
-            this.pictureBoxInvalidConfigurations.Location = new System.Drawing.Point(9, 399);
-            this.pictureBoxInvalidConfigurations.Name = "pictureBoxInvalidConfigurations";
-            this.pictureBoxInvalidConfigurations.Size = new System.Drawing.Size(128, 17);
-            this.pictureBoxInvalidConfigurations.TabIndex = 45;
-            this.pictureBoxInvalidConfigurations.TabStop = false;
-            // 
-            // tabPagePartsMultiTypes
-            // 
-            this.tabPagePartsMultiTypes.Controls.Add(this.dgParttypeDisagreement);
-            this.tabPagePartsMultiTypes.Location = new System.Drawing.Point(4, 22);
-            this.tabPagePartsMultiTypes.Name = "tabPagePartsMultiTypes";
-            this.tabPagePartsMultiTypes.Size = new System.Drawing.Size(837, 423);
-            this.tabPagePartsMultiTypes.TabIndex = 11;
-            this.tabPagePartsMultiTypes.Text = "Parttype Disagreement";
-            this.tabPagePartsMultiTypes.UseVisualStyleBackColor = true;
-            // 
-            // dgParttypeDisagreement
-            // 
-            this.dgParttypeDisagreement.AllowUserToAddRows = false;
-            this.dgParttypeDisagreement.AllowUserToDeleteRows = false;
-            this.dgParttypeDisagreement.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dgParttypeDisagreement.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
-            this.dgParttypeDisagreementPart,
-            this.dgParttypeDisagreementParttypes});
-            this.dgParttypeDisagreement.Location = new System.Drawing.Point(3, 3);
-            this.dgParttypeDisagreement.Name = "dgParttypeDisagreement";
-            this.dgParttypeDisagreement.Size = new System.Drawing.Size(838, 424);
-            this.dgParttypeDisagreement.TabIndex = 1;
-            // 
-            // pictureBoxParttypeDisagreement
-            // 
-            this.pictureBoxParttypeDisagreement.BackColor = System.Drawing.Color.Yellow;
-            this.pictureBoxParttypeDisagreement.Location = new System.Drawing.Point(9, 247);
-            this.pictureBoxParttypeDisagreement.Name = "pictureBoxParttypeDisagreement";
-            this.pictureBoxParttypeDisagreement.Size = new System.Drawing.Size(128, 15);
-            this.pictureBoxParttypeDisagreement.TabIndex = 47;
-            this.pictureBoxParttypeDisagreement.TabStop = false;
-            // 
-            // label18
-            // 
-            this.label18.AutoSize = true;
-            this.label18.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label18.Location = new System.Drawing.Point(145, 242);
-            this.label18.Name = "label18";
-            this.label18.Size = new System.Drawing.Size(172, 20);
-            this.label18.TabIndex = 48;
-            this.label18.Text = "Parttype Disagreement";
-            // 
-            // lblParttypeDisagreement
-            // 
-            this.lblParttypeDisagreement.AutoSize = true;
-            this.lblParttypeDisagreement.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblParttypeDisagreement.Location = new System.Drawing.Point(332, 242);
-            this.lblParttypeDisagreement.Name = "lblParttypeDisagreement";
-            this.lblParttypeDisagreement.Size = new System.Drawing.Size(42, 20);
-            this.lblParttypeDisagreement.TabIndex = 49;
-            this.lblParttypeDisagreement.Text = "label";
-            // 
-            // dgPartsPart
-            // 
-            this.dgPartsPart.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
-            this.dgPartsPart.HeaderText = "Part";
-            this.dgPartsPart.Name = "dgPartsPart";
-            this.dgPartsPart.ReadOnly = true;
-            this.dgPartsPart.Width = 51;
-            // 
-            // dgPartsAppCount
-            // 
-            this.dgPartsAppCount.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
-            this.dgPartsAppCount.HeaderText = "Application Count";
-            this.dgPartsAppCount.Name = "dgPartsAppCount";
-            this.dgPartsAppCount.ReadOnly = true;
-            this.dgPartsAppCount.Width = 105;
-            // 
-            // dgPartsParttypes
-            // 
-            this.dgPartsParttypes.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
-            this.dgPartsParttypes.HeaderText = "Part Types";
-            this.dgPartsParttypes.Name = "dgPartsParttypes";
-            this.dgPartsParttypes.ReadOnly = true;
-            this.dgPartsParttypes.Width = 77;
-            // 
-            // dgPartsPositions
-            // 
-            this.dgPartsPositions.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
-            this.dgPartsPositions.HeaderText = "Positions";
-            this.dgPartsPositions.Name = "dgPartsPositions";
-            this.dgPartsPositions.ReadOnly = true;
-            this.dgPartsPositions.Width = 74;
-            // 
-            // dgParttypeDisagreementPart
-            // 
-            this.dgParttypeDisagreementPart.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
-            this.dgParttypeDisagreementPart.HeaderText = "Part";
-            this.dgParttypeDisagreementPart.Name = "dgParttypeDisagreementPart";
-            this.dgParttypeDisagreementPart.ReadOnly = true;
-            this.dgParttypeDisagreementPart.Width = 51;
-            // 
-            // dgParttypeDisagreementParttypes
-            // 
-            this.dgParttypeDisagreementParttypes.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
-            this.dgParttypeDisagreementParttypes.HeaderText = "Part Types";
-            this.dgParttypeDisagreementParttypes.Name = "dgParttypeDisagreementParttypes";
-            this.dgParttypeDisagreementParttypes.ReadOnly = true;
-            this.dgParttypeDisagreementParttypes.Width = 83;
-            // 
             // dbCNCgroupnumber
             // 
             this.dbCNCgroupnumber.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
@@ -1577,6 +1384,36 @@
             this.dgCNCqualifiers.ReadOnly = true;
             this.dgCNCqualifiers.Width = 75;
             // 
+            // tabPageOverlaps
+            // 
+            this.tabPageOverlaps.Controls.Add(this.dgOverlaps);
+            this.tabPageOverlaps.Location = new System.Drawing.Point(4, 22);
+            this.tabPageOverlaps.Name = "tabPageOverlaps";
+            this.tabPageOverlaps.Size = new System.Drawing.Size(837, 423);
+            this.tabPageOverlaps.TabIndex = 3;
+            this.tabPageOverlaps.Text = "Overlaps";
+            this.tabPageOverlaps.UseVisualStyleBackColor = true;
+            // 
+            // dgOverlaps
+            // 
+            this.dgOverlaps.AllowUserToAddRows = false;
+            this.dgOverlaps.AllowUserToDeleteRows = false;
+            this.dgOverlaps.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dgOverlaps.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
+            this.dgOverlapsBaseVehicleid,
+            this.dgOverlapsMake,
+            this.dgOverlapsModel,
+            this.dgOverlapsYear,
+            this.dgOverlapsParttype,
+            this.dgOverlapsPosition,
+            this.dgOverlapsAttributes,
+            this.dgOverlapsParts});
+            this.dgOverlaps.Location = new System.Drawing.Point(3, 3);
+            this.dgOverlaps.Name = "dgOverlaps";
+            this.dgOverlaps.Size = new System.Drawing.Size(838, 424);
+            this.dgOverlaps.TabIndex = 2;
+            this.dgOverlaps.SortCompare += new System.Windows.Forms.DataGridViewSortCompareEventHandler(this.dgOverlaps_SortCompare);
+            // 
             // dgOverlapsBaseVehicleid
             // 
             this.dgOverlapsBaseVehicleid.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
@@ -1641,6 +1478,34 @@
             this.dgOverlapsParts.ReadOnly = true;
             this.dgOverlapsParts.Width = 56;
             // 
+            // tabPageInvalidBasevids
+            // 
+            this.tabPageInvalidBasevids.Controls.Add(this.dgBasevids);
+            this.tabPageInvalidBasevids.Location = new System.Drawing.Point(4, 22);
+            this.tabPageInvalidBasevids.Name = "tabPageInvalidBasevids";
+            this.tabPageInvalidBasevids.Size = new System.Drawing.Size(837, 423);
+            this.tabPageInvalidBasevids.TabIndex = 6;
+            this.tabPageInvalidBasevids.Text = "Invalid Basevehicles";
+            this.tabPageInvalidBasevids.UseVisualStyleBackColor = true;
+            // 
+            // dgBasevids
+            // 
+            this.dgBasevids.AllowUserToAddRows = false;
+            this.dgBasevids.AllowUserToDeleteRows = false;
+            this.dgBasevids.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dgBasevids.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
+            this.dgBasevidsApplicationid,
+            this.dgBasevidsBasevid,
+            this.dgBasevidsParttype,
+            this.dgBasevidsPosition,
+            this.dgBasevidsQty,
+            this.dgBasevidsPart,
+            this.dgBasevidsQualifiers});
+            this.dgBasevids.Location = new System.Drawing.Point(3, 3);
+            this.dgBasevids.Name = "dgBasevids";
+            this.dgBasevids.Size = new System.Drawing.Size(838, 424);
+            this.dgBasevids.TabIndex = 2;
+            // 
             // dgBasevidsApplicationid
             // 
             this.dgBasevidsApplicationid.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
@@ -1696,6 +1561,37 @@
             this.dgBasevidsQualifiers.Name = "dgBasevidsQualifiers";
             this.dgBasevidsQualifiers.ReadOnly = true;
             this.dgBasevidsQualifiers.Width = 75;
+            // 
+            // tabPageInvalidVCdbCodes
+            // 
+            this.tabPageInvalidVCdbCodes.Controls.Add(this.dgVCdbCodes);
+            this.tabPageInvalidVCdbCodes.Location = new System.Drawing.Point(4, 22);
+            this.tabPageInvalidVCdbCodes.Name = "tabPageInvalidVCdbCodes";
+            this.tabPageInvalidVCdbCodes.Size = new System.Drawing.Size(837, 423);
+            this.tabPageInvalidVCdbCodes.TabIndex = 7;
+            this.tabPageInvalidVCdbCodes.Text = "Invalid VCdb codes";
+            this.tabPageInvalidVCdbCodes.UseVisualStyleBackColor = true;
+            // 
+            // dgVCdbCodes
+            // 
+            this.dgVCdbCodes.AllowUserToAddRows = false;
+            this.dgVCdbCodes.AllowUserToDeleteRows = false;
+            this.dgVCdbCodes.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dgVCdbCodes.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
+            this.dgVCdbCodesApplicationid,
+            this.dgVCdbCodesMake,
+            this.dgVCdbCodesModel,
+            this.dgVCdbCodesYear,
+            this.dgVCdbCodesParttype,
+            this.dgVCdbCodesPosition,
+            this.dgVCdbCodesQty,
+            this.dgVCdbCodesPart,
+            this.dgVCdbCodesQualifiers,
+            this.dgVCdbCodesNotes});
+            this.dgVCdbCodes.Location = new System.Drawing.Point(3, 3);
+            this.dgVCdbCodes.Name = "dgVCdbCodes";
+            this.dgVCdbCodes.Size = new System.Drawing.Size(838, 425);
+            this.dgVCdbCodes.TabIndex = 2;
             // 
             // dgVCdbCodesApplicationid
             // 
@@ -1777,6 +1673,36 @@
             this.dgVCdbCodesNotes.ReadOnly = true;
             this.dgVCdbCodesNotes.Width = 60;
             // 
+            // tabPageParttypePosition
+            // 
+            this.tabPageParttypePosition.Controls.Add(this.dgParttypePosition);
+            this.tabPageParttypePosition.Location = new System.Drawing.Point(4, 22);
+            this.tabPageParttypePosition.Name = "tabPageParttypePosition";
+            this.tabPageParttypePosition.Size = new System.Drawing.Size(837, 423);
+            this.tabPageParttypePosition.TabIndex = 10;
+            this.tabPageParttypePosition.Text = "Parttype-Position";
+            this.tabPageParttypePosition.UseVisualStyleBackColor = true;
+            // 
+            // dgParttypePosition
+            // 
+            this.dgParttypePosition.AllowUserToAddRows = false;
+            this.dgParttypePosition.AllowUserToDeleteRows = false;
+            this.dgParttypePosition.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dgParttypePosition.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
+            this.dataGridViewTextBoxColumn1,
+            this.dataGridViewTextBoxColumn3,
+            this.dataGridViewTextBoxColumn4,
+            this.dataGridViewTextBoxColumn5,
+            this.dataGridViewTextBoxColumn6,
+            this.dataGridViewTextBoxColumn7,
+            this.dataGridViewTextBoxColumn8,
+            this.dataGridViewTextBoxColumn9,
+            this.dataGridViewTextBoxColumn10});
+            this.dgParttypePosition.Location = new System.Drawing.Point(3, 3);
+            this.dgParttypePosition.Name = "dgParttypePosition";
+            this.dgParttypePosition.Size = new System.Drawing.Size(838, 424);
+            this.dgParttypePosition.TabIndex = 4;
+            // 
             // dataGridViewTextBoxColumn1
             // 
             this.dataGridViewTextBoxColumn1.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
@@ -1848,6 +1774,36 @@
             this.dataGridViewTextBoxColumn10.Name = "dataGridViewTextBoxColumn10";
             this.dataGridViewTextBoxColumn10.ReadOnly = true;
             this.dataGridViewTextBoxColumn10.Width = 75;
+            // 
+            // tabPageInvalidConfigs
+            // 
+            this.tabPageInvalidConfigs.Controls.Add(this.dgVCdbConfigs);
+            this.tabPageInvalidConfigs.Location = new System.Drawing.Point(4, 22);
+            this.tabPageInvalidConfigs.Name = "tabPageInvalidConfigs";
+            this.tabPageInvalidConfigs.Size = new System.Drawing.Size(837, 423);
+            this.tabPageInvalidConfigs.TabIndex = 8;
+            this.tabPageInvalidConfigs.Text = "Invalid Configurations";
+            this.tabPageInvalidConfigs.UseVisualStyleBackColor = true;
+            // 
+            // dgVCdbConfigs
+            // 
+            this.dgVCdbConfigs.AllowUserToAddRows = false;
+            this.dgVCdbConfigs.AllowUserToDeleteRows = false;
+            this.dgVCdbConfigs.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dgVCdbConfigs.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
+            this.dgVCdbConfigsApplicationid,
+            this.dgVCdbConfigsMake,
+            this.dgVCdbConfigsModel,
+            this.dgVCdbConfigsYear,
+            this.dgVCdbConfigsParttype,
+            this.dgVCdbConfigsPosition,
+            this.dgVCdbConfigsQty,
+            this.dgVCdbConfigsPart,
+            this.dgVCdbConfigsQualifiers});
+            this.dgVCdbConfigs.Location = new System.Drawing.Point(3, 3);
+            this.dgVCdbConfigs.Name = "dgVCdbConfigs";
+            this.dgVCdbConfigs.Size = new System.Drawing.Size(838, 424);
+            this.dgVCdbConfigs.TabIndex = 3;
             // 
             // dgVCdbConfigsApplicationid
             // 
@@ -1921,18 +1877,86 @@
             this.dgVCdbConfigsQualifiers.ReadOnly = true;
             this.dgVCdbConfigsQualifiers.Width = 75;
             // 
-            // progressBarParttypeDisagreement
+            // lblStatus
             // 
-            this.progressBarParttypeDisagreement.Location = new System.Drawing.Point(9, 247);
-            this.progressBarParttypeDisagreement.Name = "progressBarParttypeDisagreement";
-            this.progressBarParttypeDisagreement.Size = new System.Drawing.Size(128, 15);
-            this.progressBarParttypeDisagreement.TabIndex = 50;
+            this.lblStatus.AutoSize = true;
+            this.lblStatus.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblStatus.Location = new System.Drawing.Point(86, 131);
+            this.lblStatus.Name = "lblStatus";
+            this.lblStatus.Size = new System.Drawing.Size(619, 20);
+            this.lblStatus.TabIndex = 13;
+            this.lblStatus.Text = "l1 label1 label1 label1 label1 label1 label1 label1 label1 label1 label1 label1 l" +
+    "abel1 label1";
+            // 
+            // button3
+            // 
+            this.button3.Location = new System.Drawing.Point(711, 102);
+            this.button3.Name = "button3";
+            this.button3.Size = new System.Drawing.Size(95, 23);
+            this.button3.TabIndex = 14;
+            this.button3.Text = "Select Qdb";
+            this.button3.UseVisualStyleBackColor = true;
+            this.button3.Visible = false;
+            // 
+            // progressBar1
+            // 
+            this.progressBar1.Location = new System.Drawing.Point(86, 151);
+            this.progressBar1.MarqueeAnimationSpeed = 0;
+            this.progressBar1.Name = "progressBar1";
+            this.progressBar1.Size = new System.Drawing.Size(709, 10);
+            this.progressBar1.Step = 1;
+            this.progressBar1.Style = System.Windows.Forms.ProgressBarStyle.Continuous;
+            this.progressBar1.TabIndex = 15;
+            // 
+            // lblProgressPercent
+            // 
+            this.lblProgressPercent.AutoSize = true;
+            this.lblProgressPercent.Location = new System.Drawing.Point(801, 149);
+            this.lblProgressPercent.Name = "lblProgressPercent";
+            this.lblProgressPercent.Size = new System.Drawing.Size(33, 13);
+            this.lblProgressPercent.TabIndex = 16;
+            this.lblProgressPercent.Text = "100%";
+            // 
+            // lblAppVersion
+            // 
+            this.lblAppVersion.AutoSize = true;
+            this.lblAppVersion.Location = new System.Drawing.Point(790, 0);
+            this.lblAppVersion.Name = "lblAppVersion";
+            this.lblAppVersion.Size = new System.Drawing.Size(16, 13);
+            this.lblAppVersion.TabIndex = 33;
+            this.lblAppVersion.Text = "...";
+            // 
+            // toolTip1
+            // 
+            this.toolTip1.Popup += new System.Windows.Forms.PopupEventHandler(this.toolTip1_Popup);
+            // 
+            // btnSelectReferenceACESfile
+            // 
+            this.btnSelectReferenceACESfile.Location = new System.Drawing.Point(12, 41);
+            this.btnSelectReferenceACESfile.Name = "btnSelectReferenceACESfile";
+            this.btnSelectReferenceACESfile.Size = new System.Drawing.Size(134, 23);
+            this.btnSelectReferenceACESfile.TabIndex = 34;
+            this.btnSelectReferenceACESfile.Text = "Reference ACES";
+            this.btnSelectReferenceACESfile.UseVisualStyleBackColor = true;
+            this.btnSelectReferenceACESfile.Visible = false;
+            // 
+            // lblReferenceACESfilePath
+            // 
+            this.lblReferenceACESfilePath.AutoSize = true;
+            this.lblReferenceACESfilePath.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblReferenceACESfilePath.Location = new System.Drawing.Point(152, 44);
+            this.lblReferenceACESfilePath.Name = "lblReferenceACESfilePath";
+            this.lblReferenceACESfilePath.Size = new System.Drawing.Size(45, 16);
+            this.lblReferenceACESfilePath.TabIndex = 35;
+            this.lblReferenceACESfilePath.Text = "label1";
             // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(894, 628);
+            this.Controls.Add(this.lblReferenceACESfilePath);
+            this.Controls.Add(this.btnSelectReferenceACESfile);
             this.Controls.Add(this.lblAppVersion);
             this.Controls.Add(this.lblProgressPercent);
             this.Controls.Add(this.progressBar1);
@@ -1955,7 +1979,14 @@
             this.tabControl1.ResumeLayout(false);
             this.tabPageStats.ResumeLayout(false);
             this.tabPageStats.PerformLayout();
-            this.tabPageParts.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBoxParttypeDisagreement)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBoxInvalidConfigurations)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBoxParttypePosition)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBoxInvalidVCdbCodes)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBoxInvalidBasevehicles)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBoxOverlaps)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBoxDuplicates)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBoxCNCoverlaps)).EndInit();
             this.tabPageExports.ResumeLayout(false);
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
@@ -1963,6 +1994,9 @@
             this.groupBoxDataExport.PerformLayout();
             this.groupBoxAssessment.ResumeLayout(false);
             this.groupBoxAssessment.PerformLayout();
+            this.tabPageParts.ResumeLayout(false);
+            this.tabPagePartsMultiTypes.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.dgParttypeDisagreement)).EndInit();
             this.tabPageDuplicates.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.dgDuplicates)).EndInit();
             this.tabPageCNCoverlaps.ResumeLayout(false);
@@ -1977,16 +2011,6 @@
             ((System.ComponentModel.ISupportInitialize)(this.dgParttypePosition)).EndInit();
             this.tabPageInvalidConfigs.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.dgVCdbConfigs)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBoxCNCoverlaps)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBoxDuplicates)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBoxOverlaps)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBoxInvalidBasevehicles)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBoxInvalidVCdbCodes)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBoxParttypePosition)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBoxInvalidConfigurations)).EndInit();
-            this.tabPagePartsMultiTypes.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.dgParttypeDisagreement)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBoxParttypeDisagreement)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -2164,6 +2188,8 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn dgVCdbConfigsPart;
         private System.Windows.Forms.DataGridViewTextBoxColumn dgVCdbConfigsQualifiers;
         private System.Windows.Forms.ProgressBar progressBarParttypeDisagreement;
+        private System.Windows.Forms.Button btnSelectReferenceACESfile;
+        private System.Windows.Forms.Label lblReferenceACESfilePath;
     }
 }
 

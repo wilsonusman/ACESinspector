@@ -57,6 +57,7 @@ namespace ACESinspector
             lblVCdbFilePath.Text = "";
             lblPCdbFilePath.Text = "";
             lblACESfilePath.Text = "";
+            lblReferenceACESfilePath.Text = "";
             lblProgressPercent.Text = "";
             lblAssessmentFilePath.Text = "";
             lblAppExportFilePath.Text = "";
@@ -149,7 +150,7 @@ namespace ACESinspector
             if (key.GetValue("lastACESDirectoryPath") != null) { openFileDialog.InitialDirectory = key.GetValue("lastACESDirectoryPath").ToString(); }
             string partTypeNameListString = ""; string positionNameListString = "";
 
-            openFileDialog.Title = "Open ACES XML file";
+            openFileDialog.Title = "Open primary  ACES XML file";
             openFileDialog.RestoreDirectory = false;
             openFileDialog.Filter = "XML files (*.xml)|*.xml";
             DialogResult openFileResult = openFileDialog.ShowDialog();
@@ -219,7 +220,7 @@ namespace ACESinspector
 
 
                 aces.clear();
-                lblStatus.Text = "Importing ACES xml file";
+                lblStatus.Text = "Importing primary ACES xml file";
                 lblACESfilePath.Text = Path.GetFileName(openFileDialog.FileName);
                 toolTip1.SetToolTip(lblACESfilePath, openFileDialog.FileName);
                 

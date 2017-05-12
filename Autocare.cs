@@ -276,7 +276,7 @@ namespace ACESinspector
 
 
     public class ACES
-    {// one of these holds the entire contents of the imported ACES file - along with the results of analysis. The methods for analysis are also here. the rationale for containerizing the imported data is for future 
+    {// one of these holds the entire contents of the imported ACES file - along with the results of analysis. The methods for analysis are also here. the rationale for containerizing the         ed data is for future 
         // development that might want to import/analyze/merge/split ACES datasets from/to seperate objects
 
         public bool analysisComplete = false;
@@ -664,7 +664,7 @@ namespace ACESinspector
             for (i = 0; i <= appsCount - 1; i++)
             {
 
-                if (!pcdb.codmasterParttypePoisitions.Contains(apps[i].parttypeid.ToString() + "_" + apps[i].positionid.ToString()))
+                if (apps[i].positionid > 1 && !pcdb.codmasterParttypePoisitions.Contains(apps[i].parttypeid.ToString() + "_" + apps[i].positionid.ToString()))
                 {
                     parttypePositionErrors.Add(apps[i].id + "\t" + vcdb.niceMakeOfBasevid(apps[i].basevehilceid) + "\t" + vcdb.niceModelOfBasevid(apps[i].basevehilceid) + "\t" + vcdb.niceYearOfBasevid(apps[i].basevehilceid) + "\t" + pcdb.niceParttype(apps[i].parttypeid) + "\t" + pcdb.nicePosition(apps[i].positionid) + "\t" + apps[i].quantity + "\t" + apps[i].part + "\t" + apps[i].niceAttributesString(vcdb, true));
                     analysisErrors++;
@@ -860,7 +860,7 @@ namespace ACESinspector
                     apps[appsCount].id = Convert.ToInt32(appElement.Attribute("id").Value);
                     apps[appsCount].basevehilceid = Convert.ToInt32(appElement.Element("BaseVehicle").Attribute("id").Value);
                     if (!distinctBasevids.Contains(apps[appsCount].basevehilceid)) { distinctBasevids.Add(apps[appsCount].basevehilceid); }
-                    if ((string)appElement.Element("Position") != null){apps[appsCount].positionid = Convert.ToInt32(appElement.Element("Position").Attribute("id").Value);}
+                    apps[appsCount].positionid = 0; if ((string)appElement.Element("Position") != null){apps[appsCount].positionid = Convert.ToInt32(appElement.Element("Position").Attribute("id").Value);}
                     apps[appsCount].parttypeid = Convert.ToInt32(appElement.Element("PartType").Attribute("id").Value);
                     apps[appsCount].mfrlabel = (string)appElement.Element("MfrLabel");
                     apps[appsCount].quantity = Convert.ToInt32((string)appElement.Element("Qty"));
@@ -1596,7 +1596,7 @@ namespace ACESinspector
                 case "EngineDesignation": return "enginedesignationid = " + myAttribute.value + " and ";
                 case "EngineVIN": return "enginevinid = " + myAttribute.value + " and ";
                 case "EngineVersion": return "engineversionid = " + myAttribute.value + " and ";
-                case "EngineMfr": return "mfrid = " + myAttribute.value + " and ";
+                case "EngineMfr": return "enginemfrid = " + myAttribute.value + " and ";
                 case "FuelDeliveryType": return "fueldeliverytypeid = " + myAttribute.value + " and ";
                 case "FuelDeliverySubType": return "fueldeliverysubtypeid = " + myAttribute.value + " and ";
                 case "FuelSystemControlType": return "fuelsystemcontroltypeid = " + myAttribute.value + " and ";
@@ -1608,7 +1608,7 @@ namespace ACESinspector
                 case "TransmissionType": return "transmissiontypeid = " + myAttribute.value + " and ";
                 case "TransmissionControlType": return "transmissioncontroltypeid = " + myAttribute.value + " and ";
                 case "TransmissionNumSpeeds": return "transmissionnumspeedsid = " + myAttribute.value + " and ";
-                case "TransmissionMfr": return "mfrid = " + myAttribute.value + " and ";
+                case "TransmissionMfr": return "transmissionmfrid = " + myAttribute.value + " and ";
                 case "BedLength": return "bedlengthid = " + myAttribute.value + " and ";
                 case "BedType": return "bedtypeid = " + myAttribute.value + " and ";
                 case "WheelBase": return "wheelbaseid = " + myAttribute.value + " and ";
