@@ -7,6 +7,7 @@ using System.Xml;
 using System.Xml.Schema;
 using System.IO;
 using System.Globalization;
+using System.Security;
 using Microsoft.Win32;
 
 
@@ -16,7 +17,7 @@ namespace ACESinspector
     public class App : IComparable<App>
     {
         public int id;
-        public char action;
+        public string action;
         public int basevehilceid;
         public int parttypeid;
         public int positionid;
@@ -27,9 +28,26 @@ namespace ACESinspector
         public string asset;
         public int assetitemorder;
         public List<VCdbAttribute> VCdbAttributes;
+
         public App()
         {
             VCdbAttributes = new List<VCdbAttribute>();
+            VCdbAttributes.Clear();
+        }
+
+        public void Clear()
+        {
+            id=0;
+            action="";
+            basevehilceid=0;
+            parttypeid=0;
+            positionid=0;
+            quantity=0;
+            part = "";
+            notes="";
+            mfrlabel="";
+            asset="";
+            assetitemorder=0;
             VCdbAttributes.Clear();
         }
 
@@ -276,14 +294,16 @@ namespace ACESinspector
 
 
     public class ACES
-    {// one of these holds the entire contents of the imported ACES file - along with the results of analysis. The methods for analysis are also here. the rationale for containerizing the         ed data is for future 
+    {// one of these holds the entire contents of the imported ACES file - along with the results of analysis. The methods for analysis are also here. the rationale for containerizing the data is for future 
         // development that might want to import/analyze/merge/split ACES datasets from/to seperate objects
 
         public bool analysisComplete = false;
         public bool successfulImport = false;
+        public int discardedDeletsOnImport = 0;
         public int analysisWarnings;
         public int analysisErrors;
         public string filePath;
+        public string fileMD5hash;
         public string version;
         public string Company;
         public string SenderName;
@@ -296,6 +316,9 @@ namespace ACESinspector
         public string VcdbVersionDate;
         public string QdbVersionDate;
         public string PcdbVersionDate;
+        public string differentialsSummary;
+        public int FooterRecordCount;
+
 
         public App[] apps; // the actual size of the array gets defined when the ACES file is loaded
         public int appsCount = 0;
@@ -320,10 +343,13 @@ namespace ACESinspector
         public List<string> vcdbConfigurationsErrors = new List<string>();
         public List<string> parttypePositionErrors = new List<string>();
         public List<string> disperateAttributeErrors = new List<string>();
+        public List<string> differentialParts = new List<string>();
+        public List<string> differentialVehicles = new List<string>();
+//        public List<string> differentialApps = new List<string>();
         public List<String> xmlValidationErrors = new List<string>();
-
-
         public Dictionary<String, String> ACESschemas = new Dictionary<string, string>();   // define as static so all instances of class can use same dictionary of XSD schema data
+
+        
 
 
         public ACES()
@@ -341,10 +367,13 @@ namespace ACESinspector
         public void clear()
         {
             analysisComplete = false;
+            discardedDeletsOnImport = 0;
             analysisWarnings = 0;
             analysisErrors = 0;
             appsCount = 0;
+            FooterRecordCount = 0;
             filePath = "";
+            fileMD5hash = "";
             version = "";
             Company = "";
             SenderName = "";
@@ -373,6 +402,8 @@ namespace ACESinspector
             vcdbCodesErrors.Clear();
             vcdbConfigurationsErrors.Clear();
             parttypePositionErrors.Clear();
+            differentialParts.Clear();
+            differentialVehicles.Clear();
             xmlValidationErrors.Clear();
         }
 
@@ -392,7 +423,26 @@ namespace ACESinspector
             xmlValidationErrors.Clear();
         }
 
-                
+        // take a string of CSS-style name-value attribute pairs and cram them into a list of VCdbAttribute class instances
+        public List<VCdbAttribute> parseAttributePairsString(string nameValuePairsString)
+        {
+            List<VCdbAttribute> myAttributeList = new List<VCdbAttribute>();
+            string[] attributes = nameValuePairsString.Split(';');
+            foreach (string attribute in attributes)
+            {
+                string[] attributePieces = attribute.Split(':');
+                if (attributePieces.Count() == 2)
+                {
+                    VCdbAttribute VCdbAttributeTemp = new VCdbAttribute(); VCdbAttributeTemp.name = attributePieces[0]; VCdbAttributeTemp.value = Convert.ToInt32(attributePieces[1]);
+                    myAttributeList.Add(VCdbAttributeTemp);
+                }
+            }
+            return myAttributeList;
+        }
+
+
+
+
         public List<string> duplicates(VCdb vcdb, PCdb pcdb, IProgress<int> progress)
         {
             // hashtable for temp storage of [basevid_parttype_position_qualifiers_mfrlable]="appId1,appId2,AppId3..."
@@ -657,16 +707,35 @@ namespace ACESinspector
 
 
         public List<string> invalidParttypePositions(VCdb vcdb, PCdb pcdb, IProgress<int> progress)
-        {
+        {// this method looks for parttype,position,and parttype/position problems
+
+
             int i; int percentProgress = 0;
-            BaseVehicle basevidTemp = new BaseVehicle();
+            string errorType = "";
+            //BaseVehicle basevidTemp = new BaseVehicle();
 
             for (i = 0; i <= appsCount - 1; i++)
             {
+                errorType = "";
 
-                if (apps[i].positionid > 1 && !pcdb.codmasterParttypePoisitions.Contains(apps[i].parttypeid.ToString() + "_" + apps[i].positionid.ToString()))
+                if (pcdb.niceParttype(apps[i].parttypeid) == apps[i].parttypeid.ToString())
+                {// parttype id not valid (nice name returned the numeric value of the id)
+                    errorType = "Invalid Parttype";
+                }
+
+                if (apps[i].positionid != 0 && pcdb.nicePosition(apps[i].positionid) == apps[i].positionid.ToString())
+                {// parttype id not valid (nice name returned the numeric value of the id)
+                    errorType+= " Invalid Position";
+                }
+
+                if (errorType=="" && apps[i].positionid!=0 && !pcdb.codmasterParttypePoisitions.Contains(apps[i].parttypeid.ToString() + "_" + apps[i].positionid.ToString()))
+                {// this combo of parttype and position was not found in the codemaster table
+                    errorType = "Invalid Parttype-Position";
+                }
+
+                if (errorType != "")
                 {
-                    parttypePositionErrors.Add(apps[i].id + "\t" + vcdb.niceMakeOfBasevid(apps[i].basevehilceid) + "\t" + vcdb.niceModelOfBasevid(apps[i].basevehilceid) + "\t" + vcdb.niceYearOfBasevid(apps[i].basevehilceid) + "\t" + pcdb.niceParttype(apps[i].parttypeid) + "\t" + pcdb.nicePosition(apps[i].positionid) + "\t" + apps[i].quantity + "\t" + apps[i].part + "\t" + apps[i].niceAttributesString(vcdb, true));
+                    parttypePositionErrors.Add(errorType + "\t" + apps[i].id.ToString() + "\t" + apps[i].basevehilceid.ToString() + "\t" + vcdb.niceMakeOfBasevid(apps[i].basevehilceid) + "\t" + vcdb.niceModelOfBasevid(apps[i].basevehilceid) + "\t" + vcdb.niceYearOfBasevid(apps[i].basevehilceid) + "\t" + pcdb.niceParttype(apps[i].parttypeid) + "\t" + pcdb.nicePosition(apps[i].positionid) + "\t" + apps[i].quantity.ToString() + "\t" + apps[i].niceAttributesString(vcdb, true) + "\t" + apps[i].part);
                     analysisErrors++;
                 }
 
@@ -770,29 +839,127 @@ namespace ACESinspector
                                     disperateAttributeErrors.Add(vcdb.niceMakeOfBasevid(apps[appid].basevehilceid)+"\t"+ vcdb.niceModelOfBasevid(apps[appid].basevehilceid)+"\t"+ vcdb.niceYearOfBasevid(apps[appid].basevehilceid)+"\t"+pcdb.niceParttype(apps[appid].parttypeid)+"\t"+pcdb.nicePosition(apps[appid].positionid)+"\t"+apps[appid].part+"\t"+apps[appid].niceAttributesString(vcdb,true));
                                 }
                             }
-
-
-
-
-
                         }
-
-
-
                     }
-
-
-
-
                 }
+            }
+            return disperateAttributeErrors;
+        }
+
+
+
+        // take two ACES objects (primary and reference) and put the diffs into "this" instance
+        public void findDifferentials(ACES primearyaces, ACES refaces, VCdb vcdb, PCdb pcdb, IProgress<int> progress)
+        {
+            string hashKey = ""; int percentProgress = 0; int partsAddedCount = 0; int partsDroppedCount = 0; int vehiclesAddedCount = 0; int vehiclesDroppedCount = 0; int appsAddedCount = 0; int appsDroppedCount = 0;
+            Dictionary<string, int> primaryvehicles = new Dictionary<string, int>();
+            Dictionary<string, int> refvehicles = new Dictionary<string, int>();
+            Dictionary<string, int> primaryApps = new Dictionary<string, int>();
+            Dictionary<string, int> refApps = new Dictionary<string, int>();
+            List<String> differentialApps = new List<String>();
+            
+
+            foreach (string part in primearyaces.distinctParts)
+            {
+                if(!refaces.partsAppsCounts.ContainsKey(part)){differentialParts.Add("Add\t" + part); partsAddedCount++; }
+            }
+            if (progress != null) { percentProgress = 5; progress.Report(percentProgress); }
+            foreach (string part in refaces.distinctParts)
+            {
+                if (!primearyaces.partsAppsCounts.ContainsKey(part)) { differentialParts.Add("Drop\t" + part); partsDroppedCount++; }
+            }
+
+
+            // differential vehicles - defined as basevid/type/position/attributes/notes/mfrlabel
+            if (progress != null){percentProgress = 10; progress.Report(percentProgress);}
+            foreach (App app in primearyaces.apps)
+            {
+                hashKey = app.basevehilceid.ToString() + "\t" + app.parttypeid.ToString() + "\t" + app.positionid.ToString() + "\t" + app.namevalpairString(false) + "\t" + app.notes + "\t" + app.mfrlabel;
+                if (!primaryvehicles.ContainsKey(hashKey)) { primaryvehicles.Add(hashKey, 0); }
+            }
+            if (progress != null) { percentProgress = 15; progress.Report(percentProgress); }
+            foreach (App app in refaces.apps)
+            {
+                hashKey = app.basevehilceid.ToString() + "\t" + app.parttypeid.ToString() + "\t" + app.positionid.ToString() + "\t" + app.namevalpairString(false) + "\t" + app.notes + "\t" + app.mfrlabel;
+                if (!refvehicles.ContainsKey(hashKey)) { refvehicles.Add(hashKey, 0); }
+            }
+            if (progress != null) { percentProgress = 20; progress.Report(percentProgress); }
+            foreach (KeyValuePair<string, int> entry in primaryvehicles)
+            {
+                if (!refvehicles.ContainsKey(entry.Key)) { differentialVehicles.Add("Add\t" + entry.Key); vehiclesAddedCount++; }
+            }
+            if (progress != null) { percentProgress = 25; progress.Report(percentProgress); }
+            foreach (KeyValuePair<string, int> entry in refvehicles)
+            {
+                if (!primaryvehicles.ContainsKey(entry.Key)) { differentialVehicles.Add("Drop\t" + entry.Key); vehiclesDroppedCount++; }
             }
 
 
 
+            // differential apps  - defined as basevid/type/position/attributes/notes/mfrlabel/part
+            if (progress != null) { percentProgress = 30; progress.Report(percentProgress); }
+            foreach (App app in primearyaces.apps)
+            {
+                hashKey = app.basevehilceid.ToString() + "\t" + app.parttypeid.ToString() + "\t" + app.positionid.ToString() + "\t" + app.quantity.ToString()+ "\t" + app.namevalpairString(false) + "\t" + app.notes + "\t" + app.mfrlabel + "\t" + app.part + "\t" + app.asset + "\t" + app.assetitemorder.ToString();
+                if (!primaryApps.ContainsKey(hashKey)) { primaryApps.Add(hashKey, 0); }
+            }
+            if (progress != null) { percentProgress = 40; progress.Report(percentProgress); }
+            foreach (App app in refaces.apps)
+            {
+                hashKey = app.basevehilceid.ToString() + "\t" + app.parttypeid.ToString() + "\t" + app.positionid.ToString() + "\t" + app.quantity.ToString() + "\t" + app.namevalpairString(false) + "\t" + app.notes + "\t" + app.mfrlabel + "\t" + app.part + "\t" + app.asset + "\t" + app.assetitemorder.ToString();
+                if (!refApps.ContainsKey(hashKey)) { refApps.Add(hashKey, 0); }
+            }
+            if (progress != null) { percentProgress = 70; progress.Report(percentProgress); }
+            foreach (KeyValuePair<string, int> entry in primaryApps)
+            {
+                if (!refApps.ContainsKey(entry.Key))
+                {
+                    differentialApps.Add("Add\t" + entry.Key); appsAddedCount++;
+                }
+            }
+            if (progress != null) { percentProgress = 90; progress.Report(percentProgress); }
+            foreach (KeyValuePair<string, int> entry in refApps)
+            {
+                if (!primaryApps.ContainsKey(entry.Key))
+                {
+                    differentialApps.Add("Drop\t" + entry.Key); appsDroppedCount++;
+                }
+            }
 
-                return disperateAttributeErrors;
+            // cram diff apps into "this" ACES class object
+            if (differentialApps.Count > 0)
+            {
+                apps = new App[differentialApps.Count]; // allocate instances of App class in "apps" array
 
+                foreach (string entry in differentialApps)
+                {
+                    string[] fields = entry.Split('\t');
+                    apps[appsCount] = new App();
+                    if (fields[0] == "Add") { apps[appsCount].action = "A"; }
+                    if (fields[0] == "Drop") { apps[appsCount].action = "D"; }
+
+                    apps[appsCount].basevehilceid = Convert.ToInt32(fields[1]);
+                    apps[appsCount].parttypeid = Convert.ToInt32(fields[2]);
+                    apps[appsCount].positionid = Convert.ToInt32(fields[3]);
+                    apps[appsCount].quantity = Convert.ToInt32(fields[4]);
+                    if (fields[5] != "") { apps[appsCount].VCdbAttributes = parseAttributePairsString(fields[5]); }
+                    apps[appsCount].notes = fields[6];
+                    apps[appsCount].mfrlabel = fields[7];
+                    apps[appsCount].part = fields[8];
+                    apps[appsCount].asset = fields[9];
+                    apps[appsCount].assetitemorder = Convert.ToInt32(fields[10]);
+                    appsCount++;
+                }
+                differentialApps.Clear();
+            }
+
+            if (progress != null) { percentProgress = 100; progress.Report(percentProgress); }
+
+            differentialsSummary = "Parts: +" + partsAddedCount.ToString() + ", -" + partsDroppedCount.ToString() + "   Vehicles: +" + vehiclesAddedCount.ToString() + ", -" + vehiclesDroppedCount.ToString();
         }
+
+
+
 
 
         public int import(string _filePath, string _schemaString, IProgress<int> progress)
@@ -801,12 +968,11 @@ namespace ACESinspector
 
             filePath = _filePath;
             xmlValidationErrors.Clear();
-            successfulImport = false;
+            successfulImport = false; string schemaString = ""; bool found; int i;
             XDocument xmlDoc = null;
             XmlSchemaSet schemas = new XmlSchemaSet();
-            string schemaString = "";
-            bool found;
-
+            List<App> appsList = new List<App>();
+            
             if (_schemaString == "")
             {// no schema string was passed in - extract ACES version from XML
                 try
@@ -842,21 +1008,127 @@ namespace ACESinspector
                 xmlDoc = XDocument.Load(filePath);
                 xmlDoc.Validate(schemas, (o, e) => { xmlValidationErrors.Add(e.Message); });
 
+                Company = (string)xmlDoc.Element("ACES").Element("Header").Element("Company");
+                SenderName = (string)xmlDoc.Element("ACES").Element("Header").Element("SenderName");
+                SenderPhone = (string)xmlDoc.Element("ACES").Element("Header").Element("SenderPhone");
+                TransferDate = (string)xmlDoc.Element("ACES").Element("Header").Element("TransferDate");
+                EffectiveDate = (string)xmlDoc.Element("ACES").Element("Header").Element("EffectiveDate");
+                BrandAAIAID = (string)xmlDoc.Element("ACES").Element("Header").Element("BrandAAIAID");
+                SubmissionType = (string)xmlDoc.Element("ACES").Element("Header").Element("SubmissionType");
                 VcdbVersionDate = (string)xmlDoc.Element("ACES").Element("Header").Element("VcdbVersionDate");
                 PcdbVersionDate = (string)xmlDoc.Element("ACES").Element("Header").Element("PcdbVersionDate");
                 QdbVersionDate = (string)xmlDoc.Element("ACES").Element("Header").Element("QdbVersionDate");
                 DocumentTitle = (string)xmlDoc.Element("ACES").Element("Header").Element("DocumentTitle");
                 version = (string)xmlDoc.Element("ACES").Attribute("version");
+                FooterRecordCount = Convert.ToInt32((string)xmlDoc.Element("ACES").Element("Footer").Element("RecordCount"));
+
 
                 // get an app count so we can allocate memory space 
                 int percentProgress = 0;
                 int totalApps = xmlDoc.Descendants("App").Count();
-                apps = new App[totalApps]; // allocate i number of instances of App class in "apps" array
                 appsCount = 0;
 
                 foreach (XElement appElement in xmlDoc.Descendants("App"))
                 {
+                    App appTemp = new App();
+
+                    appTemp.action = (string)appElement.Attribute("action").Value;
+
+                    if (appTemp.action == "D") { discardedDeletsOnImport++; continue;}
+
+                    appTemp.id = Convert.ToInt32(appElement.Attribute("id").Value);
+                    appTemp.basevehilceid = Convert.ToInt32(appElement.Element("BaseVehicle").Attribute("id").Value);
+                    if (!distinctBasevids.Contains(appTemp.basevehilceid)) { distinctBasevids.Add(appTemp.basevehilceid); }
+                    appTemp.positionid = 0; if ((string)appElement.Element("Position") != null) { appTemp.positionid = Convert.ToInt32(appElement.Element("Position").Attribute("id").Value); }
+                    appTemp.parttypeid = Convert.ToInt32(appElement.Element("PartType").Attribute("id").Value);
+                    appTemp.mfrlabel = (string)appElement.Element("MfrLabel");
+                    appTemp.quantity = Convert.ToInt32((string)appElement.Element("Qty"));
+                    appTemp.part = (string)appElement.Element("Part");
+
+
+                    if (appTemp.mfrlabel != null && !distinctMfrLabels.Contains(appTemp.mfrlabel)) { distinctMfrLabels.Add(appTemp.mfrlabel); }
+                    if (!distinctPartTypes.Contains(appTemp.parttypeid)) { distinctPartTypes.Add(appTemp.parttypeid); }
+
+                    if (!distinctParts.Contains(appTemp.part))
+                    {
+                        distinctParts.Add(appTemp.part); partsAppsCounts.Add(appTemp.part, 1);
+                    }
+                    else
+                    {// this part has been seen before - increment the associated count
+
+                        partsAppsCounts[appTemp.part] += 1;
+                    }
+
+                    // add this app's part/parttype combination to the partsPartTypes hashtable
+                    if (partsPartTypes.ContainsKey(appTemp.part))
+                    {
+                        // check for the existance of this parttypeid in the comma-seperated list before adding it.
+                        found = false;
+                        string[] chunks = partsPartTypes[appTemp.part].Split('\t');
+                        foreach (string chunk in chunks)
+                        {
+                            if (Convert.ToInt32(chunk) == Convert.ToInt32(appTemp.parttypeid.ToString())) { found = true; break; }
+                        }
+                        if (!found) { partsPartTypes[appTemp.part] += "\t" + appTemp.parttypeid.ToString(); }
+                    }
+                    else
+                    {
+                        partsPartTypes.Add(appTemp.part, appTemp.parttypeid.ToString());
+                    }
+
+                    // add this app's part/position combination to the partsPositions hashtable
+                    if (partsPositions.ContainsKey(appTemp.part))
+                    {
+                        // check for the existance of this positonid in the comma-seperated list before adding it.
+                        found = false;
+                        string[] chunks = partsPositions[appTemp.part].Split('\t');
+                        foreach (string chunk in chunks)
+                        {
+                            if (Convert.ToInt32(chunk) == Convert.ToInt32(appTemp.positionid.ToString())) { found = true; break; }
+                        }
+                        if (!found) { partsPositions[appTemp.part] += "\t" + appTemp.positionid.ToString(); }
+
+                    }
+                    else
+                    {
+                        partsPositions.Add(appTemp.part, appTemp.positionid.ToString());
+                    }
+
+                    appTemp.asset = (string)appElement.Element("Asset");
+                    if (!distinctAssets.Contains(appTemp.asset)) { distinctAssets.Add(appTemp.asset); }
+
+                    foreach (XElement noteElement in appElement.Descendants("Note"))
+                    {
+                        appTemp.notes += (string)noteElement + "; ";
+                    }
+
+                    string[] VCdbAttributeNames = new string[] { "Aspiration", "BedLength", "BedType", "BodyNumDoors", "BodyType", "BrakeABS", "BrakeSystem", "CylinderHeadType", "DriveType", "EngineBase", "EngineDesignation", "EngineMfr", "EngineVIN", "EngineVersion", "FrontBrakeType", "FrontSpringType", "FuelDeliverySubType", "FuelDeliveryType", "FuelSystemControlType", "FuelSystemDesign", "FuelType", "IgnitionSystemType", "MfrBodyCode", "PowerOutput", "RearBrakeType", "RearSpringType", "Region", "SteeringSystem", "SteeringType", "SubModel", "TransElecControlled", "TransmissionBase", "TransmissionControlType", "TransmissionMfr", "TransmissionMfrCode", "TransmissionNumSpeeds", "TransmissionType", "ValvesPerEngine", "VehicleType", "WheelBase" };
+
+                    foreach (string VCdbAttributeName in VCdbAttributeNames)
+                    {// roll through the entire of list of possible VCdb attribute names looking for nodes like <SubModel id="13">
+                        if (appElement.Element(VCdbAttributeName) != null)
+                        {
+                            VCdbAttribute VCdbAttributeTemp = new VCdbAttribute();
+                            VCdbAttributeTemp.name = VCdbAttributeName;
+                            VCdbAttributeTemp.value = Convert.ToInt32(appElement.Element(VCdbAttributeName).Attribute("id").Value);
+                            appTemp.VCdbAttributes.Add(VCdbAttributeTemp);
+                        }
+                    }
+
+                    appsList.Add(appTemp);
+
+                    appsCount++;
+                    if (progress != null)
+                    {// only report progress on whole percentage steps (100 total reports). reporting on every iteration is too process intensive
+                        percentProgress = Convert.ToInt32(((double)appsCount / (double)totalApps) * 100);
+                        if ((double)percentProgress % (double)1 == 0) { progress.Report(percentProgress); }
+                    }
+
+
+
+                    /*
                     apps[appsCount] = new App();
+                    apps[appsCount].action = (string)appElement.Attribute("action").Value;
                     apps[appsCount].id = Convert.ToInt32(appElement.Attribute("id").Value);
                     apps[appsCount].basevehilceid = Convert.ToInt32(appElement.Element("BaseVehicle").Attribute("id").Value);
                     if (!distinctBasevids.Contains(apps[appsCount].basevehilceid)) { distinctBasevids.Add(apps[appsCount].basevehilceid); }
@@ -865,7 +1137,7 @@ namespace ACESinspector
                     apps[appsCount].mfrlabel = (string)appElement.Element("MfrLabel");
                     apps[appsCount].quantity = Convert.ToInt32((string)appElement.Element("Qty"));
                     apps[appsCount].part = (string)appElement.Element("Part");
-
+                    
 
                     if(apps[appsCount].mfrlabel !=null &&  !distinctMfrLabels.Contains(apps[appsCount].mfrlabel)){distinctMfrLabels.Add(apps[appsCount].mfrlabel);}
                     if (!distinctPartTypes.Contains(apps[appsCount].parttypeid)) {distinctPartTypes.Add(apps[appsCount].parttypeid);}
@@ -891,13 +1163,11 @@ namespace ACESinspector
                             if(Convert.ToInt32(chunk) == Convert.ToInt32(apps[appsCount].parttypeid.ToString())){found = true; break;}
                         }
                         if (!found) { partsPartTypes[apps[appsCount].part] += "\t" + apps[appsCount].parttypeid.ToString(); }
-
                     }
                     else
                     {
                         partsPartTypes.Add(apps[appsCount].part, apps[appsCount].parttypeid.ToString());
                     }
-
 
                     // add this app's part/position combination to the partsPositions hashtable
                     if (partsPositions.ContainsKey(apps[appsCount].part))
@@ -916,9 +1186,6 @@ namespace ACESinspector
                     {
                         partsPositions.Add(apps[appsCount].part, apps[appsCount].positionid.ToString());
                     }
-
-
-
 
                     apps[appsCount].asset = (string)appElement.Element("Asset");
                     if (!distinctAssets.Contains(apps[appsCount].asset)) { distinctAssets.Add(apps[appsCount].asset); }
@@ -946,7 +1213,24 @@ namespace ACESinspector
                         percentProgress = Convert.ToInt32(((double)appsCount / (double)totalApps) * 100);
                         if ((double)percentProgress % (double)1 == 0) { progress.Report(percentProgress); }
                     }
+                    */
+
+
+
+
                 }
+
+                apps = new App[appsCount]; // allocate the number of instances of App class in "apps" array based on the actual number of imported noodes ("D"'s may have been excluded)
+
+                i = 0;
+                foreach(App app in appsList)
+                {// transfer the contents fo the List<App> into the array that blongs to the ACES object
+                    apps[i] = app;
+                    i++;
+                }
+
+
+
                 Array.Sort(apps); // sort apps by basevehilceid/parttypeid/positionid/part/mfrlabel/qualifiers&notes/asset/assetorder. Sorting the apps this way will allow row-by-row comparison when checking for duplicates, overlaps and CNC overlaps.
                 distinctParts.Sort();
 
@@ -957,6 +1241,7 @@ namespace ACESinspector
             }
 
             if(xmlValidationErrors.Count==0 && appsCount > 0){ successfulImport = true; }
+
             return appsCount;
         }
 
@@ -1206,14 +1491,84 @@ namespace ACESinspector
         }
 
 
+        public string exportXMLApps(string _filePath, string _SubmissionType)
+        {// dump an xml file from this ACES instance
+            int relativeAppId = 1;
+            string attributesXMLtags = ""; //\t\t<EngineBase id=\"221\"/>\r\n
+            string mfrlabelXMLtags = "";// \t\t<MfrLabel>"+app.mfrlabel+"</MfrLabel>\r\n
+            string positionXMLtags = ""; // \t\t<Position id=\"22\"/>\r\n
+            string notesXMLtags = "";// \t\t<Note>"+app.notes+"</Note>\r\n
+            //BaseVehicle basevehicle = new BaseVehicle();
+            try
+            {
+                using (StreamWriter sw = new StreamWriter(_filePath))
+                {
+                    sw.WriteLine("<?xml version=\"1.0\" encoding=\"ISO-8859-1\"?>\r\n<ACES version=\""+version+"\">\r\n\t<Header>\r\n\t\t<Company>"+ SecurityElement.Escape(Company)+"</Company>\r\n\t\t<SenderName>"+ SecurityElement.Escape(SenderName)+"</SenderName>\r\n\t\t<SenderPhone>"+SenderPhone+"</SenderPhone>\r\n\t\t<TransferDate>"+TransferDate+"</TransferDate>\r\n\t\t<BrandAAIAID>"+BrandAAIAID+"</BrandAAIAID>\r\n\t\t<DocumentTitle>"+ SecurityElement.Escape(DocumentTitle) +"</DocumentTitle>\r\n\t\t<EffectiveDate>"+EffectiveDate+"</EffectiveDate>\r\n\t\t<SubmissionType>"+_SubmissionType+"</SubmissionType>\r\n\t\t<VcdbVersionDate>"+VcdbVersionDate+"</VcdbVersionDate>\r\n\t\t<QdbVersionDate>"+QdbVersionDate+"</QdbVersionDate>\r\n\t\t<PcdbVersionDate>"+PcdbVersionDate+"</PcdbVersionDate>\r\n\t</Header>");
+                    foreach (App app in apps)
+                    {
+                        attributesXMLtags = "";
+                        if (app.VCdbAttributes.Count > 0)
+                        {
+                            foreach (VCdbAttribute myAttribute in app.VCdbAttributes)
+                            {
+                                attributesXMLtags += "\t\t<" + myAttribute.name + " id=\"" + myAttribute.value.ToString() + "\"/>\r\n";
+                            }
+                        }
+                        notesXMLtags = ""; if(app.notes != ""){notesXMLtags = "\t\t<Note>" + SecurityElement.Escape(app.notes) + "</Note>\r\n";}
+                        mfrlabelXMLtags = ""; if(app.mfrlabel != ""){mfrlabelXMLtags="\t\t<MfrLabel>"+ SecurityElement.Escape(app.mfrlabel)+"</MfrLabel>\r\n";}
+                        positionXMLtags = ""; if(app.positionid > 0){ positionXMLtags = "\t\t<Position id=\""+app.positionid.ToString()+"\"/>\r\n"; }
+                        sw.WriteLine("\t<App action=\""+app.action.ToString()+"\" id=\""+relativeAppId.ToString()+"\">\r\n\t\t<BaseVehicle id=\""+app.basevehilceid+"\"/>\r\n"+attributesXMLtags+notesXMLtags+"\t\t<Qty>"+app.quantity.ToString()+"</Qty>\r\n\t\t<PartType id=\""+app.parttypeid.ToString()+"\"/>\r\n"+mfrlabelXMLtags+positionXMLtags+"\t\t<Part>"+ SecurityElement.Escape(app.part)+"</Part>\r\n\t</App>");
+                        relativeAppId++;
+                    }
+                    sw.WriteLine("\t<Footer>\r\n\t\t<RecordCount>"+appsCount.ToString()+"</RecordCount>\r\n\t</Footer>\r\n</ACES>");
+                }
+            }
+            catch (Exception ex)
+            {
+            }
+            return appsCount.ToString() + " Net-change records exported as ACES xml file: "+_filePath;
+        }
+
+        // store stats about the analysis results in the registry using the md5hash of the ACES file as the key
+        // elements are stored as CSS-style name:value; pairs
+        // the point is to be able to know if a file has already passed validation for doing 2-file diff calculation. We want to know that the "reference" file is legit (from a previous 
+        // validation session. It also paves the way for showing and/or reporting history of validations at some point in the the future
+        public void recordAnalysisResults(string vcdbVersion, string pcdbVersion)
+        {
+            RegistryKey key = Registry.CurrentUser.OpenSubKey("Software", true);
+            key.CreateSubKey("ACESinspector");
+            key = key.OpenSubKey("ACESinspector", true);
+            key.SetValue(fileMD5hash, "fileName:" + Path.GetFileName(filePath) + ";ACESversion:" + version + ";validatedAgainstVCdb:" + vcdbVersion + ";validatedAgainstPCdb:" + pcdbVersion + ";errorCount:" + analysisErrors.ToString() + ";warningCount:" + analysisWarnings.ToString() + ";applicationCount:" + appsCount.ToString() + ";partCount:" + distinctParts.Count.ToString() + ";");
+        }
 
 
-
-
+        // lookup loaded aces file (by hash) in registry to see if it has previously passed validation against the currently-loaded VCdb/PCdb version
+        public bool fileHasBeenValidated(string vcdbVersion, string pcdbVersion)
+        {
+            string value = ""; string validatedAgainstVCdb = ""; string validatedAgainstPCdb = ""; int errorCount = -1;
+            RegistryKey key = Registry.CurrentUser.OpenSubKey("Software", true);
+            key.CreateSubKey("ACESinspector");
+            key = key.OpenSubKey("ACESinspector", true);
+            if (key.GetValue(fileMD5hash) != null)
+            {
+                value=key.GetValue(fileMD5hash).ToString();
+                string[] pairs = value.Split(';');
+                foreach(string pair in pairs)
+                {
+                    string[] pieces = pair.Split(':');
+                    if(pieces.Count() == 2)
+                    {
+                        if(pieces[0]== "validatedAgainstVCdb"){ validatedAgainstVCdb = pieces[1];}
+                        if(pieces[0] == "validatedAgainstPCdb") { validatedAgainstPCdb = pieces[1]; }
+                        if (pieces[0] == "errorCount") { errorCount = Convert.ToInt32(pieces[1]);}
+                    }
+                }
+                if(errorCount==0 && vcdbVersion==validatedAgainstVCdb && pcdbVersion == validatedAgainstPCdb){return true;}
+            }
+            return false;
+        }
 
     }
-
-
 
 
     public class VCdb

@@ -19,6 +19,8 @@ namespace ACESinspector
     public partial class Form1 : Form
     {
         ACES aces = new ACES();
+        ACES refaces = new ACES();
+        ACES diffaces = new ACES();
         VCdb vcdb = new VCdb();
         PCdb pcdb = new PCdb();
 
@@ -32,6 +34,7 @@ namespace ACESinspector
 
             lblAppVersion.Text = System.Reflection.Assembly.GetExecutingAssembly().GetName().Version.ToString();
 
+            btnSelectReferenceACESfile.Enabled = false;
             btnSelectVCdbFile.Enabled = false;
             btnSelectPCdbFile.Enabled = false;
 
@@ -53,6 +56,7 @@ namespace ACESinspector
             lblInvalidConfigurationsCount.Text = "";
             lblInvalidParttypePositionCount.Text = "";
             lblInvalidVCdbCodesCount.Text = "";
+            lblDifferentialsSummary.Text = "";
 
             lblVCdbFilePath.Text = "";
             lblPCdbFilePath.Text = "";
@@ -88,6 +92,10 @@ namespace ACESinspector
             dgParttypePosition.Height = this.Height - 248;
             dgVCdbConfigs.Width = this.Width - 36;
             dgVCdbConfigs.Height = this.Height - 248;
+            dgAddsDropsParts.Width = this.Width - 36;
+            dgAddsDropsParts.Height = this.Height - 248;
+            dgAddsDropsVehicles.Width = this.Width - 36;
+            dgAddsDropsVehicles.Height = this.Height - 248;
 
             pictureBoxParttypeDisagreement.Visible = false;
             pictureBoxCNCoverlaps.Visible = false;
@@ -97,6 +105,13 @@ namespace ACESinspector
             pictureBoxInvalidVCdbCodes.Visible = false;
             pictureBoxParttypePosition.Visible = false;
             pictureBoxInvalidConfigurations.Visible = false;
+
+            lblDifferentialsLabel.Visible = false;
+            lblDifferentialsSummary.Visible = false;
+            progressBarDifferentials.Visible = false;
+            dgAddsDropsParts.Visible = false;
+            dgAddsDropsVehicles.Visible = false;
+
 
             dgBasevids.Visible = false;
             dgParttypeDisagreement.Visible = false;
@@ -125,7 +140,7 @@ namespace ACESinspector
             if (key.GetValue("lastAssessmentDirectoryPath") != null) { lblAssessmentFilePath.Text = key.GetValue("lastAssessmentDirectoryPath").ToString(); }
             if (key.GetValue("lastAppExportDirectoryPath") != null) { lblAppExportFilePath.Text = key.GetValue("lastAppExportDirectoryPath").ToString(); }
             if (key.GetValue("lastBuyersGuideDirectoryPath") != null) { lblBgExportFilePath.Text = key.GetValue("lastBuyersGuideDirectoryPath").ToString(); }
-
+            if (key.GetValue("lastNetChangeDirectoryPath") != null) { lblNetChangeExportFilePath.Text = key.GetValue("lastNetChangeDirectoryPath").ToString(); }
         }
 
 
@@ -173,6 +188,7 @@ namespace ACESinspector
                 lblInvalidVCdbCodesCount.Text = "";
                 lblInvalidParttypePositionCount.Text = "";
                 lblInvalidConfigurationsCount.Text = "";
+                lblDifferentialsSummary.Text = "";
                 lblStatus.BackColor = SystemColors.ButtonFace;
 
                 progressBarDuplicates.Value = 0;
@@ -223,20 +239,40 @@ namespace ACESinspector
                 lblStatus.Text = "Importing primary ACES xml file";
                 lblACESfilePath.Text = Path.GetFileName(openFileDialog.FileName);
                 toolTip1.SetToolTip(lblACESfilePath, openFileDialog.FileName);
-                
+
+
+                // calculate an md5 hash of the ACES file for later storage in the registry
+                using (var md5 = MD5.Create())
+                {
+                    using (var stream = File.OpenRead(openFileDialog.FileName))
+                    {
+                        aces.fileMD5hash = BitConverter.ToString(md5.ComputeHash(stream)).Replace("-", string.Empty);
+                    }
+                }
 
                 var result = await Task.Run(() => aces.import(openFileDialog.FileName, "", progressIndicator));
+
+               
+
+                if (aces.discardedDeletsOnImport>0){MessageBox.Show(openFileDialog.FileName+" contains \"D\" (delete) applications. These were excluded from the import. Only the \"A\" (add) application are used."); }
+
 
                 btnSelectACESfile.Enabled = true;
                 btnSelectVCdbFile.Enabled = true;
                 btnSelectPCdbFile.Enabled = true;
 
 
-
                 if (aces.xmlValidationErrors.Count == 0 && aces.appsCount > 0)
                 {
                     lblStatsTitle.Text = aces.DocumentTitle;
-                    lblStatsAppsCount.Text = aces.appsCount.ToString();
+                    if (aces.appsCount == aces.FooterRecordCount)
+                    {
+                        lblStatsAppsCount.Text = aces.appsCount.ToString();
+                    }
+                    else
+                    {
+                        lblStatsAppsCount.Text = aces.appsCount.ToString() + " (footer record count claims "+ aces.FooterRecordCount.ToString() + " apps)";
+                    }
                     lblStatsACESversion.Text = aces.version;
                     lblStatsVCdbVersion.Text = aces.VcdbVersionDate;
                     lblStatsPCdbVersion.Text = aces.PcdbVersionDate;
@@ -251,8 +287,24 @@ namespace ACESinspector
                     lblInvalidConfigurationsCount.Text = "(not yet analyzed)";
                     lblInvalidParttypePositionCount.Text = "(not yet analyzed)";
                     lblInvalidVCdbCodesCount.Text = "(not yet analyzed)";
+                    lblDifferentialsSummary.Text = "(not yet analyzed)";
 
-                    
+
+                    // copy over the header stuff from the primary aces object to the diffs aces object
+                    diffaces.clear();
+                    diffaces.version = aces.version;
+                    diffaces.Company = aces.Company;
+                    diffaces.SenderName = aces.SenderName;
+                    diffaces.SenderPhone = aces.SenderPhone;
+                    diffaces.TransferDate = aces.TransferDate;
+                    diffaces.EffectiveDate = aces.EffectiveDate;
+                    diffaces.BrandAAIAID = aces.BrandAAIAID;
+                    diffaces.DocumentTitle = aces.DocumentTitle;
+                    diffaces.VcdbVersionDate = aces.VcdbVersionDate;
+                    diffaces.QdbVersionDate = aces.QdbVersionDate;
+                    diffaces.PcdbVersionDate = aces.PcdbVersionDate;
+
+                    // populate the "Parts" tab with distinct parts and their positions, types and app counts
                     foreach (string part in aces.distinctParts)
                     {
                         string[] partTypeIdStrings = aces.partsPartTypes[part].Split('\t');
@@ -272,12 +324,16 @@ namespace ACESinspector
                     if (vcdb.version!="" && aces.successfulImport)
                     {
                         btnAnalyze.Enabled = true;
-                        try {if(Directory.Exists(lblAppExportFilePath.Text)){ btnAppExportSave.Enabled = true;}}catch (Exception){ }// Fail silently.
-                        try {if(Directory.Exists(lblBgExportFilePath.Text)) {btnBgExportSave.Enabled = true; }} catch (Exception) { }// Fail silently.
+                        try {if(Directory.Exists(lblAssessmentFilePath.Text)){btnAssessmentSave.Enabled = true;}}catch (Exception){ }// Fail silently.
+                        try { if (Directory.Exists(lblAppExportFilePath.Text)) { btnAppExportSave.Enabled = true; } } catch (Exception) { }// Fail silently.
+                        try { if(Directory.Exists(lblBgExportFilePath.Text)){btnBgExportSave.Enabled = true; }}catch (Exception) { }// Fail silently.
                     }
+
+
 
                     key.SetValue("lastACESDirectoryPath", Path.GetDirectoryName(openFileDialog.FileName));
 
+                    btnSelectReferenceACESfile.Enabled = true; // allow reference file to be seleecte now that primary is loaded and valid
                 }
                 else
                 {
@@ -285,8 +341,57 @@ namespace ACESinspector
                     progressBar1.Value = 0; lblProgressPercent.Text = ""; lblACESfilePath.Text = ""; lblStatus.Text = "";
                 }
             }
+            else
+            {// file open dialog result was not "OK" (probably candeled) 
+                btnSelectACESfile.Enabled = true; // re-enable the select button for primary aces file
+            }
+
+            
         }
 
+        private async void btnSelectReferenceACESfile_Click(object sender, EventArgs e)
+        {
+            var progressIndicator = new Progress<int>(ReportImportProgress);
+
+            OpenFileDialog openFileDialog = new OpenFileDialog();
+            RegistryKey key = Registry.CurrentUser.OpenSubKey("Software", true);
+            key.CreateSubKey("ACESinspector");
+            key = key.OpenSubKey("ACESinspector", true);
+            if (key.GetValue("lastReferenceACESDirectoryPath") != null) { openFileDialog.InitialDirectory = key.GetValue("lastReferenceACESDirectoryPath").ToString(); }
+
+            openFileDialog.Title = "Open Reference ACES XML file";
+            openFileDialog.RestoreDirectory = false;
+            openFileDialog.Filter = "XML files (*.xml)|*.xml";
+            DialogResult openFileResult = openFileDialog.ShowDialog();
+            if (openFileResult.ToString() == "OK")
+            {
+                refaces.clear();
+                refaces.filePath = openFileDialog.FileName;
+                
+                using (var md5 = MD5.Create())
+                {// calculate an md5 hash of the ACES file for later storage in the registry
+                    using (var stream = File.OpenRead(openFileDialog.FileName)){refaces.fileMD5hash = BitConverter.ToString(md5.ComputeHash(stream)).Replace("-", string.Empty);}
+                }
+
+                lblStatus.Text = "Importing Reference ACES xml file";
+                lblReferenceACESfilePath.Text = Path.GetFileName(openFileDialog.FileName);
+                key.SetValue("lastReferenceACESDirectoryPath", Path.GetDirectoryName(openFileDialog.FileName));
+
+                if (refaces.fileHasBeenValidated(vcdb.version, pcdb.version))
+                {
+                    var result = await Task.Run(() => refaces.import(openFileDialog.FileName, "", progressIndicator));
+                    lblDifferentialsLabel.Visible = true; lblDifferentialsSummary.Visible = true; progressBarDifferentials.Visible = true;
+                }
+                else
+                {
+                    MessageBox.Show("You must select a reference ACES file that has previoulsy passed validation against the currently loaded version of the VCdb ("+vcdb.version+") and PCdb ("+pcdb.version+"). Open this file first as a primary ACES and run an analysis. Then select it as a reference file.");
+                    lblStatus.Text = ""; lblReferenceACESfilePath.Text = "";
+                }
+
+                progressBar1.Value = 0; lblProgressPercent.Text = ""; lblStatus.Text = "Successfully imported reference ACES xml";
+            }
+
+        }
 
         private async void btnSelectVCdbFile_Click(object sender, EventArgs e)
         {
@@ -478,6 +583,11 @@ namespace ACESinspector
             dgParttypePosition.Height = this.Height - 248;
             dgVCdbConfigs.Width = this.Width - 36;
             dgVCdbConfigs.Height = this.Height - 248;
+            dgAddsDropsParts.Width = this.Width - 36;
+            dgAddsDropsParts.Height = this.Height - 248;
+            dgAddsDropsVehicles.Width = this.Width - 36;
+            dgAddsDropsVehicles.Height = this.Height - 248;
+
 
             tabControl1.Width = this.Width - 20;
             tabControl1.Height = this.Height - 215;
@@ -536,11 +646,17 @@ namespace ACESinspector
             progressBarInvalidConfigurations.Value = value;
         }
 
+        void ReportAnalyzeProgressDifferentials(int value)
+        {
+            progressBarDifferentials.Value = value;
+        }
+
 
         private async void btnAnalyze_Click(object sender, EventArgs e)
         {
             btnAnalyze.Enabled = false;
             btnSelectACESfile.Enabled = false;
+            btnSelectReferenceACESfile.Enabled = false;
             btnSelectVCdbFile.Enabled = false;
             btnSelectPCdbFile.Enabled = false;
 
@@ -557,6 +673,7 @@ namespace ACESinspector
             lblInvalidVCdbCodesCount.Text = "";
             lblInvalidParttypePositionCount.Text = "";
             lblInvalidConfigurationsCount.Text = "";
+            lblDifferentialsSummary.Text = "";
             lblStatus.BackColor = SystemColors.ButtonFace;
 
             dgBasevids.Rows.Clear();
@@ -566,8 +683,19 @@ namespace ACESinspector
             dgVCdbCodes.Rows.Clear();
             dgParttypePosition.Rows.Clear();
             dgVCdbConfigs.Rows.Clear();
+            dgAddsDropsParts.Rows.Clear();
+            dgAddsDropsVehicles.Rows.Clear();
 
             aces.clearAnalysisResults();
+
+            pictureBoxCNCoverlaps.Visible = false;
+            pictureBoxDuplicates.Visible = false;
+            pictureBoxOverlaps.Visible = false;
+            pictureBoxInvalidBasevehicles.Visible = false;
+            pictureBoxInvalidVCdbCodes.Visible = false;
+            pictureBoxParttypePosition.Visible = false;
+            pictureBoxInvalidConfigurations.Visible = false;
+
 
             lblStatsErrorsCount.Text = "(analyzing)";
             lblStatsWarningsCount.Text = "(analyzing)";
@@ -581,6 +709,7 @@ namespace ACESinspector
             var progressInvalidVCdbCodes = new Progress<int>(ReportAnalyzeProgressInvalidVCdbCodes);
             var progressParttypePosition = new Progress<int>(ReportAnalyzeProgressParttypePosition);
             var progressInvalidConfigurations = new Progress<int>(ReportAnalyzeProgressInvalidConfigurations);
+            var progressDifferentials = new Progress<int>(ReportAnalyzeProgressDifferentials);
 
             //await Task.Run(() => aces.disperateAttributes(vcdb, pcdb, progressIndicator));
 
@@ -605,12 +734,8 @@ namespace ACESinspector
             await Task.Run(() => aces.overlaps(vcdb, pcdb, progressOverlaps));
             lblOverlapsCount.Text = aces.overlapsErrors.Count.ToString();
             pictureBoxOverlaps.Visible = true; if (aces.overlapsErrors.Count > 0) { dgOverlaps.Visible = true; pictureBoxOverlaps.BackColor = Color.Red;}else { pictureBoxOverlaps.BackColor = Color.Green; }
-            foreach (string error in aces.overlapsErrors)
-            {
-                dgOverlaps.Rows.Add(error.Split('\t'));
-            }
-
-
+            foreach (string error in aces.overlapsErrors){dgOverlaps.Rows.Add(error.Split('\t'));}
+            
             lblInvalidBasevehilcesCount.Text = "(analyzing)";
             await Task.Run(() => aces.invalidBasevids(vcdb, pcdb, progressInvalidBasevehicles));
             lblInvalidBasevehilcesCount.Text = aces.basevehicleidsErrors.Count.ToString();
@@ -636,8 +761,39 @@ namespace ACESinspector
             pictureBoxInvalidConfigurations.Visible = true; if (aces.vcdbConfigurationsErrors.Count > 0) { dgVCdbConfigs.Visible = true; pictureBoxInvalidConfigurations.BackColor = Color.Red; } else { pictureBoxInvalidConfigurations.BackColor = Color.Green; }
             foreach (string error in aces.vcdbConfigurationsErrors) {dgVCdbConfigs.Rows.Add(error.Split('\t')); }
 
+            
+            if (refaces.appsCount > 0)
+            {
+                lblDifferentialsSummary.Text = "(analyzing)";
+                await Task.Run(() => diffaces.findDifferentials(aces,refaces, vcdb, pcdb, progressDifferentials));
+                foreach (string line in diffaces.differentialParts) { dgAddsDropsParts.Rows.Add(line.Split('\t')); }
+
+                App tempApp = new App();
+                foreach (string line in diffaces.differentialVehicles)
+                {
+                    string[] fields = line.Split('\t');
+
+                    //hashKey = app.basevehilceid.ToString() + "\t" + app.parttypeid.ToString() + "\t" + app.positionid.ToString() + "\t" + app.namevalpairString(false) + "\t" + app.notes + "\t" + app.mfrlabel;
+                    tempApp.Clear();
+                    tempApp.basevehilceid = Convert.ToInt32(fields[1]);
+                    tempApp.parttypeid = Convert.ToInt32(fields[2]);
+                    tempApp.positionid = Convert.ToInt32(fields[3]);
+                    if (fields[5] != "") { tempApp.VCdbAttributes = aces.parseAttributePairsString(fields[4]); }
+                    tempApp.notes = fields[5];
+                    tempApp.mfrlabel = fields[6];
+                    dgAddsDropsVehicles.Rows.Add(fields[0],tempApp.basevehilceid.ToString(),vcdb.niceMakeOfBasevid(tempApp.basevehilceid), vcdb.niceModelOfBasevid(tempApp.basevehilceid),vcdb.niceYearOfBasevid(tempApp.basevehilceid),pcdb.niceParttype(tempApp.parttypeid),pcdb.nicePosition(tempApp.positionid),tempApp.niceAttributesString(vcdb,true),tempApp.mfrlabel);
+                }
+                
+                lblDifferentialsSummary.Text = diffaces.differentialsSummary;
+                if (diffaces.differentialParts.Count > 0) { dgAddsDropsParts.Visible = true; }
+                if (diffaces.differentialVehicles.Count > 0) { dgAddsDropsVehicles.Visible = true; }
+            }
+
+    
 
             aces.analysisComplete = true;
+            btnSelectReferenceACESfile.Enabled = true;
+            btnAnalyze.Enabled = true;
             btnSelectACESfile.Enabled = true;
             btnSelectVCdbFile.Enabled = true;
             btnSelectPCdbFile.Enabled = true;
@@ -673,6 +829,8 @@ namespace ACESinspector
 
             lblStatsErrorsCount.Text = aces.analysisErrors.ToString();
             lblStatsWarningsCount.Text = aces.analysisWarnings.ToString();
+            
+            aces.recordAnalysisResults(vcdb.version,pcdb.version); // record file hash and results in registry
         }
 
         private void groupBoxFilters_Enter(object sender, EventArgs e)
@@ -774,6 +932,35 @@ namespace ACESinspector
             //            MessageBox.Show(result);
         }
 
+
+        private async void btnSelectNetChangeFile_Click(object sender, EventArgs e)
+        {
+            using (var fbd = new FolderBrowserDialog())
+            {
+                DialogResult result = fbd.ShowDialog();
+                if (result == DialogResult.OK && !string.IsNullOrWhiteSpace(fbd.SelectedPath))
+                {
+                    lblNetChangeExportFilePath.Text = fbd.SelectedPath;
+                    RegistryKey key = Registry.CurrentUser.OpenSubKey("Software", true);
+                    key.CreateSubKey("ACESinspector");
+                    key = key.OpenSubKey("ACESinspector", true);
+                    key.SetValue("lastNetChangeDirectoryPath", fbd.SelectedPath);
+                    if (diffaces.appsCount>0) { btnNetChangeExportSave.Enabled = true; }
+                }
+            }
+
+        }
+
+        private void btnNetChangeExportSave_Click(object sender, EventArgs e)
+        {
+            if (lblNetChangeExportFilePath.Text != "")
+            {
+                string result = diffaces.exportXMLApps(lblNetChangeExportFilePath.Text + @"\NetChanges_"+ Path.GetFileName(aces.filePath), "UPDATE");
+                MessageBox.Show(result);
+            }
+        }
+
+
         private void toolTip1_Popup(object sender, PopupEventArgs e)
         {
 
@@ -832,6 +1019,34 @@ namespace ACESinspector
             }
 
         }
+
+        private void dgParttypePosition_SortCompare(object sender, DataGridViewSortCompareEventArgs e)
+        {
+            //Column 0 is group number - it needs to be compared numerically for sort instead of the default alpha
+            if (e.Column.Index == 1)
+            {
+                e.SortResult = int.Parse(e.CellValue1.ToString()).CompareTo(int.Parse(e.CellValue2.ToString()));
+                e.Handled = true;//pass by the default sorting
+            }
+
+            if (e.Column.Index == 2)
+            {
+                e.SortResult = int.Parse(e.CellValue1.ToString()).CompareTo(int.Parse(e.CellValue2.ToString()));
+                e.Handled = true;//pass by the default sorting
+            }
+
+        }
+
+
+
+
+
+
+
+
+
+
+
 
     }
 }
