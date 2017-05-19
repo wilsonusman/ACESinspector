@@ -286,10 +286,29 @@ namespace ACESinspector
         public string YearId;
     }
 
-    public class VCdbAttribute
+    public class VCdbAttribute:IComparable<VCdbAttribute>
     {// each one of these is a name/value pair that lives in an App. ex name="Submidel", value=13. A List of these (plus Notes) makes up the "qualifiers" for an App
         public string name;
         public int value;
+
+        // comparison method for getting a List<VCdbAttribute> into a sequence that is allowed by the XSD. IMHO the fact that the XSD specifies sequence for vcdb-coded attributes is bullshit. just sayin.
+        public int CompareTo(VCdbAttribute other)
+        {
+            int thisSortScore = 0; int otherSortScore = 0;
+            Dictionary<string, int> d = new Dictionary<string, int>()
+            {
+                {"MfrBodyCode",1},{"BodyNumDoors",2},{"BodyType",3},{"DriveType",4},{"EngineBase",5},{"EngineDesignation",6},
+                {"EngineVIN",7},{"EngineVersion",8},{"EngineMfr",9},{"PowerOutput",10},{"ValvesPerEngine",11},{"FuelDeliveryType",12},
+                {"FuelDeliverySubType",13},{"FuelSystemControlType",14},{"FuelSystemDesign",15},{"Aspiration",16},{"CylinderHeadType",17},
+                {"FuelType",18},{"IgnitionSystemType",19},{"TransmissionMfrCode",20},{"TransmissionBase",21},{"TransmissionType",22},
+                {"TransmissionControlType",23},{"TransmissionNumSpeeds",24},{"TransElecControlled",25},{"TransmissionMfr",26},
+                {"BedLength",27},{"BedType",28},{"WheelBase",29},{"BrakeSystem",30},{"FrontBrakeType",31},{"RearBrakeType",32},
+                {"BrakeABS",33},{"FrontSpringType",34},{"RearSpringType",35},{"SteeringSystem",36},{"SteeringType",37},{"Region",38}}
+            ;
+            if(d.ContainsKey(this.name)){ thisSortScore = d[this.name];}
+            if(d.ContainsKey(other.name)){ otherSortScore = d[other.name];}
+            return (thisSortScore-otherSortScore);
+        }
     }
 
 
@@ -1509,6 +1528,7 @@ namespace ACESinspector
                         attributesXMLtags = "";
                         if (app.VCdbAttributes.Count > 0)
                         {
+                            app.VCdbAttributes.Sort(); // this uses the classes customer Icomparable method to sort attributes into the bizare order that the XSD mandates.
                             foreach (VCdbAttribute myAttribute in app.VCdbAttributes)
                             {
                                 attributesXMLtags += "\t\t<" + myAttribute.name + " id=\"" + myAttribute.value.ToString() + "\"/>\r\n";
