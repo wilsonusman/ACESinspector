@@ -19,6 +19,6 @@ Changed “mfrid” to “enginemfrid” in the attributeWhereClause() function
 Changed “mfrid” to “transmissionmfrid” in the attributeWhereClause() function
 
 1.0.1.18 (released 5/24/2017)
-Fixed assessment output function that produced a corrupt excel file when multiple positions per part are in play. The string containing a list of position id’s was being delimited by comma and subsequently split by tab. Transitioned over to tab. 
+Fixed assessment output function that produced a corrupt excel file when multiple positions per part are in play. The string containing a list of position id’s was being delimited by comma and subsequently split by tab. Transitioned over to tab.
 
 
