@@ -1294,7 +1294,7 @@ namespace ACESinspector
                         string[] partTypeIdStrings = partsPartTypes[distinctPart].Split('\t');
                         partTypeNameListString = ""; foreach (string partTypeIdString in partTypeIdStrings) { partTypeNameListString += pcdb.niceParttype(Convert.ToInt32(partTypeIdString)) + ","; }
                         partTypeNameListString = partTypeNameListString.Substring(0, partTypeNameListString.Length - 1);
-                        string[] positionIdStrings = partsPositions[distinctPart].Split(',');
+                        string[] positionIdStrings = partsPositions[distinctPart].Split('\t');
                         positionNameListString = ""; foreach (string positionIdString in positionIdStrings) { positionNameListString += pcdb.nicePosition(Convert.ToInt32(positionIdString)) + ","; }
                         positionNameListString = positionNameListString.Substring(0, positionNameListString.Length - 1);
                         sw.Write("<Row><Cell><Data ss:Type=\"String\">" + distinctPart + "</Data></Cell><Cell><Data ss:Type=\"Number\">" + partsAppsCounts[distinctPart].ToString() + "</Data></Cell><Cell><Data ss:Type=\"String\">" + partTypeNameListString + "</Data></Cell><Cell><Data ss:Type=\"String\">" + positionNameListString + "</Data></Cell></Row>");
