@@ -99,6 +99,9 @@
             this.label2 = new System.Windows.Forms.Label();
             this.tabPageExports = new System.Windows.Forms.TabPage();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
+            this.btnNetChangeExportSave = new System.Windows.Forms.Button();
+            this.lblNetChangeExportFilePath = new System.Windows.Forms.Label();
+            this.btnSelectNetChangeFile = new System.Windows.Forms.Button();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.btnSelectBgExportFile = new System.Windows.Forms.Button();
             this.btnBgExportSave = new System.Windows.Forms.Button();
@@ -178,43 +181,6 @@
             this.dgVCdbCodesNotes = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.tabPageParttypePosition = new System.Windows.Forms.TabPage();
             this.dgParttypePosition = new System.Windows.Forms.DataGridView();
-            this.tabPageInvalidConfigs = new System.Windows.Forms.TabPage();
-            this.dgVCdbConfigs = new System.Windows.Forms.DataGridView();
-            this.dgVCdbConfigsApplicationid = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.dgVCdbConfigsMake = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.dgVCdbConfigsModel = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.dgVCdbConfigsYear = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.dgVCdbConfigsParttype = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.dgVCdbConfigsPosition = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.dgVCdbConfigsQty = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.dgVCdbConfigsPart = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.dgVCdbConfigsQualifiers = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.tabPageAddsDropsParts = new System.Windows.Forms.TabPage();
-            this.dgAddsDropsParts = new System.Windows.Forms.DataGridView();
-            this.dgAddsDropsPartsAction = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.dataGridViewTextBoxPart = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.tabPageAddsDropsVehicles = new System.Windows.Forms.TabPage();
-            this.dgAddsDropsVehicles = new System.Windows.Forms.DataGridView();
-            this.lblStatus = new System.Windows.Forms.Label();
-            this.button3 = new System.Windows.Forms.Button();
-            this.progressBar1 = new System.Windows.Forms.ProgressBar();
-            this.lblProgressPercent = new System.Windows.Forms.Label();
-            this.lblAppVersion = new System.Windows.Forms.Label();
-            this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
-            this.btnSelectReferenceACESfile = new System.Windows.Forms.Button();
-            this.lblReferenceACESfilePath = new System.Windows.Forms.Label();
-            this.btnSelectNetChangeFile = new System.Windows.Forms.Button();
-            this.lblNetChangeExportFilePath = new System.Windows.Forms.Label();
-            this.btnNetChangeExportSave = new System.Windows.Forms.Button();
-            this.dgAddsDropsVehiclesAction = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.dgAddsDropsVehiclesBaseVid = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.dgAddsDropsVehiclesMake = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.dgAddsDropsVehiclesModel = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.dgAddsDropsVehiclesYear = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.dgAddsDropsVehiclesParttype = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.dgAddsDropsVehiclesPosition = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.dgAddsDropsVehiclesQualifiers = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.dgAddsDropsVehiclesMfrLabel = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.dataGridViewParttypePositionError = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.dataGridViewParttypePositionAppId = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.dataGridViewParttypePositionBasevid = new System.Windows.Forms.DataGridViewTextBoxColumn();
@@ -226,6 +192,42 @@
             this.dataGridViewParttypePositionQty = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.dataGridViewParttypePositionQualifiers = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.dataGridViewParttypePositionPart = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.tabPageInvalidConfigs = new System.Windows.Forms.TabPage();
+            this.dgVCdbConfigs = new System.Windows.Forms.DataGridView();
+            this.tabPageAddsDropsParts = new System.Windows.Forms.TabPage();
+            this.dgAddsDropsParts = new System.Windows.Forms.DataGridView();
+            this.dgAddsDropsPartsAction = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.dataGridViewTextBoxPart = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.tabPageAddsDropsVehicles = new System.Windows.Forms.TabPage();
+            this.dgAddsDropsVehicles = new System.Windows.Forms.DataGridView();
+            this.dgAddsDropsVehiclesAction = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.dgAddsDropsVehiclesBaseVid = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.dgAddsDropsVehiclesMake = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.dgAddsDropsVehiclesModel = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.dgAddsDropsVehiclesYear = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.dgAddsDropsVehiclesParttype = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.dgAddsDropsVehiclesPosition = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.dgAddsDropsVehiclesQualifiers = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.dgAddsDropsVehiclesMfrLabel = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.lblStatus = new System.Windows.Forms.Label();
+            this.button3 = new System.Windows.Forms.Button();
+            this.progressBar1 = new System.Windows.Forms.ProgressBar();
+            this.lblProgressPercent = new System.Windows.Forms.Label();
+            this.lblAppVersion = new System.Windows.Forms.Label();
+            this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
+            this.btnSelectReferenceACESfile = new System.Windows.Forms.Button();
+            this.lblReferenceACESfilePath = new System.Windows.Forms.Label();
+            this.dgVCdbConfigsApplicationid = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.dgVCdbConfigsBasevehicleid = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.dgVCdbConfigsMake = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.dgVCdbConfigsModel = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.dgVCdbConfigsYear = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.dgVCdbConfigsParttype = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.dgVCdbConfigsPosition = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.dgVCdbConfigsQty = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.dgVCdbConfigsPart = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.dgVCdbConfigsQualifiers = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.dgVCdbConfigsNotes = new System.Windows.Forms.DataGridViewTextBoxColumn();
             ((System.ComponentModel.ISupportInitialize)(this.dgParts)).BeginInit();
             this.tabControl1.SuspendLayout();
             this.tabPageStats.SuspendLayout();
@@ -986,6 +988,35 @@
             this.groupBox2.TabIndex = 3;
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "Net-Changes Export";
+            // 
+            // btnNetChangeExportSave
+            // 
+            this.btnNetChangeExportSave.Location = new System.Drawing.Point(5, 48);
+            this.btnNetChangeExportSave.Name = "btnNetChangeExportSave";
+            this.btnNetChangeExportSave.Size = new System.Drawing.Size(89, 23);
+            this.btnNetChangeExportSave.TabIndex = 2;
+            this.btnNetChangeExportSave.Text = "Export";
+            this.btnNetChangeExportSave.UseVisualStyleBackColor = true;
+            this.btnNetChangeExportSave.Click += new System.EventHandler(this.btnNetChangeExportSave_Click);
+            // 
+            // lblNetChangeExportFilePath
+            // 
+            this.lblNetChangeExportFilePath.AutoSize = true;
+            this.lblNetChangeExportFilePath.Location = new System.Drawing.Point(119, 24);
+            this.lblNetChangeExportFilePath.Name = "lblNetChangeExportFilePath";
+            this.lblNetChangeExportFilePath.Size = new System.Drawing.Size(29, 13);
+            this.lblNetChangeExportFilePath.TabIndex = 1;
+            this.lblNetChangeExportFilePath.Text = "label";
+            // 
+            // btnSelectNetChangeFile
+            // 
+            this.btnSelectNetChangeFile.Location = new System.Drawing.Point(5, 19);
+            this.btnSelectNetChangeFile.Name = "btnSelectNetChangeFile";
+            this.btnSelectNetChangeFile.Size = new System.Drawing.Size(108, 23);
+            this.btnSelectNetChangeFile.TabIndex = 0;
+            this.btnSelectNetChangeFile.Text = "Select Ouptut Path";
+            this.btnSelectNetChangeFile.UseVisualStyleBackColor = true;
+            this.btnSelectNetChangeFile.Click += new System.EventHandler(this.btnSelectNetChangeFile_Click);
             // 
             // groupBox1
             // 
@@ -1768,8 +1799,94 @@
             this.dgParttypePosition.Size = new System.Drawing.Size(838, 424);
             this.dgParttypePosition.TabIndex = 4;
             this.dgParttypePosition.SortCompare += new System.Windows.Forms.DataGridViewSortCompareEventHandler(this.dgParttypePosition_SortCompare);
-
-
+            // 
+            // dataGridViewParttypePositionError
+            // 
+            this.dataGridViewParttypePositionError.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
+            this.dataGridViewParttypePositionError.HeaderText = "Error";
+            this.dataGridViewParttypePositionError.Name = "dataGridViewParttypePositionError";
+            this.dataGridViewParttypePositionError.ReadOnly = true;
+            this.dataGridViewParttypePositionError.Width = 54;
+            // 
+            // dataGridViewParttypePositionAppId
+            // 
+            this.dataGridViewParttypePositionAppId.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
+            this.dataGridViewParttypePositionAppId.HeaderText = "App id";
+            this.dataGridViewParttypePositionAppId.Name = "dataGridViewParttypePositionAppId";
+            this.dataGridViewParttypePositionAppId.ReadOnly = true;
+            this.dataGridViewParttypePositionAppId.Width = 51;
+            // 
+            // dataGridViewParttypePositionBasevid
+            // 
+            this.dataGridViewParttypePositionBasevid.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
+            this.dataGridViewParttypePositionBasevid.HeaderText = "BaseVehicle Id";
+            this.dataGridViewParttypePositionBasevid.Name = "dataGridViewParttypePositionBasevid";
+            this.dataGridViewParttypePositionBasevid.ReadOnly = true;
+            this.dataGridViewParttypePositionBasevid.Width = 95;
+            // 
+            // dataGridViewParttypePositionMake
+            // 
+            this.dataGridViewParttypePositionMake.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
+            this.dataGridViewParttypePositionMake.HeaderText = "Make";
+            this.dataGridViewParttypePositionMake.Name = "dataGridViewParttypePositionMake";
+            this.dataGridViewParttypePositionMake.ReadOnly = true;
+            this.dataGridViewParttypePositionMake.Width = 59;
+            // 
+            // dataGridViewParttypePositionModel
+            // 
+            this.dataGridViewParttypePositionModel.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
+            this.dataGridViewParttypePositionModel.HeaderText = "Model";
+            this.dataGridViewParttypePositionModel.Name = "dataGridViewParttypePositionModel";
+            this.dataGridViewParttypePositionModel.ReadOnly = true;
+            this.dataGridViewParttypePositionModel.Width = 61;
+            // 
+            // dataGridViewParttypePositionYear
+            // 
+            this.dataGridViewParttypePositionYear.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
+            this.dataGridViewParttypePositionYear.HeaderText = "Year";
+            this.dataGridViewParttypePositionYear.Name = "dataGridViewParttypePositionYear";
+            this.dataGridViewParttypePositionYear.ReadOnly = true;
+            this.dataGridViewParttypePositionYear.Width = 54;
+            // 
+            // dataGridViewParttypePositionParttype
+            // 
+            this.dataGridViewParttypePositionParttype.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
+            this.dataGridViewParttypePositionParttype.HeaderText = "Part Type";
+            this.dataGridViewParttypePositionParttype.Name = "dataGridViewParttypePositionParttype";
+            this.dataGridViewParttypePositionParttype.ReadOnly = true;
+            this.dataGridViewParttypePositionParttype.Width = 72;
+            // 
+            // dataGridViewParttypePositionPosition
+            // 
+            this.dataGridViewParttypePositionPosition.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
+            this.dataGridViewParttypePositionPosition.HeaderText = "Position";
+            this.dataGridViewParttypePositionPosition.Name = "dataGridViewParttypePositionPosition";
+            this.dataGridViewParttypePositionPosition.ReadOnly = true;
+            this.dataGridViewParttypePositionPosition.Width = 69;
+            // 
+            // dataGridViewParttypePositionQty
+            // 
+            this.dataGridViewParttypePositionQty.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
+            this.dataGridViewParttypePositionQty.HeaderText = "Qty";
+            this.dataGridViewParttypePositionQty.Name = "dataGridViewParttypePositionQty";
+            this.dataGridViewParttypePositionQty.ReadOnly = true;
+            this.dataGridViewParttypePositionQty.Width = 48;
+            // 
+            // dataGridViewParttypePositionQualifiers
+            // 
+            this.dataGridViewParttypePositionQualifiers.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
+            this.dataGridViewParttypePositionQualifiers.HeaderText = "Qualifiers";
+            this.dataGridViewParttypePositionQualifiers.Name = "dataGridViewParttypePositionQualifiers";
+            this.dataGridViewParttypePositionQualifiers.ReadOnly = true;
+            this.dataGridViewParttypePositionQualifiers.Width = 75;
+            // 
+            // dataGridViewParttypePositionPart
+            // 
+            this.dataGridViewParttypePositionPart.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
+            this.dataGridViewParttypePositionPart.HeaderText = "Part";
+            this.dataGridViewParttypePositionPart.Name = "dataGridViewParttypePositionPart";
+            this.dataGridViewParttypePositionPart.ReadOnly = true;
+            this.dataGridViewParttypePositionPart.Width = 51;
             // 
             // tabPageInvalidConfigs
             // 
@@ -1788,6 +1905,7 @@
             this.dgVCdbConfigs.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dgVCdbConfigs.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.dgVCdbConfigsApplicationid,
+            this.dgVCdbConfigsBasevehicleid,
             this.dgVCdbConfigsMake,
             this.dgVCdbConfigsModel,
             this.dgVCdbConfigsYear,
@@ -1795,83 +1913,13 @@
             this.dgVCdbConfigsPosition,
             this.dgVCdbConfigsQty,
             this.dgVCdbConfigsPart,
-            this.dgVCdbConfigsQualifiers});
+            this.dgVCdbConfigsQualifiers,
+            this.dgVCdbConfigsNotes});
             this.dgVCdbConfigs.Location = new System.Drawing.Point(3, 3);
             this.dgVCdbConfigs.Name = "dgVCdbConfigs";
             this.dgVCdbConfigs.Size = new System.Drawing.Size(838, 424);
             this.dgVCdbConfigs.TabIndex = 3;
-            // 
-            // dgVCdbConfigsApplicationid
-            // 
-            this.dgVCdbConfigsApplicationid.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
-            this.dgVCdbConfigsApplicationid.HeaderText = "App id";
-            this.dgVCdbConfigsApplicationid.Name = "dgVCdbConfigsApplicationid";
-            this.dgVCdbConfigsApplicationid.ReadOnly = true;
-            this.dgVCdbConfigsApplicationid.Width = 62;
-            // 
-            // dgVCdbConfigsMake
-            // 
-            this.dgVCdbConfigsMake.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
-            this.dgVCdbConfigsMake.HeaderText = "Make";
-            this.dgVCdbConfigsMake.Name = "dgVCdbConfigsMake";
-            this.dgVCdbConfigsMake.ReadOnly = true;
-            this.dgVCdbConfigsMake.Width = 59;
-            // 
-            // dgVCdbConfigsModel
-            // 
-            this.dgVCdbConfigsModel.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
-            this.dgVCdbConfigsModel.HeaderText = "Model";
-            this.dgVCdbConfigsModel.Name = "dgVCdbConfigsModel";
-            this.dgVCdbConfigsModel.ReadOnly = true;
-            this.dgVCdbConfigsModel.Width = 61;
-            // 
-            // dgVCdbConfigsYear
-            // 
-            this.dgVCdbConfigsYear.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
-            this.dgVCdbConfigsYear.HeaderText = "Year";
-            this.dgVCdbConfigsYear.Name = "dgVCdbConfigsYear";
-            this.dgVCdbConfigsYear.ReadOnly = true;
-            this.dgVCdbConfigsYear.Width = 54;
-            // 
-            // dgVCdbConfigsParttype
-            // 
-            this.dgVCdbConfigsParttype.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
-            this.dgVCdbConfigsParttype.HeaderText = "Part Type";
-            this.dgVCdbConfigsParttype.Name = "dgVCdbConfigsParttype";
-            this.dgVCdbConfigsParttype.ReadOnly = true;
-            this.dgVCdbConfigsParttype.Width = 78;
-            // 
-            // dgVCdbConfigsPosition
-            // 
-            this.dgVCdbConfigsPosition.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
-            this.dgVCdbConfigsPosition.HeaderText = "Position";
-            this.dgVCdbConfigsPosition.Name = "dgVCdbConfigsPosition";
-            this.dgVCdbConfigsPosition.ReadOnly = true;
-            this.dgVCdbConfigsPosition.Width = 69;
-            // 
-            // dgVCdbConfigsQty
-            // 
-            this.dgVCdbConfigsQty.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
-            this.dgVCdbConfigsQty.HeaderText = "Qty";
-            this.dgVCdbConfigsQty.Name = "dgVCdbConfigsQty";
-            this.dgVCdbConfigsQty.ReadOnly = true;
-            this.dgVCdbConfigsQty.Width = 48;
-            // 
-            // dgVCdbConfigsPart
-            // 
-            this.dgVCdbConfigsPart.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
-            this.dgVCdbConfigsPart.HeaderText = "Part";
-            this.dgVCdbConfigsPart.Name = "dgVCdbConfigsPart";
-            this.dgVCdbConfigsPart.ReadOnly = true;
-            this.dgVCdbConfigsPart.Width = 51;
-            // 
-            // dgVCdbConfigsQualifiers
-            // 
-            this.dgVCdbConfigsQualifiers.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
-            this.dgVCdbConfigsQualifiers.HeaderText = "Qualifiers";
-            this.dgVCdbConfigsQualifiers.Name = "dgVCdbConfigsQualifiers";
-            this.dgVCdbConfigsQualifiers.ReadOnly = true;
-            this.dgVCdbConfigsQualifiers.Width = 75;
+            this.dgVCdbConfigs.SortCompare += new System.Windows.Forms.DataGridViewSortCompareEventHandler(this.dgVCdbConfigs_SortCompare);
             // 
             // tabPageAddsDropsParts
             // 
@@ -1941,6 +1989,78 @@
             this.dgAddsDropsVehicles.Name = "dgAddsDropsVehicles";
             this.dgAddsDropsVehicles.Size = new System.Drawing.Size(838, 425);
             this.dgAddsDropsVehicles.TabIndex = 3;
+            // 
+            // dgAddsDropsVehiclesAction
+            // 
+            this.dgAddsDropsVehiclesAction.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
+            this.dgAddsDropsVehiclesAction.HeaderText = "Action";
+            this.dgAddsDropsVehiclesAction.Name = "dgAddsDropsVehiclesAction";
+            this.dgAddsDropsVehiclesAction.ReadOnly = true;
+            this.dgAddsDropsVehiclesAction.Width = 62;
+            // 
+            // dgAddsDropsVehiclesBaseVid
+            // 
+            this.dgAddsDropsVehiclesBaseVid.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
+            this.dgAddsDropsVehiclesBaseVid.HeaderText = "BaseVehicle id";
+            this.dgAddsDropsVehiclesBaseVid.Name = "dgAddsDropsVehiclesBaseVid";
+            this.dgAddsDropsVehiclesBaseVid.ReadOnly = true;
+            this.dgAddsDropsVehiclesBaseVid.Width = 102;
+            // 
+            // dgAddsDropsVehiclesMake
+            // 
+            this.dgAddsDropsVehiclesMake.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
+            this.dgAddsDropsVehiclesMake.HeaderText = "Make";
+            this.dgAddsDropsVehiclesMake.Name = "dgAddsDropsVehiclesMake";
+            this.dgAddsDropsVehiclesMake.ReadOnly = true;
+            this.dgAddsDropsVehiclesMake.Width = 59;
+            // 
+            // dgAddsDropsVehiclesModel
+            // 
+            this.dgAddsDropsVehiclesModel.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
+            this.dgAddsDropsVehiclesModel.HeaderText = "Model";
+            this.dgAddsDropsVehiclesModel.Name = "dgAddsDropsVehiclesModel";
+            this.dgAddsDropsVehiclesModel.ReadOnly = true;
+            this.dgAddsDropsVehiclesModel.Width = 61;
+            // 
+            // dgAddsDropsVehiclesYear
+            // 
+            this.dgAddsDropsVehiclesYear.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
+            this.dgAddsDropsVehiclesYear.HeaderText = "Year";
+            this.dgAddsDropsVehiclesYear.Name = "dgAddsDropsVehiclesYear";
+            this.dgAddsDropsVehiclesYear.ReadOnly = true;
+            this.dgAddsDropsVehiclesYear.Width = 54;
+            // 
+            // dgAddsDropsVehiclesParttype
+            // 
+            this.dgAddsDropsVehiclesParttype.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
+            this.dgAddsDropsVehiclesParttype.HeaderText = "Part Type";
+            this.dgAddsDropsVehiclesParttype.Name = "dgAddsDropsVehiclesParttype";
+            this.dgAddsDropsVehiclesParttype.ReadOnly = true;
+            this.dgAddsDropsVehiclesParttype.Width = 78;
+            // 
+            // dgAddsDropsVehiclesPosition
+            // 
+            this.dgAddsDropsVehiclesPosition.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
+            this.dgAddsDropsVehiclesPosition.HeaderText = "Position";
+            this.dgAddsDropsVehiclesPosition.Name = "dgAddsDropsVehiclesPosition";
+            this.dgAddsDropsVehiclesPosition.ReadOnly = true;
+            this.dgAddsDropsVehiclesPosition.Width = 69;
+            // 
+            // dgAddsDropsVehiclesQualifiers
+            // 
+            this.dgAddsDropsVehiclesQualifiers.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
+            this.dgAddsDropsVehiclesQualifiers.HeaderText = "Qualifiers";
+            this.dgAddsDropsVehiclesQualifiers.Name = "dgAddsDropsVehiclesQualifiers";
+            this.dgAddsDropsVehiclesQualifiers.ReadOnly = true;
+            this.dgAddsDropsVehiclesQualifiers.Width = 75;
+            // 
+            // dgAddsDropsVehiclesMfrLabel
+            // 
+            this.dgAddsDropsVehiclesMfrLabel.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
+            this.dgAddsDropsVehiclesMfrLabel.HeaderText = "MfrLabel";
+            this.dgAddsDropsVehiclesMfrLabel.Name = "dgAddsDropsVehiclesMfrLabel";
+            this.dgAddsDropsVehiclesMfrLabel.ReadOnly = true;
+            this.dgAddsDropsVehiclesMfrLabel.Width = 73;
             // 
             // lblStatus
             // 
@@ -2015,194 +2135,93 @@
             this.lblReferenceACESfilePath.TabIndex = 35;
             this.lblReferenceACESfilePath.Text = "label1";
             // 
-            // btnSelectNetChangeFile
+            // dgVCdbConfigsApplicationid
             // 
-            this.btnSelectNetChangeFile.Location = new System.Drawing.Point(5, 19);
-            this.btnSelectNetChangeFile.Name = "btnSelectNetChangeFile";
-            this.btnSelectNetChangeFile.Size = new System.Drawing.Size(108, 23);
-            this.btnSelectNetChangeFile.TabIndex = 0;
-            this.btnSelectNetChangeFile.Text = "Select Ouptut Path";
-            this.btnSelectNetChangeFile.UseVisualStyleBackColor = true;
-            this.btnSelectNetChangeFile.Click += new System.EventHandler(this.btnSelectNetChangeFile_Click);
+            this.dgVCdbConfigsApplicationid.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
+            this.dgVCdbConfigsApplicationid.HeaderText = "App id";
+            this.dgVCdbConfigsApplicationid.Name = "dgVCdbConfigsApplicationid";
+            this.dgVCdbConfigsApplicationid.ReadOnly = true;
+            this.dgVCdbConfigsApplicationid.Width = 62;
             // 
-            // lblNetChangeExportFilePath
+            // dgVCdbConfigsBasevehicleid
             // 
-            this.lblNetChangeExportFilePath.AutoSize = true;
-            this.lblNetChangeExportFilePath.Location = new System.Drawing.Point(119, 24);
-            this.lblNetChangeExportFilePath.Name = "lblNetChangeExportFilePath";
-            this.lblNetChangeExportFilePath.Size = new System.Drawing.Size(29, 13);
-            this.lblNetChangeExportFilePath.TabIndex = 1;
-            this.lblNetChangeExportFilePath.Text = "label";
+            this.dgVCdbConfigsBasevehicleid.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
+            this.dgVCdbConfigsBasevehicleid.HeaderText = "Base Vehicle id";
+            this.dgVCdbConfigsBasevehicleid.Name = "dgVCdbConfigsBasevehicleid";
+            this.dgVCdbConfigsBasevehicleid.ReadOnly = true;
+            this.dgVCdbConfigsBasevehicleid.Width = 87;
             // 
-            // btnNetChangeExportSave
+            // dgVCdbConfigsMake
             // 
-            this.btnNetChangeExportSave.Location = new System.Drawing.Point(5, 48);
-            this.btnNetChangeExportSave.Name = "btnNetChangeExportSave";
-            this.btnNetChangeExportSave.Size = new System.Drawing.Size(89, 23);
-            this.btnNetChangeExportSave.TabIndex = 2;
-            this.btnNetChangeExportSave.Text = "Export";
-            this.btnNetChangeExportSave.UseVisualStyleBackColor = true;
-            this.btnNetChangeExportSave.Click += new System.EventHandler(this.btnNetChangeExportSave_Click);
+            this.dgVCdbConfigsMake.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
+            this.dgVCdbConfigsMake.HeaderText = "Make";
+            this.dgVCdbConfigsMake.Name = "dgVCdbConfigsMake";
+            this.dgVCdbConfigsMake.ReadOnly = true;
+            this.dgVCdbConfigsMake.Width = 59;
             // 
-            // dgAddsDropsVehiclesAction
+            // dgVCdbConfigsModel
             // 
-            this.dgAddsDropsVehiclesAction.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
-            this.dgAddsDropsVehiclesAction.HeaderText = "Action";
-            this.dgAddsDropsVehiclesAction.Name = "dgAddsDropsVehiclesAction";
-            this.dgAddsDropsVehiclesAction.ReadOnly = true;
-            this.dgAddsDropsVehiclesAction.Width = 62;
+            this.dgVCdbConfigsModel.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
+            this.dgVCdbConfigsModel.HeaderText = "Model";
+            this.dgVCdbConfigsModel.Name = "dgVCdbConfigsModel";
+            this.dgVCdbConfigsModel.ReadOnly = true;
+            this.dgVCdbConfigsModel.Width = 61;
             // 
-            // dgAddsDropsVehiclesBaseVid
+            // dgVCdbConfigsYear
             // 
-            this.dgAddsDropsVehiclesBaseVid.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
-            this.dgAddsDropsVehiclesBaseVid.HeaderText = "BaseVehicle id";
-            this.dgAddsDropsVehiclesBaseVid.Name = "dgAddsDropsVehiclesBaseVid";
-            this.dgAddsDropsVehiclesBaseVid.ReadOnly = true;
-            this.dgAddsDropsVehiclesBaseVid.Width = 102;
+            this.dgVCdbConfigsYear.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
+            this.dgVCdbConfigsYear.HeaderText = "Year";
+            this.dgVCdbConfigsYear.Name = "dgVCdbConfigsYear";
+            this.dgVCdbConfigsYear.ReadOnly = true;
+            this.dgVCdbConfigsYear.Width = 54;
             // 
-            // dgAddsDropsVehiclesMake
+            // dgVCdbConfigsParttype
             // 
-            this.dgAddsDropsVehiclesMake.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
-            this.dgAddsDropsVehiclesMake.HeaderText = "Make";
-            this.dgAddsDropsVehiclesMake.Name = "dgAddsDropsVehiclesMake";
-            this.dgAddsDropsVehiclesMake.ReadOnly = true;
-            this.dgAddsDropsVehiclesMake.Width = 59;
+            this.dgVCdbConfigsParttype.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
+            this.dgVCdbConfigsParttype.HeaderText = "Part Type";
+            this.dgVCdbConfigsParttype.Name = "dgVCdbConfigsParttype";
+            this.dgVCdbConfigsParttype.ReadOnly = true;
+            this.dgVCdbConfigsParttype.Width = 72;
             // 
-            // dgAddsDropsVehiclesModel
+            // dgVCdbConfigsPosition
             // 
-            this.dgAddsDropsVehiclesModel.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
-            this.dgAddsDropsVehiclesModel.HeaderText = "Model";
-            this.dgAddsDropsVehiclesModel.Name = "dgAddsDropsVehiclesModel";
-            this.dgAddsDropsVehiclesModel.ReadOnly = true;
-            this.dgAddsDropsVehiclesModel.Width = 61;
+            this.dgVCdbConfigsPosition.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
+            this.dgVCdbConfigsPosition.HeaderText = "Position";
+            this.dgVCdbConfigsPosition.Name = "dgVCdbConfigsPosition";
+            this.dgVCdbConfigsPosition.ReadOnly = true;
+            this.dgVCdbConfigsPosition.Width = 69;
             // 
-            // dgAddsDropsVehiclesYear
+            // dgVCdbConfigsQty
             // 
-            this.dgAddsDropsVehiclesYear.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
-            this.dgAddsDropsVehiclesYear.HeaderText = "Year";
-            this.dgAddsDropsVehiclesYear.Name = "dgAddsDropsVehiclesYear";
-            this.dgAddsDropsVehiclesYear.ReadOnly = true;
-            this.dgAddsDropsVehiclesYear.Width = 54;
+            this.dgVCdbConfigsQty.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
+            this.dgVCdbConfigsQty.HeaderText = "Qty";
+            this.dgVCdbConfigsQty.Name = "dgVCdbConfigsQty";
+            this.dgVCdbConfigsQty.ReadOnly = true;
+            this.dgVCdbConfigsQty.Width = 48;
             // 
-            // dgAddsDropsVehiclesParttype
+            // dgVCdbConfigsPart
             // 
-            this.dgAddsDropsVehiclesParttype.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
-            this.dgAddsDropsVehiclesParttype.HeaderText = "Part Type";
-            this.dgAddsDropsVehiclesParttype.Name = "dgAddsDropsVehiclesParttype";
-            this.dgAddsDropsVehiclesParttype.ReadOnly = true;
-            this.dgAddsDropsVehiclesParttype.Width = 78;
+            this.dgVCdbConfigsPart.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
+            this.dgVCdbConfigsPart.HeaderText = "Part";
+            this.dgVCdbConfigsPart.Name = "dgVCdbConfigsPart";
+            this.dgVCdbConfigsPart.ReadOnly = true;
+            this.dgVCdbConfigsPart.Width = 51;
             // 
-            // dgAddsDropsVehiclesPosition
+            // dgVCdbConfigsQualifiers
             // 
-            this.dgAddsDropsVehiclesPosition.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
-            this.dgAddsDropsVehiclesPosition.HeaderText = "Position";
-            this.dgAddsDropsVehiclesPosition.Name = "dgAddsDropsVehiclesPosition";
-            this.dgAddsDropsVehiclesPosition.ReadOnly = true;
-            this.dgAddsDropsVehiclesPosition.Width = 69;
+            this.dgVCdbConfigsQualifiers.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
+            this.dgVCdbConfigsQualifiers.HeaderText = "VCdb Coded Attributes";
+            this.dgVCdbConfigsQualifiers.Name = "dgVCdbConfigsQualifiers";
+            this.dgVCdbConfigsQualifiers.ReadOnly = true;
+            this.dgVCdbConfigsQualifiers.Width = 127;
             // 
-            // dgAddsDropsVehiclesQualifiers
+            // dgVCdbConfigsNotes
             // 
-            this.dgAddsDropsVehiclesQualifiers.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
-            this.dgAddsDropsVehiclesQualifiers.HeaderText = "Qualifiers";
-            this.dgAddsDropsVehiclesQualifiers.Name = "dgAddsDropsVehiclesQualifiers";
-            this.dgAddsDropsVehiclesQualifiers.ReadOnly = true;
-            this.dgAddsDropsVehiclesQualifiers.Width = 75;
-            // 
-            // dgAddsDropsVehiclesMfrLabel
-            // 
-            this.dgAddsDropsVehiclesMfrLabel.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
-            this.dgAddsDropsVehiclesMfrLabel.HeaderText = "MfrLabel";
-            this.dgAddsDropsVehiclesMfrLabel.Name = "dgAddsDropsVehiclesMfrLabel";
-            this.dgAddsDropsVehiclesMfrLabel.ReadOnly = true;
-            this.dgAddsDropsVehiclesMfrLabel.Width = 73;
-            // 
-            // dataGridViewParttypePositionError
-            // 
-            this.dataGridViewParttypePositionError.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
-            this.dataGridViewParttypePositionError.HeaderText = "Error";
-            this.dataGridViewParttypePositionError.Name = "dataGridViewParttypePositionError";
-            this.dataGridViewParttypePositionError.ReadOnly = true;
-            this.dataGridViewParttypePositionError.Width = 54;
-            // 
-            // dataGridViewParttypePositionAppId
-            // 
-            this.dataGridViewParttypePositionAppId.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
-            this.dataGridViewParttypePositionAppId.HeaderText = "App id";
-            this.dataGridViewParttypePositionAppId.Name = "dataGridViewParttypePositionAppId";
-            this.dataGridViewParttypePositionAppId.ReadOnly = true;
-            this.dataGridViewParttypePositionAppId.Width = 62;
-            // 
-            // dataGridViewParttypePositionBasevid
-            // 
-            this.dataGridViewParttypePositionBasevid.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
-            this.dataGridViewParttypePositionBasevid.HeaderText = "BaseVehicle Id";
-            this.dataGridViewParttypePositionBasevid.Name = "dataGridViewParttypePositionBasevid";
-            this.dataGridViewParttypePositionBasevid.ReadOnly = true;
-            this.dataGridViewParttypePositionBasevid.Width = 95;
-            // 
-            // dataGridViewParttypePositionMake
-            // 
-            this.dataGridViewParttypePositionMake.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
-            this.dataGridViewParttypePositionMake.HeaderText = "Make";
-            this.dataGridViewParttypePositionMake.Name = "dataGridViewParttypePositionMake";
-            this.dataGridViewParttypePositionMake.ReadOnly = true;
-            this.dataGridViewParttypePositionMake.Width = 59;
-            // 
-            // dataGridViewParttypePositionModel
-            // 
-            this.dataGridViewParttypePositionModel.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
-            this.dataGridViewParttypePositionModel.HeaderText = "Model";
-            this.dataGridViewParttypePositionModel.Name = "dataGridViewParttypePositionModel";
-            this.dataGridViewParttypePositionModel.ReadOnly = true;
-            this.dataGridViewParttypePositionModel.Width = 61;
-            // 
-            // dataGridViewParttypePositionYear
-            // 
-            this.dataGridViewParttypePositionYear.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
-            this.dataGridViewParttypePositionYear.HeaderText = "Year";
-            this.dataGridViewParttypePositionYear.Name = "dataGridViewParttypePositionYear";
-            this.dataGridViewParttypePositionYear.ReadOnly = true;
-            this.dataGridViewParttypePositionYear.Width = 54;
-            // 
-            // dataGridViewParttypePositionParttype
-            // 
-            this.dataGridViewParttypePositionParttype.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
-            this.dataGridViewParttypePositionParttype.HeaderText = "Part Type";
-            this.dataGridViewParttypePositionParttype.Name = "dataGridViewParttypePositionParttype";
-            this.dataGridViewParttypePositionParttype.ReadOnly = true;
-            this.dataGridViewParttypePositionParttype.Width = 72;
-            // 
-            // dataGridViewParttypePositionPosition
-            // 
-            this.dataGridViewParttypePositionPosition.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
-            this.dataGridViewParttypePositionPosition.HeaderText = "Position";
-            this.dataGridViewParttypePositionPosition.Name = "dataGridViewParttypePositionPosition";
-            this.dataGridViewParttypePositionPosition.ReadOnly = true;
-            this.dataGridViewParttypePositionPosition.Width = 69;
-            // 
-            // dataGridViewParttypePositionQty
-            // 
-            this.dataGridViewParttypePositionQty.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
-            this.dataGridViewParttypePositionQty.HeaderText = "Qty";
-            this.dataGridViewParttypePositionQty.Name = "dataGridViewParttypePositionQty";
-            this.dataGridViewParttypePositionQty.ReadOnly = true;
-            this.dataGridViewParttypePositionQty.Width = 48;
-            // 
-            // dataGridViewParttypePositionQualifiers
-            // 
-            this.dataGridViewParttypePositionQualifiers.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
-            this.dataGridViewParttypePositionQualifiers.HeaderText = "Qualifiers";
-            this.dataGridViewParttypePositionQualifiers.Name = "dataGridViewParttypePositionQualifiers";
-            this.dataGridViewParttypePositionQualifiers.ReadOnly = true;
-            this.dataGridViewParttypePositionQualifiers.Width = 75;
-            // 
-            // dataGridViewParttypePositionPart
-            // 
-            this.dataGridViewParttypePositionPart.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
-            this.dataGridViewParttypePositionPart.HeaderText = "Part";
-            this.dataGridViewParttypePositionPart.Name = "dataGridViewParttypePositionPart";
-            this.dataGridViewParttypePositionPart.ReadOnly = true;
-            this.dataGridViewParttypePositionPart.Width = 51;
+            this.dgVCdbConfigsNotes.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
+            this.dgVCdbConfigsNotes.HeaderText = "Notes";
+            this.dgVCdbConfigsNotes.Name = "dgVCdbConfigsNotes";
+            this.dgVCdbConfigsNotes.ReadOnly = true;
+            this.dgVCdbConfigsNotes.Width = 60;
             // 
             // Form1
             // 
@@ -2430,15 +2449,6 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn dgVCdbCodesPart;
         private System.Windows.Forms.DataGridViewTextBoxColumn dgVCdbCodesQualifiers;
         private System.Windows.Forms.DataGridViewTextBoxColumn dgVCdbCodesNotes;
-        private System.Windows.Forms.DataGridViewTextBoxColumn dgVCdbConfigsApplicationid;
-        private System.Windows.Forms.DataGridViewTextBoxColumn dgVCdbConfigsMake;
-        private System.Windows.Forms.DataGridViewTextBoxColumn dgVCdbConfigsModel;
-        private System.Windows.Forms.DataGridViewTextBoxColumn dgVCdbConfigsYear;
-        private System.Windows.Forms.DataGridViewTextBoxColumn dgVCdbConfigsParttype;
-        private System.Windows.Forms.DataGridViewTextBoxColumn dgVCdbConfigsPosition;
-        private System.Windows.Forms.DataGridViewTextBoxColumn dgVCdbConfigsQty;
-        private System.Windows.Forms.DataGridViewTextBoxColumn dgVCdbConfigsPart;
-        private System.Windows.Forms.DataGridViewTextBoxColumn dgVCdbConfigsQualifiers;
         private System.Windows.Forms.ProgressBar progressBarParttypeDisagreement;
         private System.Windows.Forms.Button btnSelectReferenceACESfile;
         private System.Windows.Forms.Label lblReferenceACESfilePath;
@@ -2474,6 +2484,17 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn dataGridViewParttypePositionQty;
         private System.Windows.Forms.DataGridViewTextBoxColumn dataGridViewParttypePositionQualifiers;
         private System.Windows.Forms.DataGridViewTextBoxColumn dataGridViewParttypePositionPart;
+        private System.Windows.Forms.DataGridViewTextBoxColumn dgVCdbConfigsApplicationid;
+        private System.Windows.Forms.DataGridViewTextBoxColumn dgVCdbConfigsBasevehicleid;
+        private System.Windows.Forms.DataGridViewTextBoxColumn dgVCdbConfigsMake;
+        private System.Windows.Forms.DataGridViewTextBoxColumn dgVCdbConfigsModel;
+        private System.Windows.Forms.DataGridViewTextBoxColumn dgVCdbConfigsYear;
+        private System.Windows.Forms.DataGridViewTextBoxColumn dgVCdbConfigsParttype;
+        private System.Windows.Forms.DataGridViewTextBoxColumn dgVCdbConfigsPosition;
+        private System.Windows.Forms.DataGridViewTextBoxColumn dgVCdbConfigsQty;
+        private System.Windows.Forms.DataGridViewTextBoxColumn dgVCdbConfigsPart;
+        private System.Windows.Forms.DataGridViewTextBoxColumn dgVCdbConfigsQualifiers;
+        private System.Windows.Forms.DataGridViewTextBoxColumn dgVCdbConfigsNotes;
     }
 }
 
