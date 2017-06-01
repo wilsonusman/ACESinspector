@@ -1407,9 +1407,10 @@ namespace ACESinspector
             {
                 using (StreamWriter sw = new StreamWriter(_filePath))
                 {
+                    sw.WriteLine("Application id\tBase Vehicle id\tMake\tModel\tYear\tPart\tPart Type\tPosition\tQuantity\tVCdb-Coded Attributes\tNotes\tMfr Label");
                     foreach (App app in apps)
                     {
-                        sw.WriteLine(app.id.ToString() + "\t" + vcdb.niceMakeOfBasevid(app.basevehilceid) + "\t" + vcdb.niceModelOfBasevid(app.basevehilceid) + "\t" + vcdb.niceYearOfBasevid(app.basevehilceid) + "\t" + app.part + "\t" + pcdb.niceParttype(app.parttypeid) + "\t" + pcdb.nicePosition(app.positionid) + "\t" + app.quantity.ToString() + "\t" + app.niceAttributesString(vcdb, false) + "\t" + app.notes + "\t" + app.mfrlabel);
+                        sw.WriteLine(app.id.ToString() + "\t" + app.basevehilceid.ToString() + "\t" + vcdb.niceMakeOfBasevid(app.basevehilceid) + "\t" + vcdb.niceModelOfBasevid(app.basevehilceid) + "\t" + vcdb.niceYearOfBasevid(app.basevehilceid) + "\t" + app.part + "\t" + pcdb.niceParttype(app.parttypeid) + "\t" + pcdb.nicePosition(app.positionid) + "\t" + app.quantity.ToString() + "\t" + app.niceAttributesString(vcdb, false) + "\t" + app.notes + "\t" + app.mfrlabel);
                     }
                 }
                 return "Flat applications exported to " + _filePath;

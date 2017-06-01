@@ -66,12 +66,11 @@ namespace ACESinspector
             lblAssessmentFilePath.Text = "";
             lblAppExportFilePath.Text = "";
             lblBgExportFilePath.Text = "";
+            
             btnAssessmentSave.Enabled = false;
-            btnSelectAssessmentFile.Enabled = false;
             btnAppExportSave.Enabled = false;
-            btnSelectAppExportFile.Enabled = false;
-            btnSelectBgExportFile.Enabled = false;
             btnBgExportSave.Enabled = false;
+            btnNetChangeExportSave.Enabled = false;
 
             btnAnalyze.Enabled = false;
             dgParts.Width = Width - 36;
@@ -155,7 +154,7 @@ namespace ACESinspector
             btnSelectACESfile.Enabled = false;
             btnSelectVCdbFile.Enabled = false;
             btnSelectPCdbFile.Enabled = false;
-
+            
             var progressIndicator = new Progress<int>(ReportImportProgress);
 
             OpenFileDialog openFileDialog = new OpenFileDialog();
@@ -288,7 +287,7 @@ namespace ACESinspector
                     lblInvalidParttypePositionCount.Text = "(not yet analyzed)";
                     lblInvalidVCdbCodesCount.Text = "(not yet analyzed)";
                     lblDifferentialsSummary.Text = "(not yet analyzed)";
-
+                    btnAssessmentSave.Enabled = false;
 
                     // copy over the header stuff from the primary aces object to the diffs aces object
                     diffaces.clear();
@@ -317,19 +316,16 @@ namespace ACESinspector
                         dgParts.Rows.Add(part, Convert.ToInt32(aces.partsAppsCounts[part].ToString()), partTypeNameListString, positionNameListString);
                     }
                     progressBar1.Value = 0; lblProgressPercent.Text = ""; lblStatus.Text = "Successfully imported ACES xml";
-                    btnSelectAssessmentFile.Enabled = true; btnSelectAppExportFile.Enabled = true; btnSelectBgExportFile.Enabled = true;
+                    btnSelectAppExportFile.Enabled = true; btnSelectBgExportFile.Enabled = true;
                     pictureBoxParttypeDisagreement.Visible = true; lblParttypeDisagreement.Text = dgParttypeDisagreement.Rows.Count.ToString();
                     if (dgParttypeDisagreement.Rows.Count > 0) {pictureBoxParttypeDisagreement.BackColor = Color.Yellow; dgParttypeDisagreement.Visible = true; } else {  pictureBoxParttypeDisagreement.BackColor = Color.Green; dgParttypeDisagreement.Visible = false; }
 
                     if (vcdb.version!="" && aces.successfulImport)
                     {
                         btnAnalyze.Enabled = true;
-                        try {if(Directory.Exists(lblAssessmentFilePath.Text)){btnAssessmentSave.Enabled = true;}}catch (Exception){ }// Fail silently.
                         try { if (Directory.Exists(lblAppExportFilePath.Text)) { btnAppExportSave.Enabled = true; } } catch (Exception) { }// Fail silently.
                         try { if(Directory.Exists(lblBgExportFilePath.Text)){btnBgExportSave.Enabled = true; }}catch (Exception) { }// Fail silently.
                     }
-
-
 
                     key.SetValue("lastACESDirectoryPath", Path.GetDirectoryName(openFileDialog.FileName));
 
@@ -797,6 +793,8 @@ namespace ACESinspector
             btnSelectACESfile.Enabled = true;
             btnSelectVCdbFile.Enabled = true;
             btnSelectPCdbFile.Enabled = true;
+            btnAssessmentSave.Enabled = true;
+
 
 
             if (lblAssessmentFilePath.Text != "") { btnAssessmentSave.Enabled = true; }
